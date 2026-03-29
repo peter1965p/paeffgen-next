@@ -1,0 +1,140 @@
+"use client";
+
+import { useState, useEffect, useCallback, useRef } from "react";
+import { User, Settings, LogOut, ChevronDown, Database } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function Topbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten
+  const [isWarning, setIsWarning] = useState(false);
+  const router = useRouter();
+  
+  // Ref, um den aktuellen Timer-Wert für die Events greifbar zu haben
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Logout Funktion
+  const handleLogout = useCallback(() => {
+    console.log("SESSION_EXPIRED");
+    router.push("/login"); 
+  }, [router]);
+
+  // Reset Funktion: Setzt den Timer wieder auf den Anfangswert
+  const resetTimer = useCallback(() => {
+    setTimeLeft(300);
+    setIsWarning(false);
+  }, []);
+
+  // 1. Timer Intervall
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current);
+          handleLogout();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [handleLogout]);
+
+  // 2. Inaktivitäts-Tracker: Überwacht Maus und Tastatur
+  useEffect(() => {
+    const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+    
+    // Bei jeder dieser Aktionen wird resetTimer aufgerufen
+    const handleActivity = () => resetTimer();
+
+    activityEvents.forEach(event => {
+      window.addEventListener(event, handleActivity);
+    });
+
+    return () => {
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, handleActivity);
+      });
+    };
+  }, [resetTimer]);
+
+  // 3. Warn-Zustand bei weniger als 30 Sekunden
+  useEffect(() => {
+    setIsWarning(timeLeft <= 30 && timeLeft > 0);
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  return (
+    <div className="h-20 border-b border-white/5 bg-[#0d111c]/80 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">
+      <div className="flex items-center gap-4">
+        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">System Node: <span className="text-white">Active</span></span>
+      </div>
+
+      <div className="flex items-center gap-8">
+        {/* Dynamic Session Timer */}
+        <div className="text-right hidden md:block">
+          <p className="text-[8px] font-mono text-slate-600 uppercase tracking-widest mb-1">Session TTL</p>
+          <div className={`font-mono text-xs font-bold transition-all duration-500 ${isWarning ? 'text-red-500 animate-pulse scale-110' : 'text-green-400'}`}>
+            {formatTime(timeLeft)}
+          </div>
+        </div>
+
+        {/* User Dropdown */}
+        <div className="relative">
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-4 bg-black/40 border border-white/10 pl-4 pr-2 py-2 rounded-2xl hover:border-blue-500/50 transition-all group"
+          >
+            <div className="text-right">
+              <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest opacity-50">Operator</p>
+              <p className="text-white text-[10px] font-bold">peter@paeffgen-it.de</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-500/20 text-sm">
+              P
+            </div>
+            <ChevronDown size={14} className={`text-slate-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {isOpen && (
+            <div className="absolute right-0 mt-3 w-60 bg-[#0d111c] border border-white/10 rounded-[2rem] shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 backdrop-blur-xl">
+              <div className="px-4 py-2 mb-2 border-b border-white/5">
+                <p className="text-[8px] font-mono text-blue-500 uppercase tracking-widest">Access Level</p>
+                <p className="text-[10px] text-white font-bold italic uppercase">Administrator</p>
+              </div>
+
+              <Link href="/admin/profile" className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group">
+                <User size={16} className="text-slate-600 group-hover:text-blue-500" />
+                <span className="text-[10px] font-mono uppercase tracking-widest">Profil</span>
+              </Link>
+              
+              <Link href="/admin/settings" className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group">
+                <Settings size={16} className="text-slate-600 group-hover:text-blue-500" />
+                <span className="text-[10px] font-mono uppercase tracking-widest">Settings</span>
+              </Link>
+
+              <div className="h-px bg-white/5 my-2 mx-2"></div>
+              
+              <button 
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-3 bg-red-500/5 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all group"
+              >
+                <LogOut size={16} />
+                <span className="text-[10px] font-mono uppercase tracking-widest font-bold">Terminate Session</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
