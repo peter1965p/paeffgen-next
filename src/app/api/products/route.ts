@@ -14,6 +14,8 @@ const getSupabase = () => {
     throw new Error('Supabase URL oder Key fehlen in den Umgebungsvariablen!');
   }
 
+  // Rebuild-Trigger: 29-03-2026-v2
+
   return createClient(url, key);
 };
 
