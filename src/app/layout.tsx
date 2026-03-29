@@ -1,6 +1,8 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
+export const dynamic = 'force-dynamic';
+
 // Metadaten für Paeffgen IT / AETHER OS
 export const metadata = {
   title: "Paeffgen IT | Field Service & Hardware-Infrastruktur",

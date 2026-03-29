@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabaseClient";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
 // Diese Seite wird für jeden Blog-Post generiert
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const { data: post } = await supabase
