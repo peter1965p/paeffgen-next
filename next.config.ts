@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Wir nutzen einen Index-Signature-Workaround, um TS zu beruhigen [cite: 2026-03-08]
- 
+  // Falls du Bilder von externen Quellen (wie GitHub oder Vercel-Blobs) nutzt,
+  // müssten wir hier später images: { remotePatterns: [...] } hinzufügen.
 };
 
 export default nextConfig;
