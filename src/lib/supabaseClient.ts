@@ -1,12 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
 
-// Wir erstellen den Client IMMER. 
-// Wenn die Daten fehlen, meckert er erst beim Laden der Daten im Browser,
-// aber er bringt den Build in Vercel nicht mehr zum Absturz.
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co', 
-  supabaseAnonKey || 'placeholder'
-)
+// 1. Der fertige Client (für einfachen Import)
+export const supabase = createSupabaseClient(supabaseUrl, supabaseAnonKey)
+
+// 2. Die Funktion (falls dein Code "createClient()" aufrufen will)
+export const createClient = () => {
+  return createSupabaseClient(supabaseUrl, supabaseAnonKey)
+}
