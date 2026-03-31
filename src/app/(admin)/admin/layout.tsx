@@ -1,4 +1,4 @@
-import "../../globals.css"; // Pfad zu deiner CSS [cite: 2026-02-20]
+import "../../globals.css"; // Pfad zu deiner CSS
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 
