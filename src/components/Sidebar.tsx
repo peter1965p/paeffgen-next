@@ -21,7 +21,7 @@ export default function Sidebar() {
     <aside className="w-64 bg-[#0d111c] border-r border-white/5 h-screen flex flex-col p-8">
       <div className="mb-12">
         <h2 className="text-2xl font-black italic tracking-tighter text-white uppercase">
-          AETHER <span className="text-blue-600">OS</span>
+          AETHER <span className="text-orange-600">OS</span>
         </h2>
         <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold mt-1">Control Center</p>
       </div>
@@ -36,8 +36,8 @@ export default function Sidebar() {
               href={link.href}
               className={`px-5 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
                 isActive 
-                  ? "bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)]" 
-                  : "text-slate-500 hover:text-white hover:bg-white/5"
+                  ? "bg-orange-600 text-slate-500 shadow-[0_0_20px_rgba(37,99,235,0.3)]" 
+                  : "text-slate-500 hover:text-white hover:bg-orange-800"
               }`}
             >
               {link.label}
