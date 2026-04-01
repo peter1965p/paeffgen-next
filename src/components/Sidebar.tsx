@@ -36,7 +36,7 @@ export default function Sidebar() {
               href={link.href}
               className={`px-5 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
                 isActive 
-                  ? "bg-orange-600 text-slate-500 shadow-[0_0_20px_rgba(37,99,235,0.3)]" 
+                  ? "bg-orange-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)]" 
                   : "text-slate-500 hover:text-white hover:bg-orange-800"
               }`}
             >
