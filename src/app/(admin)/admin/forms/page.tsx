@@ -101,7 +101,7 @@ export default function FormBuilder() {
               <button
                 key={item.type}
                 onClick={() => addField(item.type as FieldType)}
-                className="group flex items-center gap-4 p-5 bg-zinc-900/40 border border-white/5 rounded-[1.5rem] hover:border-blue-500/40 hover:bg-zinc-900 transition-all text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white"
+                className="group flex items-center gap-4 p-5 bg-zinc-900/40 border border-orange-500 rounded-[1.5rem] hover:border-blue-500/40 hover:bg-zinc-900 transition-all text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white"
               >
                 <div className="p-3 bg-zinc-800 rounded-xl group-hover:text-blue-500 transition-colors">
                   <item.icon size={16} />
