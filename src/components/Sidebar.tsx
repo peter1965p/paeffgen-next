@@ -13,6 +13,7 @@ export default function Sidebar() {
     { href: "/admin/users", label: "Users" },
     { href: "/admin/intelligence", label: "Mailbox" },
     { href: "/admin/store", label: "Shop" },
+    { href: "/admin/modulstore", label: "Modul Shop" },
     { href: "/admin/settings", label: "Settings" },
   ];
 
