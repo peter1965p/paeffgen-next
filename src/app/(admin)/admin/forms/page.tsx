@@ -89,7 +89,7 @@ export default function FormBuilder() {
         
         {/* Sidebar: Komponenten */}
         <div className="w-80 border-r border-white/5 p-8 overflow-y-auto bg-zinc-950/10">
-          <p className="text-slate-500 text-[9px] font-black uppercase mb-6 tracking-[0.3em]">Hardware_Library</p>
+          <p className="text-slate-500 text-[9px] font-black uppercase mb-6 tracking-[0.3em]">Hardware Library</p>
           <div className="grid gap-3">
             {[
               { type: "text", icon: Type, label: "Textfeld" },
