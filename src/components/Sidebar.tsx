@@ -10,6 +10,7 @@ export default function Sidebar() {
     { href: "/admin", label: "Dashboard" },
     { href: "/admin/pages", label: "Sectors" }, // "Sectors" statt Pages für den AETHER-Vibe
     { href: "/admin/blog", label: "Intelligence" }, // Blog ist jetzt "Intelligence" 
+    { href: "/admin/forms", label: "Formulare" },
     { href: "/admin/users", label: "Users" },
     { href: "/admin/intelligence", label: "Mailbox" },
     { href: "/admin/store", label: "Shop" },

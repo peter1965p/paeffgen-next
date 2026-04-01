@@ -1,9 +1,20 @@
-"use client";
-import { Send, Terminal, Cpu, MapPin, Calendar } from "lucide-react";
+import { createClient } from "@/lib/supabaseClient";
+import { Send, Terminal, Cpu, MapPin, Calendar, AlertTriangle } from "lucide-react";
+import FormRenderer from "@/components/FormRenderer";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const supabase = await createClient();
+  
+  // Wir holen das Formular mit dem Slug 'service-request'
+  // Stelle sicher, dass du im Admin-Builder den Namen "Service Request" (Slug: service-request) vergeben hast.
+  const { data: form } = await supabase
+    .from("forms")
+    .select("*")
+    .eq("slug", "service-request")
+    .single();
+
   return (
-    <div className="min-h-screen bg-[#05070a] text-white pt-32 pb-20 px-6">
+    <div className="min-h-screen bg-[#05070a] text-white pt-32 pb-20 px-6 font-sans">
       <div className="max-w-4xl mx-auto">
         
         {/* Header Section */}
@@ -24,42 +35,28 @@ export default function ContactPage() {
 
         <div className="grid md:grid-cols-5 gap-12">
           
-          {/* Form Side */}
+          {/* Dynamisches Formular Side */}
           <div className="md:col-span-3">
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[9px] font-mono uppercase text-slate-500 ml-2">Client_Name</label>
-                  <input type="text" placeholder="Vorname Nachname" className="w-full bg-zinc-900/50 border border-white/5 p-4 rounded-xl font-mono text-sm focus:border-blue-500/50 outline-none transition-all placeholder:text-zinc-700" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[9px] font-mono uppercase text-slate-500 ml-2">Contact_Endpoint</label>
-                  <input type="email" placeholder="email@firma.de" className="w-full bg-zinc-900/50 border border-white/5 p-4 rounded-xl font-mono text-sm focus:border-blue-500/50 outline-none transition-all placeholder:text-zinc-700" />
-                </div>
+            {form ? (
+              <FormRenderer 
+                formId={form.id} 
+                formName={form.name} 
+                fields={form.fields} 
+              />
+            ) : (
+              <div className="p-8 border border-red-500/20 bg-red-500/5 rounded-3xl text-center">
+                <AlertTriangle className="mx-auto text-red-500 mb-4" size={32} />
+                <p className="text-[10px] font-mono uppercase text-red-400">
+                  Error: Form_Not_Found
+                </p>
+                <p className="text-xs text-slate-500 mt-2">
+                  Bitte erstellen Sie ein Formular mit dem Slug "service-request" im Admin-Bereich.
+                </p>
               </div>
-
-              <div className="space-y-1">
-                <label className="text-[9px] font-mono uppercase text-slate-500 ml-2">Service_Type</label>
-                <select className="w-full bg-zinc-900/50 border border-white/5 p-4 rounded-xl font-mono text-sm focus:border-blue-500/50 outline-none transition-all appearance-none text-zinc-400">
-                  <option>Hardware_Replacement</option>
-                  <option>Fault_Analysis_Onsite</option>
-                  <option>Rollout_Deployment</option>
-                  <option>Other_Technical_Issues</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[9px] font-mono uppercase text-slate-500 ml-2">Incident_Description</label>
-                <textarea rows={5} placeholder="Beschreiben Sie den Defekt oder das Projektziel..." className="w-full bg-zinc-900/50 border border-white/5 p-4 rounded-xl font-mono text-sm focus:border-blue-500/50 outline-none transition-all placeholder:text-zinc-700 resize-none"></textarea>
-              </div>
-
-              <button className="group w-full py-5 bg-blue-600 hover:bg-white text-white hover:text-black font-black italic uppercase text-xs rounded-xl transition-all flex items-center justify-center gap-3">
-                Request_Initialisieren <Send size={14} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </form>
+            )}
           </div>
 
-          {/* Info Side */}
+          {/* Info Side (Statisch bleibend für System-Parameter) */}
           <div className="md:col-span-2 space-y-8">
             <div className="p-6 border border-white/5 rounded-3xl bg-zinc-900/20 backdrop-blur-sm">
               <h3 className="text-[10px] font-mono font-bold uppercase text-blue-500 mb-6 flex items-center gap-2">
