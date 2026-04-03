@@ -82,7 +82,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#05070a]/80 via-transparent to-transparent"></div>
             <div className="absolute bottom-4 left-4 flex items-center gap-2 font-mono text-[9px] text-blue-400 bg-black/80 px-3 py-2 border border-blue-500/30 backdrop-blur-md">
                 <Activity size={12} className="animate-pulse" />
-                ADMIN_INTERFACE_V3.1 // LIVE_PREVIEW
+                ADMIN INTERFACE V3.1 // LIVE PREVIEW
             </div>
         </div>
       </section>
@@ -184,7 +184,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 gap-3 font-mono text-[10px] text-slate-400">
             {["NRW", "RLP", "SAARLAND", "HESSEN", "LUXEMBURG"].map(region => (
               <div key={region} className="flex items-center gap-3 border border-white/5 p-4 rounded-sm bg-zinc-900/20 hover:border-blue-500/30 transition-colors">
-                <MapPin size={12} className="text-blue-500" /> {region} // ACTIVE_ZONE
+                <MapPin size={12} className="text-blue-500" /> {region} // ACTIVE ZONE
               </div>
             ))}
           </div>
@@ -195,7 +195,7 @@ export default function HomePage() {
             Available May 2026
           </div>
           <h3 className="text-xs font-mono font-bold uppercase mb-6 text-blue-500 tracking-widest">
-            CURRENT_STATUS // RECRUITING_OPEN
+            CURRENT STATUS // RECRUITING OPEN
           </h3>
           <p className="text-sm text-slate-300 leading-relaxed italic mb-8">
             "Nach erfolgreichem Abschluss der Onsite-Projekte für RWE & E.ON stehe ich ab Mai 2026 für neue Herausforderungen zur Verfügung."
