@@ -71,27 +71,70 @@ export default function SettingsPage() {
         )}
 
         {/* PROFILING & LANDINGPAGE */}
-        {activeTab === "profile" && (
-          <div className="bg-zinc-950 border border-emerald-500/10 p-8 md:p-12 rounded-[3rem] space-y-10 shadow-2xl animate-in slide-in-from-bottom-4 duration-500">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-black italic uppercase text-white">Public Profile</h2>
-              <div className="bg-emerald-500/10 text-emerald-500 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-500/20">System Online</div>
-            </div>
-            <div className="grid grid-cols-1 gap-8">
-              <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Global URL Path</label>
-                <div className="flex items-center bg-black border border-white/10 rounded-2xl px-5 py-4 text-white font-mono text-xs">
-                  <span className="text-slate-600">paeffgen-it.de/</span>
-                  <input placeholder="my-business-slug" className="bg-transparent border-none outline-none w-full ml-1" />
-                </div>
-              </div>
-              <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Business Bio / Landingpage Text</label>
-                <textarea rows={4} placeholder="Beschreibe deine Expertise..." className="w-full bg-black border border-white/10 rounded-2xl px-5 py-4 text-white font-mono text-xs focus:border-[#b33927] outline-none" />
-              </div>
-            </div>
-          </div>
-        )}
+{activeTab === "profile" && (
+  <div className="bg-zinc-950 border border-emerald-500/10 p-8 md:p-12 rounded-[3rem] space-y-10 shadow-2xl animate-in slide-in-from-bottom-4 duration-500">
+    <div className="flex justify-between items-start md:items-center">
+      <div>
+        <h2 className="text-2xl font-black italic uppercase text-white tracking-tighter">Public Profile</h2>
+        <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
+          Node Identity Management // GUP Config
+        </p>
+      </div>
+      <div className="flex flex-col items-end gap-2">
+        <div className="bg-emerald-500/10 text-emerald-500 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-500/20">
+          System Online
+        </div>
+        {/* Kleiner Indicator für den Host */}
+        <span className="text-[7px] font-mono text-zinc-700 uppercase tracking-widest">
+          Detected Host: {typeof window !== "undefined" ? window.location.hostname : "detecting..."}
+        </span>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 gap-10">
+      
+      {/* URL KONFIGURATION */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-end px-1">
+          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Global URL Path (GUP)</label>
+          <span className="text-[9px] font-black italic text-[#b33927] uppercase">Dynamic Domain Active</span>
+        </div>
+        
+        <div className="flex items-center bg-black border border-white/10 rounded-2xl px-6 py-5 text-white font-mono text-xs focus-within:border-[#b33927] transition-all group shadow-inner">
+          <span className="text-zinc-600 group-focus-within:text-[#b33927] transition-colors">
+            {typeof window !== "undefined" ? window.location.hostname : "paeffgen-it.de"}/
+          </span>
+          <input 
+            placeholder="my-business-slug" 
+            className="bg-transparent border-none outline-none w-full ml-1 placeholder:text-zinc-800" 
+          />
+        </div>
+      </div>
+
+      {/* BIO / EXPERTISE */}
+      <div className="space-y-4">
+        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ml-1">Business Bio / Landingpage Text</label>
+        <textarea 
+          rows={6} 
+          placeholder="Beschreibe deine Expertise, deine Mission oder dein Angebot..." 
+          className="w-full bg-black border border-white/10 rounded-2xl px-6 py-5 text-white font-mono text-xs focus:border-[#b33927] outline-none transition-all resize-none shadow-inner" 
+        />
+      </div>
+
+      {/* VISIBILITY TOGGLE */}
+      <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+        <div className="space-y-1">
+          <h3 className="text-[10px] font-black uppercase text-white tracking-widest">Live Deployment</h3>
+          <p className="text-[8px] font-mono text-zinc-600 uppercase">Veröffentlicht deine Landingpage unter dem gewählten GUP.</p>
+        </div>
+        <button className="h-6 w-12 bg-zinc-800 rounded-full p-1 relative flex items-center transition-colors hover:bg-zinc-700">
+           <div className="h-4 w-4 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
 
         {/* MOLLIE PAYMENT */}
         {activeTab === "mollie" && (
