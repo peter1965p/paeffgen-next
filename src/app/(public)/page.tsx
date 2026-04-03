@@ -7,14 +7,16 @@ import {
   Code2, 
   Database, 
   Layout, 
-  ExternalLink 
+  ExternalLink,
+  Server,
+  Lock
 } from "lucide-react";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#05070a] text-white font-sans selection:bg-blue-500/30">
       
-      {/* HERO SECTION: PAEFFGEN IT & AETHER OS */}
+      {/* 1. HERO SECTION */}
       <section className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12">
           <div className="flex-1">
@@ -38,13 +40,13 @@ export default function HomePage() {
           <div className="max-w-md lg:text-right border-l lg:border-l-0 lg:border-r border-blue-600/30 pl-6 lg:pr-6 py-2">
             <p className="text-slate-500 font-mono text-[10px] uppercase leading-relaxed tracking-tighter">
               Spezialisiert auf hochperformante Dashboards und kritische Hardware-Infrastrukturen. 
-              Verbindung von 33 Jahren Onsite-Expertise mit moderner Fullstack-Entwicklung.
+              Verbindung von über 25 Jahren Onsite-Expertise mit moderner Fullstack-Entwicklung.
             </p>
           </div>
         </div>
       </section>
 
-      {/* PRODUCT SHOWCASE: AETHER OS LIVE PREVIEW */}
+      {/* 2. PRODUCT SHOWCASE: AETHER OS */}
       <section id="aether-os" className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center border-x border-white/5 bg-gradient-to-b from-blue-600/[0.03] to-transparent">
         <div className="order-2 lg:order-1">
           <h2 className="text-sm font-mono font-bold uppercase text-blue-500 mb-4 tracking-[0.2em]">PRODUCT // AETHER OS</h2>
@@ -52,7 +54,7 @@ export default function HomePage() {
             DAS BETRIEBSSYSTEM <br/>FÜR DEIN UNTERNEHMEN.
           </h3>
           <p className="text-slate-400 text-sm leading-relaxed mb-8 max-w-lg">
-            AETHER OS ist ein modulares Dashboard-System auf Basis von **Next.js** und **Supabase**. 
+            AETHER OS ist ein modulares Dashboard-System auf Basis von **Next.js** und **Supabase**.
             Es ermöglicht die strikte Trennung von Admin-Schnittstellen und individuellen User-Contexts. 
             Ideal für skalierbare Lösungen im Automotive-Sektor oder komplexe Enterprise-Infrastrukturen.
           </p>
@@ -73,16 +75,11 @@ export default function HomePage() {
           </div>
         </div>
         
-        {/* DASHBOARD PREVIEW IMAGE */}
         <div className="order-1 lg:order-2 relative aspect-video bg-zinc-900 border border-white/10 rounded-sm overflow-hidden group shadow-2xl shadow-blue-900/20">
             <div 
               className="absolute inset-0 bg-[url('/aether-os-dashboard.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-1000 ease-in-out"
             ></div>
-            
-            {/* Dark Overlay for Tech-Look */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#05070a]/80 via-transparent to-transparent"></div>
-            
-            {/* Preview Badge */}
             <div className="absolute bottom-4 left-4 flex items-center gap-2 font-mono text-[9px] text-blue-400 bg-black/80 px-3 py-2 border border-blue-500/30 backdrop-blur-md">
                 <Activity size={12} className="animate-pulse" />
                 ADMIN_INTERFACE_V3.1 // LIVE_PREVIEW
@@ -90,7 +87,53 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CORE COMPETENCIES GRID */}
+      {/* 3. TECH ARCHITECTURE (Die neue "Beweis"-Sektion) */}
+      <section className="max-w-7xl mx-auto px-6 py-20 border-x border-white/5 bg-[#05070a]">
+        <div className="flex flex-col lg:flex-row gap-16">
+          <div className="w-full lg:w-1/3">
+            <h2 className="text-3xl font-black italic uppercase mb-6 leading-none">
+              THE <span className="text-blue-600">ENGINE</span> <br/> BEHIND AETHER.
+            </h2>
+            <p className="text-slate-400 font-mono text-[10px] leading-relaxed uppercase">
+              Vollständig modularer Aufbau basierend auf dem Next.js App-Router. 
+              Sicherheit durch serverseitige Validierung und Supabase-Integration.
+            </p>
+          </div>
+
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5 border border-white/5">
+            {[
+              { 
+                label: "Logic Layer", 
+                title: "Server Actions", 
+                desc: "Direkte DB-Interaktion via lib/actions für maximale Performance ohne REST-Overhead." 
+              },
+              { 
+                label: "Security", 
+                title: "Middleware & Auth", 
+                desc: "Zentralisierte Route-Protection und Role-Based Access Control (RBAC) über Next-Middleware." 
+              },
+              { 
+                label: "UI System", 
+                title: "Custom Components", 
+                desc: "Wiederverwendbare Komponenten wie FormRenderer und Card für schnelle Skalierung." 
+              },
+              { 
+                label: "Backend", 
+                title: "Supabase Cloud", 
+                desc: "PostgreSQL mit Realtime-Features für Live-Updates im Dashboard-Status." 
+              }
+            ].map((tech, i) => (
+              <div key={i} className="bg-[#05070a] p-8 hover:bg-blue-600/[0.02] transition-colors">
+                <span className="text-[9px] font-mono text-blue-500 tracking-[0.2em] uppercase">{tech.label}</span>
+                <h4 className="text-sm font-bold mt-2 mb-3 uppercase tracking-widest">{tech.title}</h4>
+                <p className="text-slate-500 text-[11px] leading-relaxed italic">{tech.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. CORE COMPETENCIES */}
       <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 border-x border-white/5 bg-[#05070a]">
         {[
           { 
@@ -106,7 +149,7 @@ export default function HomePage() {
           { 
             icon: <ShieldCheck size={24} />, 
             title: "System Engineering", 
-            desc: "Über 33 Jahre Erfahrung in der Entstörung kritischer Infrastrukturen (z.B. RWE, E.ON, Dell Technologies)." 
+            desc: "Jahrzehntelange Erfahrung in der Entstörung kritischer Infrastrukturen (z.B. RWE, E.ON, Dell Technologies)."
           }
         ].map((item, i) => (
           <div key={i} className="p-12 border-b border-white/5 hover:bg-white/[0.02] transition-all group">
@@ -117,7 +160,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* EXPERIENCE BAR (AUTO-SCROLL LOOK) */}
+      {/* 5. EXPERIENCE BAR */}
       <section className="bg-slate-950 py-10 overflow-hidden border-y border-blue-700/50">
         <div className="flex justify-around items-center opacity-20 grayscale contrast-125 font-black italic text-xl tracking-[0.2em] whitespace-nowrap">
           <span>HEMMERSBACH</span>
@@ -132,7 +175,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* REGION & CONTACT */}
+      {/* 6. REGION & CONTACT */}
       <section className="max-w-7xl mx-auto px-6 py-24 flex flex-col md:flex-row gap-16 items-center">
         <div className="flex-1">
           <h2 className="text-3xl font-black italic uppercase mb-8">
@@ -147,7 +190,7 @@ export default function HomePage() {
           </div>
         </div>
         
-        <div className="flex-1 bg-blue-600/5 border border-blue-500/20 p-10 rounded-sm relative overflow-hidden">
+        <div className="flex-1 bg-blue-600/5 border border-blue-500/20 p-10 rounded-sm relative overflow-hidden bg-[#05070a]">
           <div className="absolute top-0 right-0 p-2 font-mono text-[8px] bg-blue-600 text-white uppercase italic tracking-widest">
             Available May 2026
           </div>
@@ -155,18 +198,18 @@ export default function HomePage() {
             CURRENT_STATUS // RECRUITING_OPEN
           </h3>
           <p className="text-sm text-slate-300 leading-relaxed italic mb-8">
-            "Nach erfolgreichem Abschluss der Onsite-Projekte für RWE & E.ON stehe ich ab Mai 2026 für neue Herausforderungen in der IT-Infrastruktur oder Software-Entwicklung zur Verfügung."
+            "Nach erfolgreichem Abschluss der Onsite-Projekte für RWE & E.ON stehe ich ab Mai 2026 für neue Herausforderungen zur Verfügung."
           </p>
           <a 
-            href="mailto:peter@paeffgen-it.de" 
+            href="/contact" 
             className="group flex items-center gap-3 font-mono text-[11px] text-white uppercase tracking-widest border-b border-blue-500 w-fit pb-2 hover:text-blue-400 transition-all"
           >
-            SEND_MESSAGE <ExternalLink size={12} className="group-hover:translate-x-1 transition-transform" />
+            PROJEKT_ANFRAGE_SENDEN <ExternalLink size={12} className="group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* 7. FOOTER */}
       <footer className="max-w-7xl mx-auto px-6 py-12 border-t border-white/5 text-center">
         <p className="text-[10px] font-mono text-slate-600 uppercase tracking-[0.5em]">
           © 2026 PAEFFGEN IT // ALL RIGHTS RESERVED
