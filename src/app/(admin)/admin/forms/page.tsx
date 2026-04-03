@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { 
   Plus, Trash2, Save, Type, Hash, AtSign, 
-  CheckSquare, Layout, MousePointer2, Eye 
+  CheckSquare, Layout, MousePointer2, Eye, X 
 } from "lucide-react";
 import { createClient } from "@/lib/supabaseClient";
+import FormRenderer from "@/components/FormRenderer"; // Wichtig für die Vorschau
 
 type FieldType = "text" | "number" | "email" | "textarea" | "checkbox";
 
@@ -18,9 +19,10 @@ interface FormField {
 
 export default function FormBuilder() {
   const supabase = createClient();
-  const [formName, setFormName] = useState("UNBENANNTES FORMULAR");
+  const [formName, setFormName] = useState("SERVICE REQUEST"); // Standardmäßig auf deinen Kontakt-Slug vorbereitet
   const [fields, setFields] = useState<FormField[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [showPreview, setShowPreview] = useState(false); // State für das Vorschau-Modal
 
   const addField = (type: FieldType) => {
     const newField: FormField = {
@@ -43,53 +45,89 @@ export default function FormBuilder() {
 
   const saveForm = async () => {
     setIsSaving(true);
-    const slug = formName.toLowerCase().replace(/ /g, "-");
+    // Erzeugt den Slug service-request aus SERVICE REQUEST
+    const slug = formName.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^\w-]+/g, "");
+    
     const { error } = await supabase.from("forms").upsert({ 
       name: formName, 
       slug, 
       fields 
     }, { onConflict: 'slug' });
 
-    if (!error) alert("KONFIGURATION GESPEICHERT");
+    if (!error) {
+      alert(`SYSTEM UPDATE: Formular "${formName}" wurde unter dem Slug "${slug}" publiziert.`);
+    } else {
+      console.error("Save Error:", error);
+      alert("FEHLER BEIM SPEICHERN: " + error.message);
+    }
     setIsSaving(false);
   };
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white font-sans overflow-hidden">
-      {/* Sub-Header direkt unter deiner Navbar */}
+    <div className="flex flex-col h-screen bg-black text-white font-sans overflow-hidden selection:bg-blue-500/30">
+      
+      {/* VORSCHAU MODAL OVERLAY */}
+      {showPreview && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl">
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#05070a] border border-white/10 rounded-[3rem] overflow-y-auto p-12 shadow-2xl shadow-blue-500/10">
+            <button 
+              onClick={() => setShowPreview(false)}
+              className="absolute top-8 right-8 p-4 bg-zinc-900 hover:bg-zinc-800 rounded-full text-slate-400 hover:text-white transition-all"
+            >
+              <X size={24} />
+            </button>
+            <div className="mb-10 text-center">
+              <span className="text-blue-500 text-[10px] font-black tracking-[0.4em] uppercase mb-2 block">Live Simulation</span>
+              <h2 className="text-3xl font-black italic uppercase tracking-tighter">{formName}</h2>
+            </div>
+            {/* Hier nutzen wir dein echtes Form-UI */}
+            <div className="max-w-2xl mx-auto">
+                <FormRenderer 
+                    formId="preview-only" 
+                    formName={formName} 
+                    fields={fields} 
+                />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sub-Header */}
       <div className="flex justify-between items-center px-10 py-8 border-b border-white/5 bg-zinc-950/20 backdrop-blur-md">
         <div className="space-y-1">
           <input 
             value={formName}
             onChange={(e) => setFormName(e.target.value.toUpperCase())}
-            className="bg-transparent text-3xl font-black uppercase italic tracking-tighter border-none focus:ring-0 w-full outline-none text-white"
+            className="bg-transparent text-3xl font-black uppercase italic tracking-tighter border-none focus:ring-0 w-full outline-none text-white placeholder:opacity-20"
+            placeholder="NAME DES FORMULARS"
           />
           <div className="flex items-center gap-4">
              <span className="text-blue-500 text-[9px] font-black tracking-[0.3em] uppercase">Node: Active</span>
-             <span className="text-slate-600 text-[9px] font-black tracking-[0.3em] uppercase">Aether OS // Form-Gen Engine</span>
+             <span className="text-slate-600 text-[9px] font-black tracking-[0.3em] uppercase italic">AETHER OS // FORM GEN ENGINE</span>
           </div>
         </div>
 
         <div className="flex gap-4">
-          <button className="flex items-center gap-2 px-6 py-4 rounded-2xl bg-zinc-900 border border-white/5 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all">
-            <Eye size={14} className="text-blue-500" /> Vorschau
+          <button 
+            onClick={() => setShowPreview(true)}
+            className="flex items-center gap-2 px-6 py-4 rounded-2xl bg-zinc-900 border border-white/5 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 hover:border-blue-500/30 transition-all"
+          >
+            <Eye size={14} className="text-blue-500" /> Live Vorschau
           </button>
           <button 
             onClick={saveForm}
             disabled={isSaving}
-            className="bg-[#b33927] hover:bg-[#d4442f] px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 transition-all shadow-[0_0_20px_rgba(179,57,39,0.3)]"
+            className="bg-[#b33927] hover:bg-[#d4442f] px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 transition-all shadow-[0_0_30px_rgba(179,57,39,0.2)] disabled:opacity-50"
           >
-            <Save size={14} /> {isSaving ? "Processing..." : "Formular Publizieren"}
+            <Save size={14} /> {isSaving ? "Synchronisiere..." : "Formular Publizieren"}
           </button>
         </div>
       </div>
 
-      {/* Main Builder Area */}
       <div className="flex flex-1 overflow-hidden">
-        
         {/* Sidebar: Komponenten */}
         <div className="w-80 border-r border-white/5 p-8 overflow-y-auto bg-zinc-950/10">
-          <p className="text-slate-500 text-[9px] font-black uppercase mb-6 tracking-[0.3em]">Hardware Library</p>
+          <p className="text-slate-500 text-[9px] font-black uppercase mb-6 tracking-[0.3em] opacity-40">Hardware Library</p>
           <div className="grid gap-3">
             {[
               { type: "text", icon: Type, label: "Textfeld" },
@@ -101,7 +139,7 @@ export default function FormBuilder() {
               <button
                 key={item.type}
                 onClick={() => addField(item.type as FieldType)}
-                className="group flex items-center gap-4 p-5 bg-zinc-900/40 border border-orange-700 rounded-[1.5rem] hover:border-blue-500/40 hover:bg-zinc-900 transition-all text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white"
+                className="group flex items-center gap-4 p-5 bg-zinc-900/40 border border-white/5 rounded-[1.5rem] hover:border-blue-500/40 hover:bg-zinc-900 transition-all text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 hover:text-white"
               >
                 <div className="p-3 bg-zinc-800 rounded-xl group-hover:text-blue-500 transition-colors">
                   <item.icon size={16} />
@@ -119,7 +157,7 @@ export default function FormBuilder() {
             {fields.length === 0 ? (
               <div className="h-96 border-2 border-dashed border-white/5 rounded-[3rem] flex flex-col items-center justify-center text-slate-700 space-y-4">
                 <MousePointer2 size={40} className="animate-bounce" />
-                <p className="text-[10px] font-black uppercase tracking-[0.4em]">Warten auf Input_Sequence...</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.4em]">Warten auf Input Sequence...</p>
               </div>
             ) : (
               fields.map((field, index) => (
@@ -154,7 +192,7 @@ export default function FormBuilder() {
                         type="checkbox" 
                         checked={field.required}
                         onChange={(e) => updateField(field.id, { required: e.target.checked })}
-                        className="w-5 h-5 rounded-lg border-white/10 bg-zinc-900 text-[#b33927] focus:ring-0 transition-all"
+                        className="w-5 h-5 rounded-lg border-white/10 bg-zinc-900 text-[#b33927] focus:ring-0 transition-all cursor-pointer"
                       />
                     </label>
                     <button 
