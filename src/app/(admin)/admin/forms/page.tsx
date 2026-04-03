@@ -48,7 +48,7 @@ export default function FormManagerPage() {
             </button>
             <div className="mb-8">
               <span className="text-blue-500 text-[10px] font-black tracking-[0.3em] uppercase block mb-2">Live Preview</span>
-              <h2 className="text-2xl font-black uppercase italic italic">{previewForm.name}</h2>
+              <h2 className="text-2xl font-black uppercase italic">{previewForm.name}</h2>
             </div>
             <FormRenderer 
               formId={previewForm.id} 
@@ -62,10 +62,10 @@ export default function FormManagerPage() {
       {/* HEADER */}
       <div className="flex justify-between items-end mb-12">
         <div className="space-y-2">
-          <h1 className="text-5xl font-black italic uppercase tracking-tighter">Form_Inventory</h1>
+          <h1 className="text-5xl font-black italic uppercase tracking-tighter">Form Inventory</h1>
           <div className="flex items-center gap-4">
             <span className="text-blue-500 text-[9px] font-black tracking-[0.3em] uppercase">Status: Operative</span>
-            <span className="text-slate-600 text-[9px] font-black tracking-[0.3em] uppercase italic">AETHER OS // DB_ACCESS_GRANTED</span>
+            <span className="text-slate-600 text-[9px] font-black tracking-[0.3em] uppercase italic">AETHER OS // DB ACCESS GRANTED</span>
           </div>
         </div>
 
@@ -82,7 +82,7 @@ export default function FormManagerPage() {
         {loading ? (
           <div className="p-20 flex flex-col items-center justify-center text-slate-600 space-y-4">
             <Loader2 size={32} className="animate-spin text-blue-500" />
-            <p className="text-[10px] font-black uppercase tracking-[0.4em]">Requesting Data_Stream...</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.4em]">Requesting Data Stream...</p>
           </div>
         ) : forms.length === 0 ? (
           <div className="p-20 text-center space-y-4">
