@@ -81,7 +81,7 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Global URL Path</label>
                 <div className="flex items-center bg-black border border-white/10 rounded-2xl px-5 py-4 text-white font-mono text-xs">
-                  <span className="text-slate-600">aether-os.de/</span>
+                  <span className="text-slate-600">paeffgen-it.de/</span>
                   <input placeholder="my-business-slug" className="bg-transparent border-none outline-none w-full ml-1" />
                 </div>
               </div>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-6">
                 <div className="w-14 h-14 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20 font-black italic text-xl">P</div>
                 <div>
-                  <h3 className="text-white font-black uppercase italic tracking-wider text-lg text-blue-500">peter@paeffgen-it.de</h3>
+                  <h3 className="text-white font-black uppercase italic tracking-wider text-lg">peter@paeffgen-it.de</h3>
                   <p className="text-[9px] font-mono text-slate-500 uppercase tracking-[0.3em] mt-1">IMAP: imaps.udag.de // SSL active</p>
                 </div>
               </div>
