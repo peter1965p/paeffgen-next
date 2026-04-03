@@ -28,7 +28,7 @@ export default function SettingsPage() {
             System <span className="text-[#b33927]">Settings</span>
           </h1>
           <p className="text-slate-500 font-mono text-[10px] uppercase tracking-[0.5em] mt-4 flex items-center gap-2">
-            <Laptop size={12} className="text-[#b33927]" /> AETHER OS // ENTERPRISE CORE [2026.04]
+            <Laptop size={12} className="text-[#b33927]" /> AETHER OS // ENTERPRISE CORE 
           </p>
         </div>
 
