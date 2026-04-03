@@ -1,130 +1,127 @@
 "use client";
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabaseClient"; // Dein Client-Pfad
 import { 
-  FileText, PenTool, ShoppingCart, ClipboardList, 
-  Users2, HeartHandshake, Truck, Palette, Lock,
-  Calculator, MonitorSmartphone, MessageSquare, Search, 
-  Share2, BrainCircuit, BarChartHorizontal 
+  Layout, PenTool, ShoppingCart, ClipboardCheck, 
+  Calculator, Monitor, Search, Cpu, Lock, CheckCircle2 
 } from "lucide-react";
+import { createClient } from "@/lib/supabaseClient";
 
-export default function ModulStore() {
+// Icon-Mapper für dynamische Icons aus der DB
+const IconMap: any = {
+  Layout: <Layout size={24} />,
+  PenTool: <PenTool size={24} />,
+  ShoppingCart: <ShoppingCart size={24} />,
+  ClipboardCheck: <ClipboardCheck size={24} />,
+  Calculator: <Calculator size={24} />,
+  Monitor: <Monitor size={24} />,
+  Search: <Search size={24} />,
+  Cpu: <Cpu size={24} />,
+};
+
+export default function ModulStorePage() {
   const supabase = createClient();
-  const [activeTab, setActiveTab] = useState("kostenlos");
-  const [activeModules, setActiveModules] = useState<string[]>([]);
-  const userEmail = "news24regional@gmail.com"; // Dein Benutzer
+  const [filter, setFilter] = useState<"Kostenlos" | "Premium">("Kostenlos");
+  const [modules, setModules] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // 1. Aktive Module aus DB laden
   useEffect(() => {
-    const loadSettings = async () => {
+    async function fetchModules() {
       const { data } = await supabase
-        .from('users')
-        .select('settings')
-        .eq('email', userEmail)
-        .single();
-      if (data?.settings?.active_modules) {
-        setActiveModules(data.settings.active_modules);
-      }
-    };
-    loadSettings();
-  }, []);
+        .from("modules")
+        .select("*")
+        .order("is_premium", { ascending: true });
+      if (data) setModules(data);
+      setLoading(false);
+    }
+    fetchModules();
+  }, [supabase]);
 
-  // 2. Modul in DB freischalten/aktivieren
-  const toggleModule = async (moduleKey: string) => {
-    const isPaid = premiumModules.find(m => m.id === moduleKey);
-    const newModules = activeModules.includes(moduleKey)
-      ? activeModules.filter(id => id !== moduleKey)
-      : [...activeModules, moduleKey];
-
-    const { error } = await supabase
-      .from('users')
-      .update({ settings: { active_modules: newModules } })
-      .eq('email', userEmail);
-
-    if (!error) setActiveModules(newModules);
+  const handleAction = (module: any) => {
+    if (module.is_premium) {
+      alert(`Mollie Integration vorbereitet für: ${module.name} (${module.price_monthly}€/Mo)`);
+      // Hier würde später createModuleSubscription() aufgerufen werden
+    } else {
+      alert(`${module.name} ist bereits in deinem System-Kern integriert.`);
+    }
   };
 
-  const freeModules = [
-    { id: "cms", name: "CMS & Seiten", desc: "Seiten verwalten", icon: FileText },
-    { id: "blog", name: "Blog", desc: "News & Artikel", icon: PenTool },
-    { id: "shop", name: "Shop", desc: "Produkte & Sales", icon: ShoppingCart },
-    { id: "forms", name: "Formularbuilder", desc: "Anfragen generieren", icon: ClipboardList },
-  ];
-
-  const premiumModules = [
-    { id: "accounting", name: "Buchhaltung Pro", price: "49€/Mo", icon: Calculator },
-    { id: "pos", name: "Kassensystem", price: "29€/Mo", icon: MonitorSmartphone },
-    { id: "seo", name: "SEO Pro", price: "39€/Mo", icon: Search },
-    { id: "ai", name: "KI-Assistent Pro", price: "149€/Mo", icon: BrainCircuit },
-  ];
-
   return (
-    <div className="p-8 font-sans max-w-7xl mx-auto min-h-screen bg-black">
-      <header className="mb-12">
-        <h1 className="text-4xl font-black text-white uppercase italic tracking-tighter">Modulstore</h1>
-        <p className="text-slate-500 text-xs mt-2 uppercase tracking-[0.2em]">System-Erweiterungen für AETHER OS</p>
-        
-        <div className="flex gap-1 mt-8 bg-zinc-900/50 p-1.5 rounded-2xl w-fit border border-white/5">
-          {["kostenlos", "premium"].map((tab) => (
-            <button 
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                activeTab === tab ? "bg-[#b33927] text-white shadow-lg" : "text-slate-500 hover:text-white"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-      </header>
+    <div className="min-h-screen bg-black text-white p-10 font-sans">
+      {/* HEADER */}
+      <div className="mb-16">
+        <h1 className="text-5xl font-black italic tracking-tighter uppercase mb-2">Modulstore</h1>
+        <p className="text-slate-500 text-[10px] font-black tracking-[0.3em] uppercase">
+          System-Erweiterungen für AETHER OS
+        </p>
+      </div>
 
-      {activeTab === "kostenlos" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-500">
-          {freeModules.map((mod) => (
-            <div key={mod.id} className="p-8 bg-zinc-950/40 border border-white/5 rounded-[2.5rem] flex flex-col justify-between group hover:border-blue-500/20 transition-all">
-              <div>
-                <div className="mb-6 text-blue-500 bg-blue-500/10 w-fit p-4 rounded-2xl">
-                  <mod.icon size={28} />
-                </div>
-                <h3 className="text-white font-bold text-lg mb-2 uppercase italic">{mod.name}</h3>
-                <p className="text-slate-500 text-[10px] leading-relaxed tracking-wider">{mod.desc}</p>
-              </div>
-              <div className="flex justify-between items-center mt-10">
-                <span className={`px-4 py-1.5 text-[9px] font-black rounded-lg uppercase tracking-widest ${
-                  activeModules.includes(mod.id) ? "bg-green-500/10 text-green-500" : "bg-zinc-800 text-zinc-500"
-                }`}>
-                  {activeModules.includes(mod.id) ? "AKTIV" : "BEREIT"}
-                </span>
-                <span className="text-slate-600 text-[10px] font-bold uppercase">Gratis</span>
-              </div>
+      {/* FILTER BUTTONS */}
+      <div className="flex gap-4 mb-12">
+        <button 
+          onClick={() => setFilter("Kostenlos")}
+          className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === 'Kostenlos' ? 'bg-[#b33927] shadow-[0_0_20px_rgba(179,57,39,0.3)]' : 'bg-zinc-900 border border-white/5 text-slate-500'}`}
+        >
+          Kostenlos
+        </button>
+        <button 
+          onClick={() => setFilter("Premium")}
+          className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === 'Premium' ? 'bg-[#b33927] shadow-[0_0_20px_rgba(179,57,39,0.3)]' : 'bg-zinc-900 border border-white/5 text-slate-500'}`}
+        >
+          Premium
+        </button>
+      </div>
+
+      {/* MODUL GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {modules.filter(m => m.category === filter).map((mod) => (
+          <div 
+            key={mod.id} 
+            className="group relative bg-zinc-950 border border-white/5 p-10 rounded-[2.5rem] hover:border-white/10 transition-all flex flex-col h-full overflow-hidden"
+          >
+            {/* BACKGROUND DECO */}
+            <div className="absolute -right-4 -top-4 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
+              {IconMap[mod.icon_name]}
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in zoom-in duration-500">
-          <div className="lg:col-span-4 bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4 mb-2 flex items-center gap-4">
-            <Lock size={16} className="text-orange-500" />
-            <p className="text-orange-200/50 text-[10px] font-bold uppercase tracking-widest">Premium-Module erfordern eine Lizenz-Freischaltung.</p>
-          </div>
-          {premiumModules.map((mod) => (
-            <div key={mod.id} className="group relative bg-zinc-950/20 border border-white/5 rounded-[2.5rem] p-8 flex flex-col items-center justify-center text-center transition-all">
-              <div className="absolute top-12 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
-                <mod.icon size={80} strokeWidth={1} />
+
+            {/* CONTENT */}
+            <div className="mb-8 p-4 bg-zinc-900 w-fit rounded-2xl text-blue-500 shadow-inner">
+              {mod.is_premium ? <Lock size={20} className="text-[#b33927]" /> : IconMap[mod.icon_name]}
+            </div>
+
+            <h3 className="text-xl font-black italic uppercase tracking-tight mb-2">{mod.name}</h3>
+            <p className="text-slate-500 text-[11px] font-medium leading-relaxed mb-10">{mod.description}</p>
+
+            <div className="mt-auto">
+              <div className="flex justify-between items-center mb-6">
+                <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md ${mod.is_premium ? 'text-slate-400' : 'text-green-500 bg-green-500/10'}`}>
+                  {mod.is_premium ? `${mod.price_monthly}€/Mo` : 'Aktiv'}
+                </span>
+                <span className="text-[9px] font-bold text-slate-700 uppercase tracking-widest">Gratis</span>
               </div>
-              <div className="mb-6 p-4 bg-zinc-900/50 border border-white/5 rounded-2xl text-orange-500">
-                <Lock size={28} fill="currentColor" fillOpacity={0.1} />
-              </div>
-              <h3 className="text-white font-black uppercase italic text-sm mb-1">{mod.name}</h3>
-              <p className="text-[#b33927] font-black text-[11px] mb-8">{mod.price}</p>
+
               <button 
-                onClick={() => toggleModule(mod.id)}
-                className="w-full bg-[#b33927] hover:bg-[#d4442f] text-white text-[10px] font-black py-4 rounded-2xl uppercase tracking-widest shadow-xl transition-all active:scale-95"
+                onClick={() => handleAction(mod)}
+                className={`w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  mod.is_premium 
+                  ? 'bg-[#b33927] hover:bg-[#d4442f] text-white shadow-[0_10px_20px_rgba(179,57,39,0.2)]' 
+                  : 'bg-zinc-900 border border-white/5 text-slate-500 hover:text-white'
+                }`}
               >
-                {activeModules.includes(mod.id) ? "Verwalten" : "Freischalten"}
+                {mod.is_premium ? 'Freischalten' : 'Bereit'}
               </button>
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
+
+      {/* FOOTER INFO */}
+      {filter === "Premium" && (
+        <div className="mt-12 p-6 border border-[#b33927]/20 bg-[#b33927]/5 rounded-[2rem] flex items-center gap-6">
+          <Lock size={20} className="text-[#b33927]" />
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[#b33927]/80 leading-relaxed">
+            Premium-Module erfordern eine Lizenz-Freischaltung via Mollie. <br/>
+            Die Abrechnung erfolgt monatlich und ist jederzeit kündbar.
+          </p>
         </div>
       )}
     </div>
