@@ -12,6 +12,7 @@ export default function Sidebar() {
     { href: "/admin/blog", label: "Intelligence" }, // Blog ist jetzt "Intelligence" 
     { href: "/admin/forms", label: "Formulare" },
     { href: "/admin/users", label: "Users" },
+    { href: "/admin/seo", label: "SEO AI"},
     { href: "/admin/intelligence", label: "Mailbox" },
     { href: "/admin/store", label: "Shop" },
     { href: "/admin/modulstore", label: "Modul Shop" },
