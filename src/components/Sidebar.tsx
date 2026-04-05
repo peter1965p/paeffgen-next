@@ -13,6 +13,7 @@ export default function Sidebar() {
     { href: "/admin/forms", label: "Formulare" },
     { href: "/admin/users", label: "Users" },
     { href: "/admin/seo", label: "SEO AI"},
+    { href: "/admin/categories", label: "Kategorien" },
     { href: "/admin/intelligence", label: "Mailbox" },
     { href: "/admin/store", label: "Shop" },
     { href: "/admin/modulstore", label: "Modul Shop" },
