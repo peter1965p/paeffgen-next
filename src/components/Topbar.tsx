@@ -1,32 +1,42 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { User, Settings, LogOut, ChevronDown, Database } from "lucide-react";
+import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabaseClient"; // Supabase Client für Client-Side Auth
 
 export default function Topbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten
+  const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
   const [isWarning, setIsWarning] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const router = useRouter();
+  const supabase = createClient();
   
-  // Ref, um den aktuellen Timer-Wert für die Events greifbar zu haben
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Logout Funktion
-  const handleLogout = useCallback(() => {
-    console.log("SESSION_EXPIRED");
-    router.push("/login"); 
-  }, [router]);
+  // 1. User-Daten beim Laden abrufen
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserEmail(user.email ?? "Unknown Operator");
+      }
+    };
+    getUser();
+  }, [supabase.auth]);
 
-  // Reset Funktion: Setzt den Timer wieder auf den Anfangswert
+  const handleLogout = useCallback(async () => {
+    await supabase.auth.signOut(); // Meldet den User bei Supabase ab
+    router.push("/login"); 
+  }, [router, supabase.auth]);
+
   const resetTimer = useCallback(() => {
     setTimeLeft(300);
     setIsWarning(false);
   }, []);
 
-  // 1. Timer Intervall
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -39,30 +49,16 @@ export default function Topbar() {
       });
     }, 1000);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [handleLogout]);
 
-  // 2. Inaktivitäts-Tracker: Überwacht Maus und Tastatur
   useEffect(() => {
     const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
-    
-    // Bei jeder dieser Aktionen wird resetTimer aufgerufen
     const handleActivity = () => resetTimer();
-
-    activityEvents.forEach(event => {
-      window.addEventListener(event, handleActivity);
-    });
-
-    return () => {
-      activityEvents.forEach(event => {
-        window.removeEventListener(event, handleActivity);
-      });
-    };
+    activityEvents.forEach(event => window.addEventListener(event, handleActivity));
+    return () => activityEvents.forEach(event => window.removeEventListener(event, handleActivity));
   }, [resetTimer]);
 
-  // 3. Warn-Zustand bei weniger als 30 Sekunden
   useEffect(() => {
     setIsWarning(timeLeft <= 30 && timeLeft > 0);
   }, [timeLeft]);
@@ -73,6 +69,9 @@ export default function Topbar() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
+  // Avatar-Initial generieren (z.B. "N" für news24...)
+  const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "?";
+
   return (
     <div className="h-20 border-b border-white/5 bg-[#0d111c]/80 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">
       <div className="flex items-center gap-4">
@@ -80,16 +79,14 @@ export default function Topbar() {
         <span className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">System Node: <span className="text-white">Active</span></span>
       </div>
 
-      <div className="flex items-center gap-8">
-        {/* Dynamic Session Timer */}
-        <div className="text-right hidden md:block">
+      <div className="flex items-center gap-8 text-right">
+        <div className="hidden md:block">
           <p className="text-[8px] font-mono text-slate-600 uppercase tracking-widest mb-1">Session TTL</p>
           <div className={`font-mono text-xs font-bold transition-all duration-500 ${isWarning ? 'text-red-500 animate-pulse scale-110' : 'text-green-400'}`}>
             {formatTime(timeLeft)}
           </div>
         </div>
 
-        {/* User Dropdown */}
         <div className="relative">
           <button 
             onClick={() => setIsOpen(!isOpen)}
@@ -97,10 +94,10 @@ export default function Topbar() {
           >
             <div className="text-right">
               <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest opacity-50">Operator</p>
-              <p className="text-white text-[10px] font-bold">peter@paeffgen-it.de</p>
+              <p className="text-white text-[10px] font-bold">{userEmail || "Loading..."}</p>
             </div>
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-500/20 text-sm">
-              P
+              {userInitial}
             </div>
             <ChevronDown size={14} className={`text-slate-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
           </button>
