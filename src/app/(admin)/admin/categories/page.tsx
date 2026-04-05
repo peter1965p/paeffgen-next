@@ -66,7 +66,7 @@ export default function GlobalCategoryCenter() {
           </div>
           <div>
             <h1 className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-500">AETHER OS // CORE</h1>
-            <p className="text-3xl font-black uppercase tracking-tighter text-white">Global_Categories</p>
+            <p className="text-3xl font-black uppercase tracking-tighter text-white">Global Categories</p>
           </div>
         </div>
         
