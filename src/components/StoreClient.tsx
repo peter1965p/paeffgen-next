@@ -31,7 +31,7 @@ export default function StoreClient({ initialProducts, categories }: StoreClient
       {/* ACTION BAR */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-           <h2 className="text-4xl font-black uppercase tracking-tighter text-white">Stock_Level</h2>
+           <h2 className="text-4xl font-black uppercase tracking-tighter text-white">Stock Level</h2>
            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em] mt-1">Total Assets: {filteredProducts.length}</p>
         </div>
         
