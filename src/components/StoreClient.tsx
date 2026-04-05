@@ -1,103 +1,120 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Package, DollarSign, RefreshCw, Database } from "lucide-react";
-import AddProductModal from "./AddProductModal";
+import { 
+  Package, Search, Filter, 
+  Plus, MoreVertical, Hash,
+  ArrowUpDown
+} from "lucide-react";
 
-/**
- * AETHER OS // STORE CLIENT [cite: 2026-03-09]
- */
-export default function StoreClient({ initialProducts }: { initialProducts: any[] }) {
-  const [products, setProducts] = useState<any[]>(initialProducts || []);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+// 1. Definition der Props, damit TypeScript nicht mehr meckert
+interface StoreClientProps {
+  initialProducts: any[];
+  categories: any[]; // Hier ist die fehlende Eigenschaft!
+}
 
-  const refreshProducts = async () => {
-    setIsRefreshing(true);
-    try {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      if (!data.error) setProducts(data);
-    } catch (err) {
-      console.error("STORE_SYNC_ERROR", err);
-    }
-    setIsRefreshing(false);
-  };
+export default function StoreClient({ initialProducts, categories }: StoreClientProps) {
+  const [products, setProducts] = useState(initialProducts);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter-Logik
+  const filteredProducts = products.filter((p) => {
+    const matchesCategory = activeCategory === "all" || p.category_id?.toString() === activeCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <div className="p-8 h-full flex flex-col gap-8 bg-transparent font-sans overflow-hidden">
-      {/* Das Modal Overlay [cite: 2026-03-09] */}
-      <AddProductModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onRefresh={refreshProducts} 
-      />
-
-      <div className="flex justify-between items-end">
+    <div className="p-8 space-y-8">
+      
+      {/* ACTION BAR */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter">
-            Inventory <span className="text-blue-500">Sector</span>
-          </h1>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">
-            Node: paeffgen-it.de // commerce_active
-          </p>
+           <h2 className="text-4xl font-black uppercase tracking-tighter text-white">Stock_Level</h2>
+           <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em] mt-1">Total Assets: {filteredProducts.length}</p>
         </div>
-        <div className="flex gap-4">
-          <button 
-            onClick={refreshProducts} 
-            className={`p-4 rounded-2xl border border-white/5 bg-white/5 transition-all ${isRefreshing ? 'animate-spin text-blue-500' : 'text-slate-500 hover:text-white'}`}
-          >
-            <RefreshCw size={16} />
-          </button>
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-2xl font-black italic uppercase text-[10px] transition-all shadow-lg shadow-blue-500/20"
-          >
-            <Plus size={16} /> Add Asset
+        
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className="relative flex-1 md:w-64">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={14} />
+            <input 
+              type="text"
+              placeholder="SEARCH ASSET..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-[10px] font-bold uppercase tracking-widest outline-none focus:border-blue-500/50 transition-all"
+            />
+          </div>
+          <button className="p-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all flex items-center gap-2">
+            <Plus size={18} />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar pr-4 pb-12">
-        {products.length === 0 ? (
-          <div className="h-64 border border-dashed border-white/10 rounded-[3rem] flex flex-col items-center justify-center text-slate-700 italic font-mono uppercase tracking-[0.4em] text-[10px]">
-            <Database className="mb-4 opacity-20" size={40} />
-            No Assets Detected in Database
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <div key={product.id} className="group bg-[#0d111c]/80 border border-white/5 rounded-[2.5rem] p-8 backdrop-blur-xl hover:border-blue-500/30 transition-all shadow-2xl relative overflow-hidden">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-blue-500 shadow-inner group-hover:bg-blue-500 group-hover:text-white transition-all">
-                    <Package size={20} />
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-mono text-slate-600 uppercase tracking-widest">{product.category_id || 'ASSET_UNIT'}</span>
-                    <h3 className="text-white font-black italic uppercase tracking-tight text-lg leading-none mt-1">{product.name}</h3>
-                  </div>
+      {/* GLOBAL CATEGORY FILTER */}
+      <div className="flex items-center gap-3 overflow-x-auto pb-4 no-scrollbar border-b border-white/5">
+        <button 
+          onClick={() => setActiveCategory("all")}
+          className={`px-6 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${activeCategory === "all" ? "bg-blue-600 border-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]" : "bg-white/[0.02] border-white/5 text-slate-500 hover:border-white/10"}`}
+        >
+          All_Assets
+        </button>
+        {categories.map((cat) => (
+          <button 
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.id.toString())}
+            className={`px-6 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border flex items-center gap-2 ${activeCategory === cat.id.toString() ? "bg-blue-600 border-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]" : "bg-white/[0.02] border-white/5 text-slate-500 hover:border-white/10"}`}
+          >
+            <Hash size={10} /> {cat.name}
+          </button>
+        ))}
+      </div>
+
+      {/* PRODUCT GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredProducts.map((p) => (
+          <div key={p.id} className="group bg-white/[0.01] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-blue-500/30 transition-all flex flex-col">
+            <div className="aspect-video bg-black/40 relative">
+              {p.bild_url ? (
+                <img src={p.bild_url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={p.name} />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center opacity-10">
+                  <Package size={40} />
                 </div>
+              )}
+              {/* Kategorie Label aus der Relation */}
+              <div className="absolute bottom-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-lg text-[8px] font-black text-blue-400 uppercase tracking-widest">
+                {p.categories?.name || "No_Sector"}
+              </div>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-lg font-black uppercase tracking-tighter text-white truncate">{p.name}</h3>
+                  <p className="text-[10px] text-slate-600 font-mono">ID: {p.id.toString().padStart(4, '0')}</p>
+                </div>
+                <button className="p-2 text-slate-700 hover:text-white transition-colors">
+                  <MoreVertical size={16} />
+                </button>
+              </div>
 
-                <p className="text-slate-400 text-xs leading-relaxed mb-8 h-12 line-clamp-2 italic opacity-60">
-                  {product.beschreibung || "No asset log description available for this unit."}
-                </p>
-
-                <div className="flex justify-between items-center bg-black/40 p-5 rounded-[1.8rem] border border-white/5">
-                  <div className="flex items-center gap-2 text-blue-500">
-                    <DollarSign size={16} />
-                    <span className="text-2xl font-mono font-bold tracking-tighter text-white">{product.preis}</span>
-                  </div>
-                  <div className="text-[9px] font-mono uppercase tracking-tighter">
-                    <span className="text-slate-600 mr-2">Stock:</span>
-                    <span className={product.lagerbestand > 0 ? "text-green-500 font-bold" : "text-red-500 font-bold"}>
-                      {product.lagerbestand} Units
-                    </span>
-                  </div>
+              <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                <div className="flex flex-col">
+                  <span className="text-[8px] text-slate-600 uppercase font-black">Valuation</span>
+                  <span className="text-sm font-black text-white">{Number(p.price).toLocaleString('de-DE')} €</span>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-[8px] text-slate-600 uppercase font-black tracking-tighter">Status</span>
+                  <span className={`text-[10px] font-black ${p.lagerbestand > 0 ? "text-green-500" : "text-red-500"}`}>
+                    {p.lagerbestand > 0 ? `${p.lagerbestand} IN_STOCK` : "DEPLETED"}
+                  </span>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
