@@ -2,16 +2,22 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabaseClient"; // Wir brauchen den Server-Client!
+import { createClient } from "@/lib/supabaseClient";
 
 export async function login(prevState: any, formData: FormData) {
+  // 1. Beide Felder dynamisch aus dem Formular ziehen
+  const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const email = "news24regional@gmail.com"; 
 
-  // 1. Supabase Server Client initialisieren
+  // Kleiner Safety-Check
+  if (!email || !password) {
+    return { error: "Bitte E-Mail und Passwort angeben." };
+  }
+
+  // 2. Supabase Server Client initialisieren
   const supabase = createClient();
 
-  // 2. Echtes Login bei Supabase versuchen
+  // 3. Echtes Login bei Supabase mit den eingegebenen Daten
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -19,23 +25,24 @@ export async function login(prevState: any, formData: FormData) {
 
   if (error) {
     console.error("Auth-Fehler:", error.message);
-    return { error: "Zugriff verweigert: " + error.message };
+    // Wir geben eine generische Meldung zurück, um Brute-Force zu erschweren
+    return { error: "Zugriff verweigert: Logindaten ungültig." };
   }
 
-  // 3. Wenn Login erfolgreich, setzen wir den Session-Cookie
+  // 4. Wenn Login erfolgreich, setzen wir den Session-Cookie
   if (data.user) {
     (await cookies()).set("admin_session", "true", { 
       httpOnly: true, 
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 24, // 24 Stunden
       path: "/",
     });
     
-    // Wichtig: Redirect muss außerhalb von try/catch stehen
+    // Redirect in den Admin-Bereich
     redirect("/admin");
   }
 
-  return { error: "Unbekannter Fehler beim Login" };
+  return { error: "Kritischer Systemfehler: Authentifizierung fehlgeschlagen." };
 }
 
 export async function logout() {
