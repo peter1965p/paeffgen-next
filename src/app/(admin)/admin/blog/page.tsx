@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
-import { Terminal, Cpu, Database, Trash2, Edit3, Plus } from "lucide-react";
+import { Cpu, Database, Trash2, Edit3, Plus } from "lucide-react";
 
 export default function IntelligenceHub() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -14,20 +14,25 @@ export default function IntelligenceHub() {
   useEffect(() => {
     async function fetchPosts() {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .order("created_at", { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .order("created_at", { ascending: false });
 
-      if (!error && data) {
-        setPosts(data);
+        if (!error && data) {
+          setPosts(data);
+        }
+      } catch (err) {
+        console.error("Critical System Error during Sync:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchPosts();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number | string) => {
     if (!confirm("SYSTEM-CRITICAL: Datensatz wirklich unwiderruflich löschen?")) return;
     const { error } = await supabase.from("blog_posts").delete().eq("id", id);
     if (!error) {
@@ -86,12 +91,14 @@ export default function IntelligenceHub() {
                 </div>
                 <div className="bg-black/20 rounded-2xl p-4 border border-white/5">
                   <p className="text-slate-600 text-[8px] font-black uppercase tracking-widest mb-1">Database ID</p>
-                  <p className="text-white font-mono text-[10px] truncate">{unit.id.substring(0, 8)}...</p>
+                  <p className="text-white font-mono text-[10px] truncate">
+                    {/* HIER WAR DER FEHLER: Wir wandeln unit.id explizit in einen String um */}
+                    ID: {unit.id ? String(unit.id).padStart(4, '0') : "0000"}
+                  </p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                {/* WICHTIG: Hier verlinken wir jetzt auf die ID für den Editor */}
                 <Link href={`/admin/blog/edit/${unit.id}`} className="flex-1">
                   <button className="w-full bg-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-black hover:bg-blue-600 hover:text-white transition-all shadow-xl flex items-center justify-center gap-2">
                     <Edit3 size={14} /> DECRYPT & EDIT
