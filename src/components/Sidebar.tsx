@@ -9,7 +9,7 @@ export default function Sidebar() {
   const navLinks = [
     { href: "/admin", label: "Dashboard" },
     { href: "/admin/pages", label: "Sectors" }, // "Sectors" statt Pages für den AETHER-Vibe
-    { href: "/admin/blog", label: "Intelligence" }, // Blog ist jetzt "Intelligence" 
+    { href: "/admin/blog", label: "Blog" }, // Blog ist jetzt "Intelligence" 
     { href: "/admin/forms", label: "Formulare" },
     { href: "/admin/users", label: "Users" },
     { href: "/admin/seo", label: "SEO AI"},
