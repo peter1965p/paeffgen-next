@@ -37,7 +37,7 @@ export default async function IntelligencePage() {
       <div className="flex justify-between items-end px-2">
         <div>
           <h1 className="text-4xl font-black italic uppercase text-white tracking-tighter">
-            Intelligence <span className="text-blue-500 text-glow-blue">Center</span>
+            Message & Mailing <span className="text-blue-500 text-glow-blue">Center</span>
           </h1>
           <div className="flex items-center gap-3 mt-2">
             <span className="h-[2px] w-8 bg-blue-500"></span>
