@@ -6,45 +6,24 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient"; 
 
-export default function Topbar() {
+// Wir definieren, welche Daten die Topbar von oben (Server) bekommt
+interface TopbarProps {
+  initialEmail?: string | null;
+  initialId?: string | null;
+}
+
+export default function Topbar({ initialEmail, initialId }: TopbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
+  const [timeLeft, setTimeLeft] = useState(300); 
   const [isWarning, setIsWarning] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null); 
+  
+  // Wir nutzen die initialen Daten als Startwert für den State
+  const [userEmail] = useState<string | null>(initialEmail || null);
+  const [userId] = useState<string | null>(initialId || null); 
   
   const router = useRouter();
-  // Wir rufen den Client einmalig oben auf
   const supabase = createClient();
-  
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // 1. User-Daten beim Laden abrufen - Fix gegen die Gold-Warnungen
-  useEffect(() => {
-    let isMounted = true;
-
-    const getUser = async () => {
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        
-        if (error) throw error;
-
-        if (user && isMounted) {
-          setUserEmail(user.email ?? "Unknown Operator");
-          setUserId(user.id);
-        }
-      } catch (err) {
-        console.error("AETHER_OS_AUTH_SYNC_FAILED", err);
-      }
-    };
-
-    getUser();
-
-    return () => {
-      isMounted = false;
-    };
-    // WICHTIG: Leeres Array, damit der Effekt nur einmal beim Mounten rennt!
-  }, []); 
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut(); 
@@ -56,7 +35,7 @@ export default function Topbar() {
     setIsWarning(false);
   }, []);
 
-  // Session-Timeout Logic
+  // Timer & Activity Logik (bleibt gleich...)
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -68,11 +47,9 @@ export default function Topbar() {
         return prev - 1;
       });
     }, 1000);
-
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [handleLogout]);
 
-  // Activity Listener
   useEffect(() => {
     const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
     const handleActivity = () => resetTimer();
@@ -80,9 +57,7 @@ export default function Topbar() {
     return () => activityEvents.forEach(event => window.removeEventListener(event, handleActivity));
   }, [resetTimer]);
 
-  useEffect(() => {
-    setIsWarning(timeLeft <= 30 && timeLeft > 0);
-  }, [timeLeft]);
+  useEffect(() => { setIsWarning(timeLeft <= 30 && timeLeft > 0); }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -90,7 +65,7 @@ export default function Topbar() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "?";
+  const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "O";
 
   return (
     <div className="h-20 border-b border-white/5 bg-[#0d111c]/80 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">
@@ -114,7 +89,8 @@ export default function Topbar() {
           >
             <div className="text-right">
               <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest opacity-50">Operator</p>
-              <p className="text-white text-[10px] font-bold">{userEmail || "Loading..."}</p>
+              {/* HIER STEHT JETZT SOFORT DIE EMAIL */}
+              <p className="text-white text-[10px] font-bold">{userEmail || "Unauthorized"}</p>
             </div>
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-500/20 text-sm">
               {userInitial}
@@ -124,34 +100,23 @@ export default function Topbar() {
 
           {isOpen && (
             <div className="absolute right-0 mt-3 w-60 bg-[#0d111c] border border-white/10 rounded-[2rem] shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 backdrop-blur-xl">
-              <div className="px-4 py-2 mb-2 border-b border-white/5">
+               <div className="px-4 py-2 mb-2 border-b border-white/5">
                 <p className="text-[8px] font-mono text-blue-500 uppercase tracking-widest">Access Level</p>
                 <p className="text-[10px] text-white font-bold italic uppercase">Administrator</p>
               </div>
 
               <Link 
                 href={userId ? `/admin/profile/${userId}` : "#"} 
-                className={`flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group ${!userId && 'opacity-50 cursor-not-allowed'}`}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group"
                 onClick={() => setIsOpen(false)}
               >
                 <User size={16} className="text-slate-600 group-hover:text-blue-500" />
                 <span className="text-[10px] font-mono uppercase tracking-widest">Profil</span>
               </Link>
               
-              <Link 
-                href="/admin/settings" 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group"
-                onClick={() => setIsOpen(false)}
-              >
-                <Settings size={16} className="text-slate-600 group-hover:text-blue-500" />
-                <span className="text-[10px] font-mono uppercase tracking-widest">Settings</span>
-              </Link>
-
-              <div className="h-px bg-white/5 my-2 mx-2"></div>
-              
               <button 
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 bg-red-500/5 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all group"
+                className="w-full flex items-center gap-3 px-4 py-3 bg-red-500/5 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all group mt-2"
               >
                 <LogOut size={16} />
                 <span className="text-[10px] font-mono uppercase tracking-widest font-bold">Terminate Session</span>
