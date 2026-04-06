@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient"; 
 
-// Wir definieren, welche Daten die Topbar von oben (Server) bekommt
+// 1. Definition der Schnittstelle für die Daten vom Server
 interface TopbarProps {
   initialEmail?: string | null;
   initialId?: string | null;
@@ -14,28 +14,31 @@ interface TopbarProps {
 
 export default function Topbar({ initialEmail, initialId }: TopbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); 
+  const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
   const [isWarning, setIsWarning] = useState(false);
   
-  // Wir nutzen die initialen Daten als Startwert für den State
-  const [userEmail] = useState<string | null>(initialEmail || null);
+  // 2. Wir nutzen die Daten vom Server als festen Startwert
+  // Wenn initialEmail leer ist, zeigen wir "Unauthorized" als Debug-Hilfe
+  const [userEmail] = useState<string | null>(initialEmail || "Unauthorized");
   const [userId] = useState<string | null>(initialId || null); 
   
   const router = useRouter();
   const supabase = createClient();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Logout-Logik
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut(); 
     router.push("/login"); 
   }, [router, supabase.auth]);
 
+  // Timer-Reset bei Aktivität
   const resetTimer = useCallback(() => {
     setTimeLeft(300);
     setIsWarning(false);
   }, []);
 
-  // Timer & Activity Logik (bleibt gleich...)
+  // Session-Countdown
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -47,9 +50,11 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
         return prev - 1;
       });
     }, 1000);
+
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [handleLogout]);
 
+  // User-Aktivität überwachen
   useEffect(() => {
     const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
     const handleActivity = () => resetTimer();
@@ -57,7 +62,10 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
     return () => activityEvents.forEach(event => window.removeEventListener(event, handleActivity));
   }, [resetTimer]);
 
-  useEffect(() => { setIsWarning(timeLeft <= 30 && timeLeft > 0); }, [timeLeft]);
+  // Warnzustand für den Timer (letzte 30 Sek)
+  useEffect(() => {
+    setIsWarning(timeLeft <= 30 && timeLeft > 0);
+  }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -65,7 +73,9 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "O";
+  const userInitial = userEmail && userEmail !== "Unauthorized" 
+    ? userEmail.charAt(0).toUpperCase() 
+    : "?";
 
   return (
     <div className="h-20 border-b border-white/5 bg-[#0d111c]/80 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">
@@ -75,6 +85,7 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-8 text-right">
+        {/* Session Timer Anzeige */}
         <div className="hidden md:block">
           <p className="text-[8px] font-mono text-slate-600 uppercase tracking-widest mb-1">Session TTL</p>
           <div className={`font-mono text-xs font-bold transition-all duration-500 ${isWarning ? 'text-red-500 animate-pulse scale-110' : 'text-green-400'}`}>
@@ -82,6 +93,7 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
           </div>
         </div>
 
+        {/* User Dropdown */}
         <div className="relative">
           <button 
             onClick={() => setIsOpen(!isOpen)}
@@ -89,8 +101,9 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
           >
             <div className="text-right">
               <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest opacity-50">Operator</p>
-              {/* HIER STEHT JETZT SOFORT DIE EMAIL */}
-              <p className="text-white text-[10px] font-bold">{userEmail || "Unauthorized"}</p>
+              <p className={`text-[10px] font-bold ${userEmail === "Unauthorized" ? "text-red-500" : "text-white"}`}>
+                {userEmail}
+              </p>
             </div>
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-500/20 text-sm">
               {userInitial}
@@ -100,23 +113,35 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
 
           {isOpen && (
             <div className="absolute right-0 mt-3 w-60 bg-[#0d111c] border border-white/10 rounded-[2rem] shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 backdrop-blur-xl">
-               <div className="px-4 py-2 mb-2 border-b border-white/5">
+              <div className="px-4 py-2 mb-2 border-b border-white/5">
                 <p className="text-[8px] font-mono text-blue-500 uppercase tracking-widest">Access Level</p>
                 <p className="text-[10px] text-white font-bold italic uppercase">Administrator</p>
               </div>
 
+              {/* Profil-Link mit dynamischer ID */}
               <Link 
                 href={userId ? `/admin/profile/${userId}` : "#"} 
-                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group"
+                className={`flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group ${!userId && 'opacity-50 cursor-not-allowed'}`}
                 onClick={() => setIsOpen(false)}
               >
                 <User size={16} className="text-slate-600 group-hover:text-blue-500" />
                 <span className="text-[10px] font-mono uppercase tracking-widest">Profil</span>
               </Link>
               
+              <Link 
+                href="/admin/settings" 
+                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group"
+                onClick={() => setIsOpen(false)}
+              >
+                <Settings size={16} className="text-slate-600 group-hover:text-blue-500" />
+                <span className="text-[10px] font-mono uppercase tracking-widest">Settings</span>
+              </Link>
+
+              <div className="h-px bg-white/5 my-2 mx-2"></div>
+              
               <button 
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 bg-red-500/5 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all group mt-2"
+                className="w-full flex items-center gap-3 px-4 py-3 bg-red-500/5 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all group"
               >
                 <LogOut size={16} />
                 <span className="text-[10px] font-mono uppercase tracking-widest font-bold">Terminate Session</span>
