@@ -1,4 +1,5 @@
-// import "./src/app/globals.css";
+// @ts-ignore
+import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 export const dynamic = 'force-dynamic';
