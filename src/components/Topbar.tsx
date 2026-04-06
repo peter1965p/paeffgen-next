@@ -11,23 +11,40 @@ export default function Topbar() {
   const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
   const [isWarning, setIsWarning] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null); // State für die ID hinzugefügt
+  const [userId, setUserId] = useState<string | null>(null); 
+  
   const router = useRouter();
+  // Wir rufen den Client einmalig oben auf
   const supabase = createClient();
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 1. User-Daten beim Laden abrufen
+  // 1. User-Daten beim Laden abrufen - Fix gegen die Gold-Warnungen
   useEffect(() => {
+    let isMounted = true;
+
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUserEmail(user.email ?? "Unknown Operator");
-        setUserId(user.id); // ID für den Profil-Link speichern
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) throw error;
+
+        if (user && isMounted) {
+          setUserEmail(user.email ?? "Unknown Operator");
+          setUserId(user.id);
+        }
+      } catch (err) {
+        console.error("AETHER_OS_AUTH_SYNC_FAILED", err);
       }
     };
+
     getUser();
-  }, [supabase.auth]);
+
+    return () => {
+      isMounted = false;
+    };
+    // WICHTIG: Leeres Array, damit der Effekt nur einmal beim Mounten rennt!
+  }, []); 
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut(); 
@@ -39,6 +56,7 @@ export default function Topbar() {
     setIsWarning(false);
   }, []);
 
+  // Session-Timeout Logic
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -54,6 +72,7 @@ export default function Topbar() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [handleLogout]);
 
+  // Activity Listener
   useEffect(() => {
     const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
     const handleActivity = () => resetTimer();
@@ -110,7 +129,6 @@ export default function Topbar() {
                 <p className="text-[10px] text-white font-bold italic uppercase">Administrator</p>
               </div>
 
-              {/* DYNAMISCHER PROFIL LINK [cite: 2026-03-28] */}
               <Link 
                 href={userId ? `/admin/profile/${userId}` : "#"} 
                 className={`flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group ${!userId && 'opacity-50 cursor-not-allowed'}`}
