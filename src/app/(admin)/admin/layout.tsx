@@ -1,4 +1,5 @@
-import "@/app/globals.css";
+// @ts-ignore
+import "../../globals.css";
 import Topbar from "@/components/Topbar";
 import Sidebar from "@/components/Sidebar";
 import { createClient } from "@/lib/supabaseClient";
