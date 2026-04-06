@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Deine Hauptfarbe für den AETHER Look */
+  --background: #05070a;
+  --foreground: #ffffff;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  /* Scrollbar für den Sci-Fi Look anpassen */
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b transparent;
+}
+
+html, body {
+  background-color: var(--background) !important;
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* --- DER ULTIMATIVE AUTOFILL-KILLER --- */
+/* Verhindert das gelbe Grauen bei Passwörtern und E-Mails */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #05070a !important; /* Passt sich deinem Background an */
+}
+
+/* Tailwind Base Fix für Autofill */
+@layer base {
+  input:-webkit-autofill {
+    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #05070a inset !important;
+  }
+}
+
+/* --- HILFSKLASSEN FÜR DAS ADMIN-DESIGN --- */
+
+/* Versteckt Scrollbars aber erlaubt Scrollen (für Sidebar/Main) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glasmorphismus-Effekt für Karten */
+.glass-card {
+  background: rgba(13, 17, 28, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Schimmer-Animation für "Active" Nodes */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
