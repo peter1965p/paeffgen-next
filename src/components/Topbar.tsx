@@ -4,13 +4,14 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabaseClient"; // Supabase Client für Client-Side Auth
+import { createClient } from "@/lib/supabaseClient"; 
 
 export default function Topbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
   const [isWarning, setIsWarning] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null); // State für die ID hinzugefügt
   const router = useRouter();
   const supabase = createClient();
   
@@ -22,13 +23,14 @@ export default function Topbar() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUserEmail(user.email ?? "Unknown Operator");
+        setUserId(user.id); // ID für den Profil-Link speichern
       }
     };
     getUser();
   }, [supabase.auth]);
 
   const handleLogout = useCallback(async () => {
-    await supabase.auth.signOut(); // Meldet den User bei Supabase ab
+    await supabase.auth.signOut(); 
     router.push("/login"); 
   }, [router, supabase.auth]);
 
@@ -69,7 +71,6 @@ export default function Topbar() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Avatar-Initial generieren (z.B. "N" für news24...)
   const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "?";
 
   return (
@@ -109,12 +110,21 @@ export default function Topbar() {
                 <p className="text-[10px] text-white font-bold italic uppercase">Administrator</p>
               </div>
 
-              <Link href="/admin/profile" className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group">
+              {/* DYNAMISCHER PROFIL LINK [cite: 2026-03-28] */}
+              <Link 
+                href={userId ? `/admin/profile/${userId}` : "#"} 
+                className={`flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group ${!userId && 'opacity-50 cursor-not-allowed'}`}
+                onClick={() => setIsOpen(false)}
+              >
                 <User size={16} className="text-slate-600 group-hover:text-blue-500" />
                 <span className="text-[10px] font-mono uppercase tracking-widest">Profil</span>
               </Link>
               
-              <Link href="/admin/settings" className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group">
+              <Link 
+                href="/admin/settings" 
+                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-xl text-slate-300 hover:text-white transition-all group"
+                onClick={() => setIsOpen(false)}
+              >
                 <Settings size={16} className="text-slate-600 group-hover:text-blue-500" />
                 <span className="text-[10px] font-mono uppercase tracking-widest">Settings</span>
               </Link>
