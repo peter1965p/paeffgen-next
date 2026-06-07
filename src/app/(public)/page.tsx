@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  Wrench,
   Zap,
   MapPin,
   ShieldCheck,
@@ -13,132 +12,6 @@ import {
   Brain,
   Layers,
 } from "lucide-react";
-
-// ── Animated particle canvas background ──────────────────────────────────────
-function ParticleCanvas() {
-  const ref = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = ref.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    type P = {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      r: number;
-      a: number;
-    };
-    const pts: P[] = Array.from({ length: 70 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.28,
-      vy: (Math.random() - 0.5) * 0.28,
-      r: Math.random() * 1.2 + 0.3,
-      a: Math.random() * 0.45 + 0.08,
-    }));
-
-    let raf: number;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // subtle grid
-      ctx.strokeStyle = "rgba(59,130,246,0.04)";
-      ctx.lineWidth = 0.5;
-      for (let x = 0; x < canvas.width; x += 48) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += 48) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      pts.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(59,130,246,${p.a})`;
-        ctx.fill();
-      });
-
-      // connections
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
-          if (d < 90) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(59,130,246,${0.07 * (1 - d / 90)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <canvas ref={ref} className="absolute inset-0 w-full h-full" />;
-}
-
-// ── Pulse rings ───────────────────────────────────────────────────────────────
-function PulseRings() {
-  return (
-    <div className="absolute right-12 top-28 w-72 h-72 pointer-events-none hidden lg:block">
-      {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className="absolute rounded-full border border-blue-500/10"
-          style={{
-            inset: `${-i * 32}px`,
-            animation: `expandRing 3s ease-out ${i}s infinite`,
-          }}
-        />
-      ))}
-      <div className="absolute inset-16 rounded-full border border-blue-500/30 flex items-center justify-center">
-        <div
-          className="w-16 h-16 rounded-full border border-blue-500/60 bg-blue-500/5 flex items-center justify-center"
-          style={{ animation: "pulseScale 2s ease-in-out infinite" }}
-        >
-          <div
-            className="w-4 h-4 rounded-full bg-blue-500"
-            style={{ animation: "blink 1.5s ease-in-out infinite" }}
-          />
-        </div>
-      </div>
-      <style>{`
-        @keyframes expandRing { 0%{transform:scale(1);opacity:.4} 100%{transform:scale(1.6);opacity:0} }
-        @keyframes pulseScale { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-        @keyframes blink { 0%,100%{opacity:1;box-shadow:0 0 8px #3b82f6} 50%{opacity:.3;box-shadow:none} }
-      `}</style>
-    </div>
-  );
-}
 
 // ── Typing terminal ───────────────────────────────────────────────────────────
 const TERMINAL_LINES = [
@@ -225,7 +98,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#05070a] text-white font-mono selection:bg-blue-500/30 overflow-x-hidden">
       {/* ── NAV ── */}
       <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-white/5 bg-[#05070a]/90 backdrop-blur-md">
-        <div className="text-[11px] tracking-[0.25em] text-blue-400 uppercase">
+        <div className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000">
           Päffgen<span className="text-white">_</span>IT
         </div>
         <div className="hidden md:flex gap-8">
@@ -249,10 +122,7 @@ export default function HomePage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section className="relative min-h-[90vh] flex flex-col justify-center w-full px-10 py-24 border-b border-white/5 overflow-hidden">
-        <ParticleCanvas />
-        <PulseRings />
-
+      <section className="relative w-screen left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] min-h-screen flex items-center justify-center overflow-hidden bg-black">
         <div className="relative z-10 max-w-4xl">
           <div className="flex items-center gap-3 mb-8 text-blue-500 text-[10px] uppercase tracking-[0.3em]">
             <span className="relative flex h-2 w-2">
@@ -262,21 +132,16 @@ export default function HomePage() {
             Verfügbar für Projekte // Remote aus der Vulkaneifel
           </div>
 
-          {/* ── ULTRA-TECH LOGO HERO ── */}
-          <div className="relative text-center w-screen left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] min-h-screen flex items-center justify-center overflow-hidden">
-            <h1 className="text-[6rem] md:text-[12rem] font-black tracking-[-0.08em] leading-none select-none flex flex-wrap items-center">
-              {/* PÄFFGEN: Chrome-Effekt */}
-              <span className="relative bg-gradient-to-b from-blue-200 via-blue-500 to-blue-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(59,130,246,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
-                Päffgen
-              </span>
-              {/* IT: Akzent */}
-              <span className="relative ml-6 italic bg-gradient-to-br from-white via-slate-400 to-slate-800 bg-clip-text text-transparent drop-shadow-[0_0_50px_rgba(255,255,255,0.2)]">
-                IT
+          <div className="relative mb-20 group">
+            <h1 className="text-[5rem] md:text-[9rem] font-black tracking-[-0.08em] leading-none select-none flex flex-wrap justify-center items-center">
+              {/* Paeffgen: Chrome-Reflektionseffekt */}
+              <span className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000">
+                Päffgen IT
               </span>
             </h1>
             <div className="mt-6">
-              <p className="text-blue-400/40 font-mono text-[11px] tracking-[1.8em] uppercase italic opacity-60">
-                Senior_IT_Systemdenker_&_AI_Dev
+              <p className="text-blue-400/40 font-mono text-[11px] tracking-[1.5em] uppercase italic opacity-60">
+                Unified_Enterprise_Protocol_2026
               </p>
             </div>
           </div>
