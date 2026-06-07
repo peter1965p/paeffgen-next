@@ -262,8 +262,11 @@ export default function HomePage() {
             Verfügbar für Projekte // Remote aus der Vulkaneifel
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter leading-[0.88] mb-6">
-            Senior IT
+          <h1 className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
+            Senior
+            <span className="relative ml-6 italic bg-gradient-to-br from-blue-400 via-blue-600 to-blue-950 bg-clip-text text-transparent drop-shadow-[0_0_50px_rgba(30,58,138,0.6)]">
+              IT
+            </span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300">
               Systemdenker
