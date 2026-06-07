@@ -31,7 +31,14 @@ function ParticleCanvas() {
     resize();
     window.addEventListener("resize", resize);
 
-    type P = { x: number; y: number; vx: number; vy: number; r: number; a: number };
+    type P = {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      a: number;
+    };
     const pts: P[] = Array.from({ length: 70 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -49,14 +56,21 @@ function ParticleCanvas() {
       ctx.strokeStyle = "rgba(59,130,246,0.04)";
       ctx.lineWidth = 0.5;
       for (let x = 0; x < canvas.width; x += 48) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
       }
       for (let y = 0; y < canvas.height; y += 48) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
       }
 
       pts.forEach((p) => {
-        p.x += p.vx; p.y += p.vy;
+        p.x += p.vx;
+        p.y += p.vy;
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
@@ -84,7 +98,10 @@ function ParticleCanvas() {
       raf = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
   return <canvas ref={ref} className="absolute inset-0 w-full h-full" />;
@@ -109,7 +126,10 @@ function PulseRings() {
           className="w-16 h-16 rounded-full border border-blue-500/60 bg-blue-500/5 flex items-center justify-center"
           style={{ animation: "pulseScale 2s ease-in-out infinite" }}
         >
-          <div className="w-4 h-4 rounded-full bg-blue-500" style={{ animation: "blink 1.5s ease-in-out infinite" }} />
+          <div
+            className="w-4 h-4 rounded-full bg-blue-500"
+            style={{ animation: "blink 1.5s ease-in-out infinite" }}
+          />
         </div>
       </div>
       <style>{`
@@ -124,10 +144,26 @@ function PulseRings() {
 // ── Typing terminal ───────────────────────────────────────────────────────────
 const TERMINAL_LINES = [
   { prefix: "> ", text: "Initialisiere System...", color: "text-slate-500" },
-  { prefix: "> ", text: "40+ Jahre IT-Erfahrung: GELADEN", color: "text-blue-400" },
-  { prefix: "> ", text: "AI_Engine: ONLINE  //  Claude · GPT · Gemini", color: "text-blue-400" },
-  { prefix: "> ", text: "Stack: Next.js · TypeScript · Tailwind · Supabase · Rust", color: "text-slate-300" },
-  { prefix: "> ", text: "Peter Päffgen: VERFÜGBAR FÜR PROJEKTE", color: "text-blue-300" },
+  {
+    prefix: "> ",
+    text: "40+ Jahre IT-Erfahrung: GELADEN",
+    color: "text-blue-400",
+  },
+  {
+    prefix: "> ",
+    text: "AI_Engine: ONLINE  //  Claude · GPT · Gemini",
+    color: "text-blue-400",
+  },
+  {
+    prefix: "> ",
+    text: "Stack: Next.js · TypeScript · Tailwind · Supabase · Rust",
+    color: "text-slate-300",
+  },
+  {
+    prefix: "> ",
+    text: "Peter Päffgen: VERFÜGBAR FÜR PROJEKTE",
+    color: "text-blue-300",
+  },
 ];
 
 function Terminal() {
@@ -143,14 +179,21 @@ function Terminal() {
     <div className="mt-10 bg-black/60 border border-white/8 rounded-sm p-5 font-mono text-[11px] backdrop-blur-sm">
       <div className="flex items-center gap-2 mb-4">
         {["#ff5f56", "#febc2e", "#27c840"].map((c) => (
-          <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />
+          <div
+            key={c}
+            className="w-2.5 h-2.5 rounded-full"
+            style={{ background: c }}
+          />
         ))}
-        <span className="text-slate-600 text-[9px] tracking-widest ml-2 uppercase">KERNEL_OUTPUT</span>
+        <span className="text-slate-600 text-[9px] tracking-widest ml-2 uppercase">
+          KERNEL_OUTPUT
+        </span>
       </div>
       <div className="space-y-1.5">
         {TERMINAL_LINES.slice(0, visible).map((l, i) => (
           <div key={i} className={l.color}>
-            <span className="text-slate-600">{l.prefix}</span>{l.text}
+            <span className="text-slate-600">{l.prefix}</span>
+            {l.text}
           </div>
         ))}
         {visible < TERMINAL_LINES.length && (
@@ -168,7 +211,10 @@ function Terminal() {
 function LiveMetric() {
   const [val, setVal] = useState("99.9");
   useEffect(() => {
-    const t = setInterval(() => setVal((99.7 + Math.random() * 0.3).toFixed(1)), 2800);
+    const t = setInterval(
+      () => setVal((99.7 + Math.random() * 0.3).toFixed(1)),
+      2800,
+    );
     return () => clearInterval(t);
   }, []);
   return <>{val}</>;
@@ -178,7 +224,6 @@ function LiveMetric() {
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#05070a] text-white font-mono selection:bg-blue-500/30 overflow-x-hidden">
-
       {/* ── NAV ── */}
       <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-white/5 bg-[#05070a]/90 backdrop-blur-md">
         <div className="text-[11px] tracking-[0.25em] text-blue-400 uppercase">
@@ -186,8 +231,11 @@ export default function HomePage() {
         </div>
         <div className="hidden md:flex gap-8">
           {["Über mich", "Services", "Referenzen", "Kontakt"].map((l) => (
-            <a key={l} href={`#${l.toLowerCase().replace(" ", "-")}`}
-              className="text-[10px] text-slate-500 hover:text-blue-400 transition-colors uppercase tracking-widest">
+            <a
+              key={l}
+              href={`#${l.toLowerCase().replace(" ", "-")}`}
+              className="text-[10px] text-slate-500 hover:text-blue-400 transition-colors uppercase tracking-widest"
+            >
               {l}
             </a>
           ))}
@@ -216,17 +264,20 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter leading-[0.88] mb-6">
-            Senior IT<br />
+            Senior IT
+            <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300">
               Systemdenker
-            </span><br />
+            </span>
+            <br />
             &amp; AI_Dev
           </h1>
 
           <p className="text-slate-400 text-sm leading-relaxed max-w-xl mb-10 not-italic">
-            40+ Jahre Hardware &amp; Fieldservice-Expertise — von RWE über E.ON bis Dell Technologies.
-            Jetzt baue ich komplexe Webanwendungen mit KI als Co-Pilot.
-            Ich denke Systeme. Ich sehe Zusammenhänge. Ich liefere.
+            40+ Jahre Hardware &amp; Fieldservice-Expertise — von RWE über E.ON
+            bis Dell Technologies. Jetzt baue ich komplexe Webanwendungen mit KI
+            als Co-Pilot. Ich denke Systeme. Ich sehe Zusammenhänge. Ich
+            liefere.
           </p>
 
           {/* Metrics */}
@@ -237,22 +288,34 @@ export default function HomePage() {
               { val: "AI", unit: "_FIRST", label: "DEV_APPROACH" },
               { val: "100%", unit: "", label: "REMOTE_READY" },
             ].map((m, i) => (
-              <div key={i} className="bg-[#05070a] px-5 py-4 hover:bg-blue-600/5 transition-colors">
+              <div
+                key={i}
+                className="bg-[#05070a] px-5 py-4 hover:bg-blue-600/5 transition-colors"
+              >
                 <div className="text-xl font-black text-white">
-                  {m.val}<span className="text-blue-500 text-sm">{m.unit}</span>
+                  {m.val}
+                  <span className="text-blue-500 text-sm">{m.unit}</span>
                 </div>
-                <div className="text-[9px] text-slate-600 tracking-widest mt-1">{m.label}</div>
+                <div className="text-[9px] text-slate-600 tracking-widest mt-1">
+                  {m.label}
+                </div>
               </div>
             ))}
           </div>
 
           <div className="flex gap-4 flex-wrap">
-            <a href="#kontakt"
-              className="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold uppercase tracking-widest px-6 py-3 rounded-sm transition-colors">
+            <a
+              href="#kontakt"
+              className="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold uppercase tracking-widest px-6 py-3 rounded-sm transition-colors"
+            >
               Projekt anfragen →
             </a>
-            <a href="https://github.com/peter1965p" target="_blank" rel="noopener noreferrer"
-              className="border border-white/10 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 text-[11px] uppercase tracking-widest px-6 py-3 rounded-sm transition-all flex items-center gap-2">
+            <a
+              href="https://github.com/peter1965p"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-white/10 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 text-[11px] uppercase tracking-widest px-6 py-3 rounded-sm transition-all flex items-center gap-2"
+            >
               GitHub_Access <ExternalLink size={11} />
             </a>
           </div>
@@ -261,40 +324,56 @@ export default function HomePage() {
         </div>
       </section>
 
-      
-{/* ── EXPERIENCE BAND ── */}
-<section className="bg-slate-950 py-8 border-y border-blue-700/20 overflow-hidden">
-  <motion.div
-    className="flex gap-16 whitespace-nowrap"
-    animate={{ x: ["0%", "-50%"] }}
-    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-  >
-    {[...Array(2)].map((_, repeat) => (
-      <div key={repeat} className="flex gap-16 shrink-0">
-        {["HEMMERSBACH", "DELL TECHNOLOGIES", "RWE PROJECT", "E.ON OPS", "FIELD_SERVICE_EU"].map((s) => (
-          <span key={s} className="font-black italic text-sm tracking-[0.2em] text-white opacity-20">
-            {s} <span className="text-blue-500 mx-2">/</span>
-          </span>
-        ))}
-      </div>
-    ))}
-  </motion.div>
-</section>
+      {/* ── EXPERIENCE BAND ── */}
+      <section className="bg-slate-950 py-8 border-y border-blue-700/20 overflow-hidden">
+        <motion.div
+          className="flex gap-16 whitespace-nowrap"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        >
+          {[...Array(2)].map((_, repeat) => (
+            <div key={repeat} className="flex gap-16 shrink-0">
+              {[
+                "HEMMERSBACH",
+                "DELL TECHNOLOGIES",
+                "RWE PROJECT",
+                "E.ON OPS",
+                "FIELD_SERVICE_EU",
+              ].map((s) => (
+                <span
+                  key={s}
+                  className="font-black italic text-sm tracking-[0.2em] text-white opacity-20"
+                >
+                  {s} <span className="text-blue-500 mx-2">/</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </motion.div>
+      </section>
 
       {/* ── ÜBER MICH ── */}
-      <section id="über-mich" className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5">
+      <section
+        id="über-mich"
+        className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5"
+      >
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           <div className="w-full lg:w-2/5">
-            <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">Über mich</p>
+            <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
+              Über mich
+            </p>
             <h2 className="text-4xl font-black italic uppercase leading-none mb-6">
-              Jahrzehnte<br />
-              <span className="text-blue-500">Praxis.</span><br />
+              Jahrzehnte
+              <br />
+              <span className="text-blue-500">Praxis.</span>
+              <br />
               Neue Werkzeuge.
             </h2>
             <p className="text-slate-500 text-[11px] leading-relaxed uppercase tracking-tighter">
-              Ich komme nicht aus der Theorie — ich komme aus dem Maschinenraum. Hardware-Rollouts,
-              kritische Infrastrukturen, Entstörung unter Zeitdruck. Das gibt mir einen Blick auf
-              Systeme den kein Bootcamp lehrt.
+              Ich komme nicht aus der Theorie — ich komme aus dem Maschinenraum.
+              Hardware-Rollouts, kritische Infrastrukturen, Entstörung unter
+              Zeitdruck. Das gibt mir einen Blick auf Systeme den kein Bootcamp
+              lehrt.
             </p>
           </div>
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -320,10 +399,19 @@ export default function HomePage() {
                 desc: "Kein Buzzword-Bingo. Kein Overhead. Ich liefere — pünktlich, durchdacht, und mit echtem Verständnis für dein Business.",
               },
             ].map((c, i) => (
-              <div key={i} className="bg-zinc-900/30 border border-white/5 p-6 rounded-sm hover:border-blue-500/20 transition-colors group">
-                <div className="text-blue-500 mb-4 group-hover:scale-110 transition-transform inline-block">{c.icon}</div>
-                <h3 className="text-[11px] font-bold uppercase tracking-widest mb-3">{c.title}</h3>
-                <p className="text-slate-500 text-[10px] leading-relaxed">{c.desc}</p>
+              <div
+                key={i}
+                className="bg-zinc-900/30 border border-white/5 p-6 rounded-sm hover:border-blue-500/20 transition-colors group"
+              >
+                <div className="text-blue-500 mb-4 group-hover:scale-110 transition-transform inline-block">
+                  {c.icon}
+                </div>
+                <h3 className="text-[11px] font-bold uppercase tracking-widest mb-3">
+                  {c.title}
+                </h3>
+                <p className="text-slate-500 text-[10px] leading-relaxed">
+                  {c.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -331,9 +419,16 @@ export default function HomePage() {
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="services" className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5">
-        <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">Services</p>
-        <h2 className="text-4xl font-black italic uppercase mb-12">Was ich anbiete</h2>
+      <section
+        id="services"
+        className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5"
+      >
+        <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
+          Services
+        </p>
+        <h2 className="text-4xl font-black italic uppercase mb-12">
+          Was ich anbiete
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5">
           {[
             {
@@ -355,13 +450,27 @@ export default function HomePage() {
               tags: ["Supabase", "PostgreSQL", "AWS", "Node.js"],
             },
           ].map((s, i) => (
-            <div key={i} className="p-10 hover:bg-white/[0.015] transition-all group">
-              <div className="text-blue-500 mb-6 group-hover:scale-110 transition-transform inline-block">{s.icon}</div>
-              <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4">{s.title}</h3>
-              <p className="text-slate-500 text-[10px] leading-relaxed mb-6">{s.desc}</p>
+            <div
+              key={i}
+              className="p-10 hover:bg-white/[0.015] transition-all group"
+            >
+              <div className="text-blue-500 mb-6 group-hover:scale-110 transition-transform inline-block">
+                {s.icon}
+              </div>
+              <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4">
+                {s.title}
+              </h3>
+              <p className="text-slate-500 text-[10px] leading-relaxed mb-6">
+                {s.desc}
+              </p>
               <div className="flex flex-wrap gap-2">
                 {s.tags.map((t) => (
-                  <span key={t} className="text-[9px] text-blue-400 border border-blue-500/20 px-2 py-1 rounded-sm">{t}</span>
+                  <span
+                    key={t}
+                    className="text-[9px] text-blue-400 border border-blue-500/20 px-2 py-1 rounded-sm"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
@@ -369,42 +478,80 @@ export default function HomePage() {
         </div>
       </section>
 
-      
       {/* ── STACK ── */}
-<section className="py-10 border-b border-white/5 overflow-hidden">
-  <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase mb-6 px-6">Tech_Stack</p>
-  <motion.div
-    className="flex gap-16 whitespace-nowrap"
-    animate={{ x: ["0%", "-50%"] }}
-    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-  >
-    {[...Array(2)].map((_, repeat) => (
-      <div key={repeat} className="flex gap-16 shrink-0">
-        {[
-          "Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js",
-          "Supabase", "PostgreSQL", "MongoDB", "SQLite3", "Electron",
-          "Rust", "AWS S3", "Google Cloud", "JavaScript", "HTML/CSS",
-        ].map((t) => (
-          <span key={t} className="font-black italic text-sm tracking-[0.2em] text-white opacity-20">
-            {t} <span className="text-blue-500 mx-2">/</span>
-          </span>
-        ))}
-      </div>
-    ))}
-  </motion.div>
-</section>
+      <section className="py-10 border-b border-white/5 overflow-hidden">
+        <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase mb-6 px-6">
+          Tech_Stack
+        </p>
+        <motion.div
+          className="flex gap-16 whitespace-nowrap"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        >
+          {[...Array(2)].map((_, repeat) => (
+            <div key={repeat} className="flex gap-16 shrink-0">
+              {[
+                "Next.js",
+                "React",
+                "TypeScript",
+                "Tailwind CSS",
+                "Node.js",
+                "Supabase",
+                "PostgreSQL",
+                "MongoDB",
+                "SQLite3",
+                "Electron",
+                "Rust",
+                "AWS S3",
+                "Google Cloud",
+                "JavaScript",
+                "HTML/CSS",
+              ].map((t) => (
+                <span
+                  key={t}
+                  className="font-black italic text-sm tracking-[0.2em] text-white opacity-20"
+                >
+                  {t} <span className="text-blue-500 mx-2">/</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </motion.div>
+      </section>
 
       {/* ── REGION & CONTACT ── */}
-      <section id="kontakt" className="max-w-7xl mx-auto px-6 py-24 flex flex-col md:flex-row gap-16 items-start">
+      <section
+        id="kontakt"
+        className="max-w-7xl mx-auto px-6 py-24 flex flex-col md:flex-row gap-16 items-start"
+      >
         <div className="flex-1">
-          <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">Erreichbarkeit</p>
+          <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
+            Erreichbarkeit
+          </p>
           <h2 className="text-3xl font-black italic uppercase mb-8">
-            Service<br /><span className="text-blue-500">Regionen</span>
+            Service
+            <br />
+            <span className="text-blue-500">Regionen</span>
           </h2>
           <div className="grid grid-cols-2 gap-3 text-[10px] text-slate-400 mb-8">
-            {["Hamburg", "Bremen", "Niedersachsen", "NRW", "Hessen", "RLP", "Saarland", "Baden-Württemberg", "Luxemburg", "Remote_EU"].map((r) => (
-              <div key={r} className="flex items-center gap-3 border border-white/5 p-4 rounded-sm hover:border-blue-500/20 transition-colors">
-                <MapPin size={11} className="text-blue-500" /> {r} // ACTIVE
+            {[
+              "Hamburg",
+              "Bremen",
+              "Niedersachsen",
+              "NRW",
+              "Hessen",
+              "RLP",
+              "Saarland",
+              "Baden-Württemberg",
+              "Luxemburg",
+              "Remote_EU",
+            ].map((r) => (
+              <div
+                key={r}
+                className="flex items-center gap-3 border border-white/5 p-4 rounded-sm hover:border-blue-500/20 transition-colors"
+              >
+                <MapPin size={11} className="text-blue-500" /> {r}{" "}
+                {/* ACTIVE */}
               </div>
             ))}
           </div>
@@ -418,22 +565,40 @@ export default function HomePage() {
           <div className="absolute top-0 right-0 px-3 py-1.5 bg-blue-600 text-white text-[9px] uppercase tracking-widest font-bold">
             Verfügbar
           </div>
-          <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">Status // Open</p>
+          <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
+            Status // Open
+          </p>
           <h3 className="text-2xl font-black italic uppercase mb-4 leading-tight">
-            Lass uns<br />reden.
+            Lass uns
+            <br />
+            reden.
           </h3>
           <p className="text-slate-400 text-[11px] leading-relaxed mb-8">
-            Du hast ein Projekt das Systemdenken braucht? Eine Idee die jemanden braucht
-            der sie wirklich versteht? Dann schreib mir.
+            Du hast ein Projekt das Systemdenken braucht? Eine Idee die jemanden
+            braucht der sie wirklich versteht? Dann schreib mir.
           </p>
           <div className="space-y-3">
-            <a href="mailto:peter@paeffgen-it.de"
-              className="group flex items-center gap-3 text-[11px] text-white uppercase tracking-widest border-b border-blue-500/30 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit">
-              E-Mail schreiben <ExternalLink size={11} className="group-hover:translate-x-1 transition-transform" />
+            <a
+              href="mailto:peter@paeffgen-it.de"
+              className="group flex items-center gap-3 text-[11px] text-white uppercase tracking-widest border-b border-blue-500/30 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit"
+            >
+              E-Mail schreiben{" "}
+              <ExternalLink
+                size={11}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </a>
-            <a href="https://github.com/peter1965p" target="_blank" rel="noopener noreferrer"
-              className="group flex items-center gap-3 text-[11px] text-slate-500 uppercase tracking-widest border-b border-white/10 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit">
-              GitHub ansehen <ExternalLink size={11} className="group-hover:translate-x-1 transition-transform" />
+            <a
+              href="https://github.com/peter1965p"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 text-[11px] text-slate-500 uppercase tracking-widest border-b border-white/10 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit"
+            >
+              GitHub ansehen{" "}
+              <ExternalLink
+                size={11}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </a>
           </div>
         </div>
