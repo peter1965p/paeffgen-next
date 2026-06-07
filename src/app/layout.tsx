@@ -1,19 +1,26 @@
-// @ts-ignore
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import type { Metadata } from "next";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-// Metadaten für Paeffgen IT / AETHER OS
-export const metadata = {
-  title: "Paeffgen IT | Field Service & Hardware-Infrastruktur",
-  description: "Professioneller Vor-Ort-Service für IT-Systeme, Rollouts und Infrastruktur-Support in RLP, NRW und Hessen.",
-  keywords: ["IT-Systemtechniker", "Field Service", "Hardware Rollout", "Infrastruktur Support", "Paeffgen IT"],
+export const metadata: Metadata = {
+  title: "Päffgen IT | Senior IT Systemdenker & AI-Dev",
+  description:
+    "40+ Jahre IT-Erfahrung trifft KI-gestützte Entwicklung. Komplexe Webanwendungen, System-Architektur und AI-Integration. Remote aus der Vulkaneifel.",
+  keywords: [
+    "Päffgen IT",
+    "Fullstack Entwicklung",
+    "Next.js",
+    "AI Development",
+    "System Architektur",
+    "Vulkaneifel",
+    "Remote",
+  ],
   openGraph: {
-    title: "Paeffgen IT - AETHER OS",
-    description: "Ihr Partner für zuverlässigen IT-Field-Service.",
+    title: "Päffgen IT | Senior IT Systemdenker & AI-Dev",
+    description: "40+ Jahre IT-Erfahrung trifft KI-gestützte Entwicklung.",
     url: "https://paeffgen-it.de",
-    siteName: "Paeffgen IT",
+    siteName: "Päffgen IT",
     images: [{ url: "/og-image.png" }],
     locale: "de_DE",
     type: "website",
@@ -27,12 +34,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="bg-[#05070a] text-white antialiased font-mono">
-        <Navbar /> 
-        {/* pt-20 sorgt dafür, dass der Content unter der Navbar startet */}
-        <main className="pt-20">
-          {children}
-        </main>
+      <body className="bg-[#05070a] text-white antialiased font-mono w-full overflow-x-hidden">
+        <main className="w-full">{children}</main>
       </body>
     </html>
   );

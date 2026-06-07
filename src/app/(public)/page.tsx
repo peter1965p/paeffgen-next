@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import {
   Wrench,
   Zap,
@@ -250,11 +249,11 @@ export default function HomePage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section className="relative min-h-[90vh] flex flex-col justify-center max-w-7xl mx-auto px-6 py-24 border-b border-white/5 overflow-hidden">
+      <section className="relative min-h-[90vh] flex flex-col justify-center w-full px-10 py-24 border-b border-white/5 overflow-hidden">
         <ParticleCanvas />
         <PulseRings />
 
-        <div className="relative z-10 max-w-3xl">
+        <div className="relative z-10 max-w-4xl">
           <div className="flex items-center gap-3 mb-8 text-blue-500 text-[10px] uppercase tracking-[0.3em]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
@@ -325,37 +324,27 @@ export default function HomePage() {
       </section>
 
       {/* ── EXPERIENCE BAND ── */}
-      <section className="bg-slate-950 py-8 border-y border-blue-700/20 overflow-hidden">
-        <motion.div
-          className="flex gap-16 whitespace-nowrap"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          {[...Array(2)].map((_, repeat) => (
-            <div key={repeat} className="flex gap-16 shrink-0">
-              {[
-                "HEMMERSBACH",
-                "DELL TECHNOLOGIES",
-                "RWE PROJECT",
-                "E.ON OPS",
-                "FIELD_SERVICE_EU",
-              ].map((s) => (
-                <span
-                  key={s}
-                  className="font-black italic text-sm tracking-[0.2em] text-white opacity-20"
-                >
-                  {s} <span className="text-blue-500 mx-2">/</span>
-                </span>
-              ))}
-            </div>
+      <section className="bg-slate-950 py-8 overflow-hidden border-y border-blue-700/20">
+        <div className="flex justify-around items-center opacity-20 grayscale font-black italic text-sm tracking-[0.2em] whitespace-nowrap">
+          {[
+            "HEMMERSBACH",
+            "DELL TECHNOLOGIES",
+            "RWE PROJECT",
+            "E.ON OPS",
+            "FIELD_SERVICE_EU",
+          ].map((s, i) => (
+            <span key={i}>
+              {s}
+              {i < 4 && <span className="text-blue-500 mx-6">/</span>}
+            </span>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       {/* ── ÜBER MICH ── */}
       <section
         id="über-mich"
-        className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5"
+        className="w-full px-10 py-24 border-b border-white/5"
       >
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           <div className="w-full lg:w-2/5">
@@ -421,7 +410,7 @@ export default function HomePage() {
       {/* ── SERVICES ── */}
       <section
         id="services"
-        className="max-w-7xl mx-auto px-6 py-24 border-b border-white/5"
+        className="w-full px-10 py-24 border-b border-white/5"
       >
         <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
           Services
@@ -479,50 +468,42 @@ export default function HomePage() {
       </section>
 
       {/* ── STACK ── */}
-      <section className="py-10 border-b border-white/5 overflow-hidden">
-        <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase mb-6 px-6">
+      <section className="w-full px-10 py-16 border-b border-white/5">
+        <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase mb-8">
           Tech_Stack
         </p>
-        <motion.div
-          className="flex gap-16 whitespace-nowrap"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        >
-          {[...Array(2)].map((_, repeat) => (
-            <div key={repeat} className="flex gap-16 shrink-0">
-              {[
-                "Next.js",
-                "React",
-                "TypeScript",
-                "Tailwind CSS",
-                "Node.js",
-                "Supabase",
-                "PostgreSQL",
-                "MongoDB",
-                "SQLite3",
-                "Electron",
-                "Rust",
-                "AWS S3",
-                "Google Cloud",
-                "JavaScript",
-                "HTML/CSS",
-              ].map((t) => (
-                <span
-                  key={t}
-                  className="font-black italic text-sm tracking-[0.2em] text-white opacity-20"
-                >
-                  {t} <span className="text-blue-500 mx-2">/</span>
-                </span>
-              ))}
-            </div>
+        <div className="flex flex-wrap gap-3">
+          {[
+            "Next.js",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+            "Node.js",
+            "Supabase",
+            "PostgreSQL",
+            "MongoDB",
+            "SQLite3",
+            "Electron",
+            "Rust",
+            "AWS S3",
+            "Google Cloud",
+            "JavaScript",
+            "HTML/CSS",
+          ].map((t) => (
+            <span
+              key={t}
+              className="text-[10px] text-slate-400 border border-white/8 px-3 py-2 rounded-sm hover:border-blue-500/30 hover:text-blue-400 transition-all cursor-default"
+            >
+              {t}
+            </span>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       {/* ── REGION & CONTACT ── */}
       <section
         id="kontakt"
-        className="max-w-7xl mx-auto px-6 py-24 flex flex-col md:flex-row gap-16 items-start"
+        className="w-full px-10 py-24 flex flex-col md:flex-row gap-16 items-start"
       >
         <div className="flex-1">
           <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
@@ -534,26 +515,16 @@ export default function HomePage() {
             <span className="text-blue-500">Regionen</span>
           </h2>
           <div className="grid grid-cols-2 gap-3 text-[10px] text-slate-400 mb-8">
-            {[
-              "Hamburg",
-              "Bremen",
-              "Niedersachsen",
-              "NRW",
-              "Hessen",
-              "RLP",
-              "Saarland",
-              "Baden-Württemberg",
-              "Luxemburg",
-              "Remote_EU",
-            ].map((r) => (
-              <div
-                key={r}
-                className="flex items-center gap-3 border border-white/5 p-4 rounded-sm hover:border-blue-500/20 transition-colors"
-              >
-                <MapPin size={11} className="text-blue-500" /> {r}{" "}
-                {/* ACTIVE */}
-              </div>
-            ))}
+            {["NRW", "RLP", "Saarland", "Hessen", "Luxemburg", "Remote_EU"].map(
+              (r) => (
+                <div
+                  key={r}
+                  className="flex items-center gap-3 border border-white/5 p-4 rounded-sm hover:border-blue-500/20 transition-colors"
+                >
+                  <MapPin size={11} className="text-blue-500" /> {r}
+                </div>
+              ),
+            )}
           </div>
           <div className="flex items-center gap-2 text-[10px] text-slate-500">
             <Activity size={11} className="text-blue-500 animate-pulse" />
@@ -605,7 +576,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="max-w-7xl mx-auto px-6 py-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+      <footer className="w-full px-10 py-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-[10px] text-slate-600 uppercase tracking-[0.4em]">
           © 2026 Päffgen IT // Peter Päffgen // Manderscheid, Vulkaneifel
         </p>
