@@ -263,7 +263,7 @@ export default function HomePage() {
           </div>
 
           {/* ── ULTRA-TECH LOGO HERO ── */}
-          <div className="relative w-screen left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] min-h-screen flex items-center justify-center overflow-hidden">
+          <div className="relative text-center w-screen left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] min-h-screen flex items-center justify-center overflow-hidden">
             <h1 className="text-[6rem] md:text-[12rem] font-black tracking-[-0.08em] leading-none select-none flex flex-wrap items-center">
               {/* PÄFFGEN: Chrome-Effekt */}
               <span className="relative bg-gradient-to-b from-blue-200 via-blue-500 to-blue-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(59,130,246,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
