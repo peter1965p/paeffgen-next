@@ -262,18 +262,31 @@ export default function HomePage() {
             Verfügbar für Projekte // Remote aus der Vulkaneifel
           </div>
 
-          <h1 className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
-            Senior
-            <span className="relative ml-6 italic bg-gradient-to-br from-blue-400 via-blue-600 to-blue-950 bg-clip-text text-transparent drop-shadow-[0_0_50px_rgba(30,58,138,0.6)]">
-              IT
+          {/* ── ULTRA-TECH LOGO HERO ── */}
+          <div className="relative mb-20 group">
+            <h1 className="text-[6rem] md:text-[12rem] font-black tracking-[-0.08em] leading-none select-none flex flex-wrap items-center">
+              {/* PÄFFGEN: Chrome-Effekt */}
+              <span className="relative bg-gradient-to-b from-blue-200 via-blue-500 to-blue-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(59,130,246,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
+                Päffgen
+              </span>
+              {/* IT: Akzent */}
+              <span className="relative ml-6 italic bg-gradient-to-br from-white via-slate-400 to-slate-800 bg-clip-text text-transparent drop-shadow-[0_0_50px_rgba(255,255,255,0.2)]">
+                IT
+              </span>
+            </h1>
+            <div className="mt-6">
+              <p className="text-blue-400/40 font-mono text-[11px] tracking-[1.8em] uppercase italic opacity-60">
+                Senior_IT_Systemdenker_&_AI_Dev
+              </p>
+            </div>
+          </div>
+
+          <p className="max-w-3xl text-xl md:text-2xl text-zinc-300 font-light italic tracking-[0.15em] opacity-80 uppercase mb-16 leading-relaxed">
+            40+ Jahre Erfahrung. Neue Werkzeuge.
+            <span className="block mt-4 text-blue-500 font-black font-mono text-xs tracking-[0.6em] not-italic">
+              AI_FIRST // SYSTEMS_THINKING // REMOTE_READY
             </span>
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300">
-              Systemdenker
-            </span>
-            <br />
-            &amp; AI_Dev
-          </h1>
+          </p>
 
           <p className="text-slate-400 text-sm leading-relaxed max-w-xl mb-10 not-italic">
             40+ Jahre Hardware &amp; Fieldservice-Expertise — von RWE über E.ON
