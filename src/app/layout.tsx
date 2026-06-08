@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className="bg-[#05070a] text-white antialiased font-mono w-full overflow-x-hidden">
         <main className="w-full">{children}</main>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

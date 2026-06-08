@@ -18,6 +18,7 @@
     "@uppy/react": "^5.2.0",
     "@uppy/xhr-upload": "^5.2.0",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "^12.35.1",
     "imapflow": "^1.2.12",
     "lucide-react": "^0.577.0",
