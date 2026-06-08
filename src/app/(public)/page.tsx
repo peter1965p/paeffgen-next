@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Zap,
   MapPin,
@@ -662,6 +663,12 @@ export default function HomePage() {
                 className="group-hover:translate-x-1 transition-transform"
               />
             </a>
+            <Link
+              href="/contact"
+              className="group flex items-center gap-3 text-[11px] text-slate-500 uppercase tracking-widest border-b border-white/10 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit"
+            >
+              Impressum
+            </Link>
           </div>
         </div>
       </section>
