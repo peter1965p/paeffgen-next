@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import {
   Zap,
   MapPin,
@@ -332,20 +333,30 @@ export default function HomePage() {
 
       {/* ── EXPERIENCE BAND ── */}
       <section className="bg-slate-950 py-8 overflow-hidden border-y border-blue-700/20">
-        <div className="flex justify-around items-center opacity-20 grayscale font-black italic text-sm tracking-[0.2em] whitespace-nowrap">
-          {[
-            "HEMMERSBACH",
-            "DELL TECHNOLOGIES",
-            "RWE PROJECT",
-            "E.ON OPS",
-            "FIELD_SERVICE_EU",
-          ].map((s, i) => (
-            <span key={i}>
-              {s}
-              {i < 4 && <span className="text-blue-500 mx-6">/</span>}
-            </span>
+        <motion.div
+          className="flex gap-16 whitespace-nowrap"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        >
+          {[...Array(2)].map((_, repeat) => (
+            <div key={repeat} className="flex gap-16 shrink-0">
+              {[
+                "HEMMERSBACH",
+                "DELL TECHNOLOGIES",
+                "RWE PROJECT",
+                "E.ON OPS",
+                "FIELD_SERVICE_EU",
+              ].map((s) => (
+                <span
+                  key={s}
+                  className="font-black italic text-sm tracking-[0.2em] text-white opacity-20"
+                >
+                  {s} <span className="text-blue-500 mx-2">/</span>
+                </span>
+              ))}
+            </div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* ── ÜBER MICH ── */}
@@ -488,36 +499,96 @@ export default function HomePage() {
       </section>
 
       {/* ── STACK ── */}
-      <section className="w-full px-10 py-16 border-b border-white/5 overflow-hidden">
-        <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase mb-8">
-          Tech_Stack
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {[
-            "Next.js",
-            "React",
-            "TypeScript",
-            "Tailwind CSS",
-            "Node.js",
-            "Supabase",
-            "PostgreSQL",
-            "MongoDB",
-            "SQLite3",
-            "Electron",
-            "Rust",
-            "AWS S3",
-            "Google Cloud",
-            "JavaScript",
-            "HTML/CSS",
-          ].map((t) => (
-            <span
-              key={t}
-              className="text-[10px] text-slate-400 border border-white/8 px-3 py-2 rounded-sm hover:border-blue-500/30 hover:text-blue-400 transition-all cursor-default"
-            >
-              {t}
-            </span>
-          ))}
+      {/* ── STACK ── */}
+      <section className="w-full py-16 border-b border-white/5 overflow-hidden">
+        <div className="flex items-center justify-between px-10 mb-8">
+          <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase">
+            Tech Stack
+          </p>
+          <div className="hidden md:flex items-center gap-6">
+            <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase right-11">
+              Legende:
+            </p>
+            {[
+              {
+                color: "bg-blue-500/20 text-blue-400 border-blue-500/20",
+                label: "Frontend",
+              },
+              {
+                color:
+                  "bg-emerald-500/20 text-emerald-400 border-emerald-500/20",
+                label: "Backend / DB",
+              },
+              {
+                color: "bg-orange-500/20 text-orange-400 border-orange-500/20",
+                label: "Systems / Cloud",
+              },
+              {
+                color: "bg-violet-500/20 text-violet-400 border-violet-500/20",
+                label: "Microsoft Stack",
+              },
+            ].map((l) => (
+              <div key={l.label} className="flex items-center gap-2">
+                <span
+                  className={`text-[9px] font-mono px-2 py-0.5 rounded-full border ${l.color}`}
+                >
+                  {l.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
+        <motion.div
+          className="flex gap-4 whitespace-nowrap"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        >
+          {[...Array(2)].map((_, repeat) => (
+            <div key={repeat} className="flex gap-4 shrink-0 items-center">
+              {[
+                { label: "Next.js", color: "blue" },
+                { label: "React", color: "blue" },
+                { label: "TypeScript", color: "blue" },
+                { label: "Tailwind CSS", color: "blue" },
+                { label: "Node.js", color: "green" },
+                { label: "Python", color: "green" },
+                { label: "Django", color: "green" },
+                { label: "C#", color: "violet" },
+                { label: ".NET", color: "violet" },
+                { label: "ASP.NET", color: "violet" },
+                { label: "Qt", color: "violet" },
+                { label: "Rust", color: "orange" },
+                { label: "Go", color: "orange" },
+                { label: "JavaScript", color: "orange" },
+                { label: "PHP/Laravel", color: "orange" },
+                { label: "Supabase", color: "green" },
+                { label: "PostgreSQL", color: "green" },
+                { label: "MongoDB", color: "green" },
+                { label: "SQL Server", color: "green" },
+                { label: "Firebase", color: "green" },
+                { label: "SQLite3", color: "green" },
+                { label: "Electron", color: "blue" },
+                { label: "AWS S3", color: "orange" },
+                { label: "Google Cloud", color: "blue" },
+                { label: "HTML/CSS", color: "orange" },
+              ].map((t) => (
+                <span
+                  key={t.label}
+                  className={`
+              text-[10px] font-mono px-4 py-1.5 rounded-full whitespace-nowrap
+              transition-all cursor-default
+              ${t.color === "blue" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20" : ""}
+              ${t.color === "green" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20" : ""}
+              ${t.color === "orange" ? "bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20" : ""}
+              ${t.color === "violet" ? "bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500/20" : ""}
+            `}
+                >
+                  {t.label}
+                </span>
+              ))}
+            </div>
+          ))}
+        </motion.div>
       </section>
 
       {/* ── REGION & CONTACT ── */}
