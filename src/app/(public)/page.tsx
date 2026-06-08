@@ -11,7 +11,92 @@ import {
   Activity,
   Brain,
   Layers,
+  Server,
+  Wrench,
+  Monitor,
 } from "lucide-react";
+
+// ── Animated particle canvas background ──────────────────────────────────────
+function ParticleCanvas() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d")!;
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    type P = {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      a: number;
+    };
+    const pts: P[] = Array.from({ length: 70 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.2 + 0.3,
+      a: Math.random() * 0.45 + 0.08,
+    }));
+    let raf: number;
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "rgba(59,130,246,0.04)";
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < canvas.width; x += 48) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 48) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+      pts.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(59,130,246,${p.a})`;
+        ctx.fill();
+      });
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+          if (d < 90) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(59,130,246,${0.07 * (1 - d / 90)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+  return <canvas ref={ref} className="absolute inset-0 w-full h-full" />;
+}
 
 // ── Typing terminal ───────────────────────────────────────────────────────────
 const TERMINAL_LINES = [
@@ -40,15 +125,13 @@ const TERMINAL_LINES = [
 
 function Terminal() {
   const [visible, setVisible] = useState(0);
-
   useEffect(() => {
     if (visible >= TERMINAL_LINES.length) return;
     const t = setTimeout(() => setVisible((v) => v + 1), 700);
     return () => clearTimeout(t);
   }, [visible]);
-
   return (
-    <div className="mt-10 bg-black/60 border border-white/8 rounded-sm p-5 font-mono text-[11px] backdrop-blur-sm">
+    <div className="mt-10 bg-gradient-to-bl from-orange-600 via-violet-800 to-slate-900 border border-orange-600 rounded p-5 font-mono text-[11px] backdrop-blur-sm">
       <div className="flex items-center gap-2 mb-4">
         {["#ff5f56", "#febc2e", "#27c840"].map((c) => (
           <div
@@ -57,19 +140,19 @@ function Terminal() {
             style={{ background: c }}
           />
         ))}
-        <span className="text-slate-600 text-[9px] tracking-widest ml-2 uppercase">
+        <span className="text-slate-300 text-[9px] tracking-widest ml-2 uppercase">
           KERNEL_OUTPUT
         </span>
       </div>
       <div className="space-y-1.5">
         {TERMINAL_LINES.slice(0, visible).map((l, i) => (
           <div key={i} className={l.color}>
-            <span className="text-slate-600">{l.prefix}</span>
+            <span className="text-slate-400">{l.prefix}</span>
             {l.text}
           </div>
         ))}
         {visible < TERMINAL_LINES.length && (
-          <div className="text-slate-600">
+          <div className="text-slate-400">
             {">"}{" "}
             <span className="inline-block w-2 h-3 bg-blue-500 align-[-2px] animate-pulse" />
           </div>
@@ -92,14 +175,60 @@ function LiveMetric() {
   return <>{val}</>;
 }
 
+// ── Services data ─────────────────────────────────────────────────────────────
+const SERVICES = [
+  {
+    icon: <Code2 size={22} />,
+    title: "Web-Entwicklung",
+    desc: "Komplexe Webanwendungen mit Next.js, TypeScript und Tailwind. Von der Architektur bis zum Launch — aus einer Hand.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind"],
+    accent: "blue",
+  },
+  {
+    icon: <Brain size={22} />,
+    title: "AI-Integration",
+    desc: "Ich integriere KI-Modelle sinnvoll in bestehende Prozesse und Anwendungen — kein Hype, nur echter Mehrwert.",
+    tags: ["Claude API", "GPT", "Automation", "Workflows"],
+    accent: "violet",
+  },
+  {
+    icon: <Database size={22} />,
+    title: "System-Architektur",
+    desc: "Datenbank-Design, API-Struktur, Cloud-Setup. Ich denke das System als Ganzes — nicht nur die Oberfläche.",
+    tags: ["Supabase", "PostgreSQL", "AWS", "Node.js"],
+    accent: "blue",
+  },
+  {
+    icon: <Wrench size={22} />,
+    title: "Field Service",
+    desc: "40+ Jahre Vor-Ort-Erfahrung. Hardware-Rollouts, Entstörung kritischer Systeme, Einsatz unter Zeitdruck — ich kenne das Feld.",
+    tags: ["Hardware Rollout", "Vor-Ort", "RWE", "E.ON", "Dell"],
+    accent: "orange",
+  },
+  {
+    icon: <Monitor size={22} />,
+    title: "Hardware Setup",
+    desc: "Workstations, Server-Racks, Netzwerk-Infrastruktur. Aufbau, Konfiguration und Inbetriebnahme — alles aus einer Hand.",
+    tags: ["Server", "Workstations", "Netzwerk", "Konfiguration"],
+    accent: "orange",
+  },
+  {
+    icon: <Server size={22} />,
+    title: "Server Administration",
+    desc: "Linux & Windows Server, Cloud-Infrastruktur, Monitoring und Wartung. Ich halte deine Systeme am Laufen.",
+    tags: ["Linux", "Windows Server", "Cloud", "Monitoring"],
+    accent: "orange",
+  },
+];
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#05070a] text-white font-mono selection:bg-blue-500/30 overflow-x-hidden">
       {/* ── NAV ── */}
       <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-white/5 bg-[#05070a]/90 backdrop-blur-md">
-        <div className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000">
-          Päffgen<span className="text-white">_</span>IT
+        <div className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 text-[11px] tracking-[0.25em]">
+          Päffgen_IT
         </div>
         <div className="hidden md:flex gap-8">
           {["Über mich", "Services", "Referenzen", "Kontakt"].map((l) => (
@@ -114,16 +243,17 @@ export default function HomePage() {
         </div>
         <div className="flex items-center gap-2 text-[9px] text-slate-600 uppercase tracking-widest">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
           </span>
           System Online
         </div>
       </nav>
 
       {/* ── HERO ── */}
-      <section className="relative w-screen left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] min-h-screen flex items-center justify-center overflow-hidden bg-black">
-        <div className="relative z-10 max-w-4xl">
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black">
+        <ParticleCanvas />
+        <div className="relative z-10 w-full px-10 max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-8 text-blue-500 text-[10px] uppercase tracking-[0.3em]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
@@ -132,35 +262,31 @@ export default function HomePage() {
             Verfügbar für Projekte // Remote aus der Vulkaneifel
           </div>
 
-          <div className="relative mb-20 group">
-            <h1 className="text-[5rem] md:text-[9rem] font-black tracking-[-0.08em] leading-none select-none flex flex-wrap justify-center items-center">
-              {/* Paeffgen: Chrome-Reflektionseffekt */}
-              <span className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000">
+          <div className="relative mb-12 group text-center">
+            <h1 className="text-[5rem] md:text-[9rem] font-black tracking-[-0.08em] leading-none select-none">
+              <span className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase">
                 Päffgen IT
               </span>
             </h1>
-            <div className="mt-6">
-              <p className="text-blue-400/40 font-mono text-[11px] tracking-[1.5em] uppercase italic opacity-60">
-                Unified_Enterprise_Protocol_2026
-              </p>
-            </div>
+            <p className="mt-6 text-slate-500 font-mono text-[11px] tracking-[1.5em] uppercase italic opacity-60">
+              Unified Enterprise System Architecture
+            </p>
           </div>
 
-          <p className="max-w-3xl text-xl md:text-2xl text-zinc-300 font-light italic tracking-[0.15em] opacity-80 uppercase mb-16 leading-relaxed">
+          <p className="text-xl md:text-2xl text-zinc-300 font-light italic tracking-[0.15em] opacity-80 uppercase mb-8 leading-relaxed">
             40+ Jahre Erfahrung. Neue Werkzeuge.
             <span className="block mt-4 text-blue-500 font-black font-mono text-xs tracking-[0.6em] not-italic">
               AI_FIRST // SYSTEMS_THINKING // REMOTE_READY
             </span>
           </p>
 
-          <p className="text-slate-400 text-sm leading-relaxed max-w-xl mb-10 not-italic">
+          <p className="text-slate-400 text-sm leading-relaxed max-w-2xl mb-10 not-italic">
             40+ Jahre Hardware &amp; Fieldservice-Expertise — von RWE über E.ON
             bis Dell Technologies. Jetzt baue ich komplexe Webanwendungen mit KI
             als Co-Pilot. Ich denke Systeme. Ich sehe Zusammenhänge. Ich
             liefere.
           </p>
 
-          {/* Metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/5 rounded-sm mb-10 overflow-hidden">
             {[
               { val: "40+", unit: "Jahre", label: "IT_ERFAHRUNG" },
@@ -194,7 +320,7 @@ export default function HomePage() {
               href="https://github.com/peter1965p"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-white/10 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 text-[11px] uppercase tracking-widest px-6 py-3 rounded-sm transition-all flex items-center gap-2"
+              className="border border-orange-600 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 text-[11px] uppercase tracking-widest px-6 py-3 rounded-sm transition-all flex items-center gap-2"
             >
               GitHub_Access <ExternalLink size={11} />
             </a>
@@ -299,27 +425,10 @@ export default function HomePage() {
         <h2 className="text-4xl font-black italic uppercase mb-12">
           Was ich anbiete
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5">
-          {[
-            {
-              icon: <Code2 size={22} />,
-              title: "Web-Entwicklung",
-              desc: "Komplexe Webanwendungen mit Next.js, TypeScript und Tailwind. Von der Architektur bis zum Launch — aus einer Hand.",
-              tags: ["Next.js", "React", "TypeScript", "Tailwind"],
-            },
-            {
-              icon: <Brain size={22} />,
-              title: "AI-Integration",
-              desc: "Ich integriere KI-Modelle sinnvoll in bestehende Prozesse und Anwendungen — kein Hype, nur echter Mehrwert.",
-              tags: ["Claude API", "GPT", "Automation", "Workflows"],
-            },
-            {
-              icon: <Database size={22} />,
-              title: "System-Architektur",
-              desc: "Datenbank-Design, API-Struktur, Cloud-Setup. Ich denke das System als Ganzes — nicht nur die Oberfläche.",
-              tags: ["Supabase", "PostgreSQL", "AWS", "Node.js"],
-            },
-          ].map((s, i) => (
+
+        {/* Web & AI & Architektur */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5 mb-px">
+          {SERVICES.slice(0, 3).map((s, i) => (
             <div
               key={i}
               className="p-10 hover:bg-white/[0.015] transition-all group"
@@ -346,10 +455,40 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+
+        {/* Field Service, Hardware, Server */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 border-t-0 divide-y md:divide-y-0 md:divide-x divide-white/5">
+          {SERVICES.slice(3).map((s, i) => (
+            <div
+              key={i}
+              className="p-10 hover:bg-orange-500/[0.03] transition-all group"
+            >
+              <div className="text-orange-500 mb-6 group-hover:scale-110 transition-transform inline-block">
+                {s.icon}
+              </div>
+              <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4">
+                {s.title}
+              </h3>
+              <p className="text-slate-500 text-[10px] leading-relaxed mb-6">
+                {s.desc}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {s.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="text-[9px] text-orange-400 border border-orange-500/20 px-2 py-1 rounded-sm"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── STACK ── */}
-      <section className="w-full px-10 py-16 border-b border-white/5">
+      <section className="w-full px-10 py-16 border-b border-white/5 overflow-hidden">
         <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase mb-8">
           Tech_Stack
         </p>
