@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning>
       <body className="bg-[#05070a] text-white antialiased font-mono w-full overflow-x-hidden">
         <main className="w-full">{children}</main>
+        <Analytics />
       </body>
     </html>
   );
