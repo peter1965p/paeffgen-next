@@ -500,7 +500,6 @@ export default function HomePage() {
       </section>
 
       {/* ── STACK ── */}
-      {/* ── STACK ── */}
       <section className="w-full py-16 border-b border-white/5 overflow-hidden">
         <div className="flex items-center justify-between px-10 mb-8">
           <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase">
@@ -518,11 +517,19 @@ export default function HomePage() {
               {
                 color:
                   "bg-emerald-500/20 text-emerald-400 border-emerald-500/20",
-                label: "Backend / DB",
+                label: "Backend",
+              },
+              {
+                color: "bg-red-500/20 text-red-400 border-red-500/20",
+                label: "Database",
               },
               {
                 color: "bg-orange-500/20 text-orange-400 border-orange-500/20",
-                label: "Systems / Cloud",
+                label: "Systems / Architecture",
+              },
+              {
+                color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/20",
+                label: "Cloud",
               },
               {
                 color: "bg-violet-500/20 text-violet-400 border-violet-500/20",
@@ -557,21 +564,24 @@ export default function HomePage() {
                 { label: "C#", color: "violet" },
                 { label: ".NET", color: "violet" },
                 { label: "ASP.NET", color: "violet" },
-                { label: "Qt", color: "violet" },
+                { label: "Qt", color: "blue" },
                 { label: "Rust", color: "orange" },
                 { label: "Go", color: "orange" },
                 { label: "JavaScript", color: "orange" },
-                { label: "PHP/Laravel", color: "orange" },
-                { label: "Supabase", color: "green" },
-                { label: "PostgreSQL", color: "green" },
-                { label: "MongoDB", color: "green" },
-                { label: "SQL Server", color: "green" },
-                { label: "Firebase", color: "green" },
-                { label: "SQLite3", color: "green" },
-                { label: "Electron", color: "blue" },
-                { label: "AWS S3", color: "orange" },
-                { label: "Google Cloud", color: "blue" },
-                { label: "HTML/CSS", color: "orange" },
+                { label: "PHP/Laravel", color: "blue" },
+                { label: "Supabase", color: "red" },
+                { label: "PostgreSQL", color: "red" },
+                { label: "MongoDB", color: "red" },
+                { label: "SQL Server", color: "red" },
+                { label: "Firebase", color: "red" },
+                { label: "SQLite3", color: "red" },
+                { label: "Electron", color: "orange" },
+                { label: "Tauri", color: "orange" },
+                { label: "AWS S3", color: "red" },
+                { label: "Google Cloud", color: "yellow" },
+                { label: "Azure Cloud", color: "yellow" },
+                { label: "AWS Cloud", color: "yellow" },
+                { label: "HTML/CSS", color: "blue" },
               ].map((t) => (
                 <span
                   key={t.label}
@@ -582,6 +592,8 @@ export default function HomePage() {
               ${t.color === "green" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20" : ""}
               ${t.color === "orange" ? "bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20" : ""}
               ${t.color === "violet" ? "bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500/20" : ""}
+              ${t.color === "red" ? "bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20" : ""}
+              ${t.color === "yellow" ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 hover:bg-yellow-500/20" : ""}
             `}
                 >
                   {t.label}
