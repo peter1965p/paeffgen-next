@@ -601,22 +601,33 @@ export default function HomePage() {
           <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
             Erreichbarkeit
           </p>
-          <h2 className="text-3xl font-black italic uppercase mb-8">
+          <h2 className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
             Service
-            <br />
-            <span className="text-blue-500">Regionen</span>
+            <span className=" bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
+              {" "}
+              Regionen
+            </span>
           </h2>
-          <div className="grid grid-cols-2 gap-3 text-[10px] text-slate-400 mb-8">
-            {["NRW", "RLP", "Saarland", "Hessen", "Luxemburg", "Remote_EU"].map(
-              (r) => (
-                <div
-                  key={r}
-                  className="flex items-center gap-3 border border-white/5 p-4 rounded-sm hover:border-blue-500/20 transition-colors"
-                >
-                  <MapPin size={11} className="text-blue-500" /> {r}
-                </div>
-              ),
-            )}
+          <div className="grid grid-cols-2 gap-3  text-[10px] text-slate-400 mb-8">
+            {[
+              "Bremen",
+              "Hamburg",
+              "Nds",
+              "NRW",
+              "RLP",
+              "Saarland",
+              "BaWü",
+              "Hessen",
+              "Luxemburg",
+              "Remote_EU",
+            ].map((r) => (
+              <div
+                key={r}
+                className="flex items-center gap-3 border border-blue-600/40 p-4 rounded hover:border-blue-500/20 transition-colors"
+              >
+                <MapPin size={11} className="text-blue-500" /> {r}
+              </div>
+            ))}
           </div>
           <div className="flex items-center gap-2 text-[10px] text-slate-500">
             <Activity size={11} className="text-blue-500 animate-pulse" />
@@ -624,7 +635,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="flex-1 bg-blue-600/5 border border-blue-500/20 p-10 rounded-sm relative overflow-hidden">
+        <div className="flex-1 bg-blue-600/5 border border-blue-500/20 p-10 rounded relative overflow-hidden">
           <div className="absolute top-0 right-0 px-3 py-1.5 bg-blue-600 text-white text-[9px] uppercase tracking-widest font-bold">
             Verfügbar
           </div>
