@@ -2,3 +2,7 @@ name = "paeffgen-next"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".open-next/assets"
+
+[vars]
+NEXT_PUBLIC_SUPABASE_URL = "https://nxbgsfgypyasvvvjzoum.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54YmdzZmd5cHlhc3Z2dmp6b3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NjI4MzAsImV4cCI6MjA4ODEzODgzMH0.HJOZC8vxhMqg5qeb8V9h8AYeEasqQjsv2PI-ca-myjI"
