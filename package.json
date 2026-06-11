@@ -23,13 +23,14 @@
     "imapflow": "^1.2.12",
     "lucide-react": "^0.577.0",
     "mailparser": "^3.9.3",
-    "next": "16.1.6",
+    "next": "^16.2.9",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.8.1",
     "resend": "^6.9.3"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.19.11",
     "@types/imapflow": "^1.0.23",
     "@types/mailparser": "^3.4.6",
     "@types/node": "^20",
