@@ -193,7 +193,7 @@ const PROJECTS = [
       "CI/CD",
     ],
     accent: "blue",
-    link: "https://github.com/peter1965p",
+    link: "https://github.com/peter1965p/plexora",
   },
   {
     icon: <Brain size={22} />,
@@ -202,16 +202,16 @@ const PROJECTS = [
     desc: "Offline-fähige Desktop-App (Windows, Linux, macOS) mit Cloud-Sync. Datenvisualisierung, PDF-Export, modulare Architektur — echter Nutzen, kein Demo-Projekt.",
     tags: ["C#", ".NET 9", "Avalonia UI", "Supabase", "OxyPlot", "QuestPDF"],
     accent: "violet",
-    link: "https://github.com/peter1965p",
+    link: "https://github.com/peter1965p/BlutzuckerApp",
   },
   {
     icon: <Server size={22} />,
     title: "sysRunner & cachyos-dashboard",
-    subtitle: "System-Automation & Linux-Tooling",
-    desc: "Automations-Pipelines für lokale Prozesse, Deployments und System-Tasks. Linux System Overview Dashboard mit Monitoring und Logging.",
+    subtitle: "Norton-Commander-Style Automation & Linux-Tooling",
+    desc: "sysRunner — ein moderner Dateimanager im Norton-Commander-Stil für die Kommandozeile. Dazu cachyos-dashboard-qt: Linux System Overview mit Monitoring und Logging.",
     tags: ["Python", "Rust", "Qt", "Linux", "Automation"],
     accent: "blue",
-    link: "https://github.com/peter1965p",
+    link: "https://github.com/peter1965p/sysRunner",
   },
 ];
 
@@ -667,8 +667,7 @@ export default function HomePage() {
             Erreichbarkeit
           </p>
           <h2 className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase text-4xl font-black italic mb-6">
-            Remote
-            <span className="block">First.</span>
+            Remote First.
           </h2>
           <p className="text-slate-500 text-[11px] leading-relaxed mb-6 uppercase tracking-tighter">
             Ich arbeite vollständig remote — vollständig ausgestattet,
