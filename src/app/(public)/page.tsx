@@ -14,8 +14,8 @@ import {
   Brain,
   Layers,
   Server,
-  Wrench,
   Monitor,
+  GitBranch,
 } from "lucide-react";
 
 // ── Animated particle canvas background ──────────────────────────────────────
@@ -105,7 +105,7 @@ const TERMINAL_LINES = [
   { prefix: "> ", text: "Initialisiere System...", color: "text-slate-500" },
   {
     prefix: "> ",
-    text: "40+ Jahre IT-Erfahrung: GELADEN",
+    text: "Stack: Vue 3 · Nuxt 4 · TypeScript · AWS · C# .NET",
     color: "text-blue-400",
   },
   {
@@ -115,7 +115,7 @@ const TERMINAL_LINES = [
   },
   {
     prefix: "> ",
-    text: "Stack: Next.js · TypeScript · Tailwind · Supabase · Rust",
+    text: "Plexora: DEPLOYED  //  CRM · Finance · HR · Support",
     color: "text-slate-300",
   },
   {
@@ -177,49 +177,66 @@ function LiveMetric() {
   return <>{val}</>;
 }
 
+// ── Projects data ─────────────────────────────────────────────────────────────
+const PROJECTS = [
+  {
+    icon: <Monitor size={22} />,
+    title: "Plexora",
+    subtitle: "Modulare Business-Plattform",
+    desc: "Vollständige SaaS-Plattform mit CRM, Finance, HR, Support und Analytics — selbst entwickelt, produktionsreif deployed. Multi-Modul-Architektur mit Realtime-Daten und Role-based Access Control.",
+    tags: [
+      "Vue 3",
+      "Nuxt 4",
+      "TypeScript",
+      "AWS DynamoDB",
+      "Supabase",
+      "CI/CD",
+    ],
+    accent: "blue",
+    link: "https://github.com/peter1965p",
+  },
+  {
+    icon: <Brain size={22} />,
+    title: "BlutzuckerApp",
+    subtitle: "Cross-Platform Diabetes Tracker",
+    desc: "Offline-fähige Desktop-App (Windows, Linux, macOS) mit Cloud-Sync. Datenvisualisierung, PDF-Export, modulare Architektur — echter Nutzen, kein Demo-Projekt.",
+    tags: ["C#", ".NET 9", "Avalonia UI", "Supabase", "OxyPlot", "QuestPDF"],
+    accent: "violet",
+    link: "https://github.com/peter1965p",
+  },
+  {
+    icon: <Server size={22} />,
+    title: "sysRunner & cachyos-dashboard",
+    subtitle: "System-Automation & Linux-Tooling",
+    desc: "Automations-Pipelines für lokale Prozesse, Deployments und System-Tasks. Linux System Overview Dashboard mit Monitoring und Logging.",
+    tags: ["Python", "Rust", "Qt", "Linux", "Automation"],
+    accent: "blue",
+    link: "https://github.com/peter1965p",
+  },
+];
+
 // ── Services data ─────────────────────────────────────────────────────────────
 const SERVICES = [
   {
     icon: <Code2 size={22} />,
-    title: "Web-Entwicklung",
-    desc: "Komplexe Webanwendungen mit Next.js, TypeScript und Tailwind. Von der Architektur bis zum Launch — aus einer Hand.",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind"],
+    title: "Fullstack-Entwicklung",
+    desc: "Komplette Webanwendungen von der Datenbankarchitektur bis zum fertigen UI. Vue/Nuxt, Next.js, TypeScript, Tailwind — aus einer Hand, produktionsreif.",
+    tags: ["Vue 3", "Nuxt 4", "Next.js", "TypeScript", "Tailwind"],
     accent: "blue",
   },
   {
     icon: <Brain size={22} />,
     title: "AI-Integration",
-    desc: "Ich integriere KI-Modelle sinnvoll in bestehende Prozesse und Anwendungen — kein Hype, nur echter Mehrwert.",
-    tags: ["Claude API", "GPT", "Automation", "Workflows"],
+    desc: "KI sinnvoll in Anwendungen einbauen — als Automatisierung, als Assistent, als intelligente Schnittstelle. Kein Hype, nur echter Mehrwert.",
+    tags: ["Claude API", "OpenAI", "LLM-Orchestrierung", "Automation"],
     accent: "violet",
   },
   {
     icon: <Database size={22} />,
     title: "System-Architektur",
-    desc: "Datenbank-Design, API-Struktur, Cloud-Setup. Ich denke das System als Ganzes — nicht nur die Oberfläche.",
-    tags: ["Supabase", "PostgreSQL", "AWS", "Node.js"],
+    desc: "Datenbank-Design, API-Struktur, Cloud-Setup. Ich denke das System als Ganzes — nicht nur die Oberfläche. Skalierbar, wartbar, durchdacht.",
+    tags: ["AWS", "Supabase", "PostgreSQL", "Node.js", "REST-APIs"],
     accent: "blue",
-  },
-  {
-    icon: <Wrench size={22} />,
-    title: "Field Service",
-    desc: "40+ Jahre Vor-Ort-Erfahrung. Hardware-Rollouts, Entstörung kritischer Systeme, Einsatz unter Zeitdruck — ich kenne das Feld.",
-    tags: ["Hardware Rollout", "Vor-Ort", "RWE", "E.ON", "Dell"],
-    accent: "orange",
-  },
-  {
-    icon: <Monitor size={22} />,
-    title: "Hardware Setup",
-    desc: "Workstations, Server-Racks, Netzwerk-Infrastruktur. Aufbau, Konfiguration und Inbetriebnahme — alles aus einer Hand.",
-    tags: ["Server", "Workstations", "Netzwerk", "Konfiguration"],
-    accent: "orange",
-  },
-  {
-    icon: <Server size={22} />,
-    title: "Server Administration",
-    desc: "Linux & Windows Server, Cloud-Infrastruktur, Monitoring und Wartung. Ich halte deine Systeme am Laufen.",
-    tags: ["Linux", "Windows Server", "Cloud", "Monitoring"],
-    accent: "orange",
   },
 ];
 
@@ -233,7 +250,7 @@ export default function HomePage() {
           Päffgen_IT
         </div>
         <div className="hidden md:flex gap-8">
-          {["Über mich", "Services", "Referenzen", "Kontakt"].map((l) => (
+          {["Über mich", "Projekte", "Services", "Kontakt"].map((l) => (
             <a
               key={l}
               href={`#${l.toLowerCase().replace(" ", "-")}`}
@@ -271,27 +288,27 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="mt-6 text-slate-500 font-mono text-[11px] tracking-[1.5em] uppercase italic opacity-60">
-              Unified Enterprise System Architecture
+              Fullstack Engineer · TypeScript · Vue · AWS · C# .NET
             </p>
           </div>
 
           <p className="text-xl md:text-2xl text-zinc-300 font-light italic tracking-[0.15em] opacity-80 uppercase mb-8 leading-relaxed">
-            40+ Jahre Erfahrung. Neue Werkzeuge.
+            Ich baue Produkte. Nicht Prototypen.
             <span className="block mt-4 text-blue-500 font-black font-mono text-xs tracking-[0.6em] not-italic">
-              AI_FIRST // SYSTEMS_THINKING // REMOTE_READY
+              FULLSTACK // AI_ASSISTED // REMOTE_READY
             </span>
           </p>
 
           <p className="text-slate-400 text-sm leading-relaxed max-w-2xl mb-10 not-italic">
-            40+ Jahre Hardware &amp; Fieldservice-Expertise — von RWE über E.ON
-            bis Dell Technologies. Jetzt baue ich komplexe Webanwendungen mit KI
-            als Co-Pilot. Ich denke Systeme. Ich sehe Zusammenhänge. Ich
-            liefere.
+            Von der Datenbankarchitektur bis zum fertigen UI — ich entwickle
+            komplette Systeme. Mein aktuelles Projekt Plexora ist eine modulare
+            Business-Plattform mit Vue 3, Nuxt 4 und AWS DynamoDB. Daneben
+            C#/.NET, Linux-Tooling und KI als Präzisionswerkzeug.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/5 rounded-sm mb-10 overflow-hidden">
             {[
-              { val: "40+", unit: "Jahre", label: "IT_ERFAHRUNG" },
+              { val: "3", unit: "+ Projekte", label: "PRODUKTIONSREIF" },
               { val: <LiveMetric />, unit: "%", label: "UPTIME_INDEX" },
               { val: "AI", unit: "_FIRST", label: "DEV_APPROACH" },
               { val: "100%", unit: "", label: "REMOTE_READY" },
@@ -342,11 +359,12 @@ export default function HomePage() {
           {[...Array(2)].map((_, repeat) => (
             <div key={repeat} className="flex gap-16 shrink-0">
               {[
+                "PLEXORA",
+                "BLUTZUCKERAPP",
                 "HEMMERSBACH",
                 "DELL TECHNOLOGIES",
                 "RWE PROJECT",
                 "E.ON OPS",
-                "FIELD_SERVICE_EU",
               ].map((s) => (
                 <span
                   key={s}
@@ -371,16 +389,17 @@ export default function HomePage() {
               Über mich
             </p>
             <h2 className="text-4xl font-black italic uppercase leading-none mb-6">
-              Jahrzehnte
+              Systeme
               <br />
-              <span className="text-blue-500">Praxis.</span>
+              <span className="text-blue-500">denken.</span>
               <br />
-              Neue Werkzeuge.
+              Produkte bauen.
             </h2>
             <p className="text-slate-500 text-[11px] leading-relaxed uppercase tracking-tighter">
-              Ich komme nicht aus der Theorie — ich komme aus dem Maschinenraum.
-              Hardware-Rollouts, kritische Infrastrukturen, Entstörung unter
-              Zeitdruck. Das gibt mir einen Blick auf Systeme den kein Bootcamp
+              Ich baue vollständige Systeme — von der Datenbankarchitektur über
+              REST-APIs bis zum fertigen UI. Mein Fokus liegt auf sauberem,
+              modularem Code und Cloud-nativen Architekturen. 40+ Jahre
+              Enterprise-IT geben mir einen Blick auf Systeme den kein Bootcamp
               lehrt.
             </p>
           </div>
@@ -388,23 +407,23 @@ export default function HomePage() {
             {[
               {
                 icon: <Brain size={18} />,
-                title: "Systemdenken",
-                desc: "40+ Jahre Hardware und Fieldservice haben mir beigebracht, komplexe Systeme als Ganzes zu sehen — nicht nur einzelne Komponenten.",
+                title: "Produkt-Denken",
+                desc: "Ich denke in Produkten, nicht in Tickets. Plexora, BlutzuckerApp, sysRunner — alles selbst konzipiert, architekturiert und deployed.",
               },
               {
                 icon: <Zap size={18} />,
-                title: "AI als Hebel",
-                desc: "Ich nutze KI nicht als Hype-Tool, sondern als Präzisionswerkzeug — um komplexe Webanwendungen zu bauen, die sonst ein ganzes Team bräuchten.",
+                title: "AI als Werkzeug",
+                desc: "KI nicht als Hype, sondern als Präzisionswerkzeug — um komplexe Systeme zu bauen, schneller zu iterieren und saubere Architekturen zu strukturieren.",
               },
               {
                 icon: <Layers size={18} />,
-                title: "Design-Instinkt",
-                desc: "Fotografisches Gedächtnis und jahrelanges Interesse an UI/UX: Ich weiß wie etwas aussehen soll — und warum.",
+                title: "Full-Stack-Tiefe",
+                desc: "Vue/Nuxt, TypeScript, AWS DynamoDB, C#/.NET, Supabase, Linux-Tooling — ich kenne den ganzen Stack, nicht nur eine Schicht.",
               },
               {
                 icon: <ShieldCheck size={18} />,
-                title: "Hands-on & direkt",
-                desc: "Kein Buzzword-Bingo. Kein Overhead. Ich liefere — pünktlich, durchdacht, und mit echtem Verständnis für dein Business.",
+                title: "Enterprise-Kontext",
+                desc: "4 Jahre SLA-getriebener Enterprise-Support bei DAX-Konzernen (E.ON, RWE). Arbeitszeugnis: 'Hervorragende Leistungen' — Projektende, kein eigenes Verschulden.",
               },
             ].map((c, i) => (
               <div
@@ -426,6 +445,70 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── PROJEKTE ── */}
+      <section
+        id="projekte"
+        className="w-full px-10 py-24 border-b border-white/5"
+      >
+        <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
+          Portfolio
+        </p>
+        <h2 className="text-4xl font-black italic uppercase mb-12">
+          Echte Projekte.
+          <br />
+          <span className="text-blue-500">Echter Code.</span>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5">
+          {PROJECTS.map((p, i) => (
+            <div
+              key={i}
+              className="p-10 hover:bg-white/[0.015] transition-all group flex flex-col"
+            >
+              <div
+                className={`mb-6 group-hover:scale-110 transition-transform inline-block ${p.accent === "violet" ? "text-violet-400" : "text-blue-500"}`}
+              >
+                {p.icon}
+              </div>
+              <h3 className="text-[13px] font-bold uppercase tracking-widest mb-1">
+                {p.title}
+              </h3>
+              <p
+                className={`text-[9px] uppercase tracking-widest mb-4 ${p.accent === "violet" ? "text-violet-500" : "text-blue-500"}`}
+              >
+                {p.subtitle}
+              </p>
+              <p className="text-slate-500 text-[10px] leading-relaxed mb-6 flex-1">
+                {p.desc}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className={`text-[9px] border px-2 py-1 rounded-sm ${p.accent === "violet" ? "text-violet-400 border-violet-500/20" : "text-blue-400 border-blue-500/20"}`}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/link flex items-center gap-2 text-[10px] text-slate-500 hover:text-blue-400 uppercase tracking-widest transition-colors w-fit"
+              >
+                <GitBranch size={11} />
+                GitHub ansehen
+                <ExternalLink
+                  size={10}
+                  className="group-hover/link:translate-x-1 transition-transform"
+                />
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── SERVICES ── */}
       <section
         id="services"
@@ -438,14 +521,15 @@ export default function HomePage() {
           Was ich anbiete
         </h2>
 
-        {/* Web & AI & Architektur */}
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5 mb-px">
-          {SERVICES.slice(0, 3).map((s, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5">
+          {SERVICES.map((s, i) => (
             <div
               key={i}
               className="p-10 hover:bg-white/[0.015] transition-all group"
             >
-              <div className="text-blue-500 mb-6 group-hover:scale-110 transition-transform inline-block">
+              <div
+                className={`mb-6 group-hover:scale-110 transition-transform inline-block ${s.accent === "violet" ? "text-violet-400" : "text-blue-500"}`}
+              >
                 {s.icon}
               </div>
               <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4">
@@ -458,37 +542,7 @@ export default function HomePage() {
                 {s.tags.map((t) => (
                   <span
                     key={t}
-                    className="text-[9px] text-blue-400 border border-blue-500/20 px-2 py-1 rounded-sm"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Field Service, Hardware, Server */}
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 border-t-0 divide-y md:divide-y-0 md:divide-x divide-white/5">
-          {SERVICES.slice(3).map((s, i) => (
-            <div
-              key={i}
-              className="p-10 hover:bg-orange-500/[0.03] transition-all group"
-            >
-              <div className="text-orange-500 mb-6 group-hover:scale-110 transition-transform inline-block">
-                {s.icon}
-              </div>
-              <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4">
-                {s.title}
-              </h3>
-              <p className="text-slate-500 text-[10px] leading-relaxed mb-6">
-                {s.desc}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {s.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[9px] text-orange-400 border border-orange-500/20 px-2 py-1 rounded-sm"
+                    className={`text-[9px] border px-2 py-1 rounded-sm ${s.accent === "violet" ? "text-violet-400 border-violet-500/20" : "text-blue-400 border-blue-500/20"}`}
                   >
                     {t}
                   </span>
@@ -525,7 +579,7 @@ export default function HomePage() {
               },
               {
                 color: "bg-orange-500/20 text-orange-400 border-orange-500/20",
-                label: "Systems / Architecture",
+                label: "Systems",
               },
               {
                 color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/20",
@@ -554,47 +608,46 @@ export default function HomePage() {
           {[...Array(2)].map((_, repeat) => (
             <div key={repeat} className="flex gap-4 shrink-0 items-center">
               {[
+                { label: "Vue 3", color: "blue" },
+                { label: "Nuxt 4", color: "blue" },
                 { label: "Next.js", color: "blue" },
                 { label: "React", color: "blue" },
                 { label: "TypeScript", color: "blue" },
                 { label: "Tailwind CSS", color: "blue" },
                 { label: "Node.js", color: "green" },
                 { label: "Python", color: "green" },
-                { label: "Django", color: "green" },
+                { label: "Hono", color: "green" },
                 { label: "C#", color: "violet" },
-                { label: ".NET", color: "violet" },
+                { label: ".NET 9", color: "violet" },
                 { label: "ASP.NET", color: "violet" },
-                { label: "Qt", color: "blue" },
+                { label: "Avalonia UI", color: "violet" },
                 { label: "Rust", color: "orange" },
-                { label: "Go", color: "orange" },
-                { label: "JavaScript", color: "orange" },
-                { label: "PHP/Laravel", color: "blue" },
+                { label: "Qt", color: "orange" },
+                { label: "Electron", color: "orange" },
+                { label: "Linux", color: "orange" },
                 { label: "Supabase", color: "red" },
                 { label: "PostgreSQL", color: "red" },
+                { label: "AWS DynamoDB", color: "red" },
+                { label: "LibSQL", color: "red" },
                 { label: "MongoDB", color: "red" },
-                { label: "SQL Server", color: "red" },
-                { label: "Firebase", color: "red" },
-                { label: "SQLite3", color: "red" },
-                { label: "Electron", color: "orange" },
-                { label: "Tauri", color: "orange" },
-                { label: "AWS S3", color: "red" },
-                { label: "Google Cloud", color: "yellow" },
-                { label: "Azure Cloud", color: "yellow" },
-                { label: "AWS Cloud", color: "yellow" },
-                { label: "HTML/CSS", color: "blue" },
+                { label: "AWS S3", color: "yellow" },
+                { label: "AWS IAM", color: "yellow" },
+                { label: "Vercel", color: "yellow" },
+                { label: "Cloudflare", color: "yellow" },
+                { label: "GitHub CI/CD", color: "orange" },
+                { label: "Docker", color: "orange" },
               ].map((t) => (
                 <span
-                  key={t.label}
+                  key={t.label + repeat}
                   className={`
-              text-[10px] font-mono px-4 py-1.5 rounded-full whitespace-nowrap
-              transition-all cursor-default
-              ${t.color === "blue" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20" : ""}
-              ${t.color === "green" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20" : ""}
-              ${t.color === "orange" ? "bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20" : ""}
-              ${t.color === "violet" ? "bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500/20" : ""}
-              ${t.color === "red" ? "bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20" : ""}
-              ${t.color === "yellow" ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 hover:bg-yellow-500/20" : ""}
-            `}
+                    text-[10px] font-mono px-4 py-1.5 rounded-full whitespace-nowrap transition-all cursor-default
+                    ${t.color === "blue" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20" : ""}
+                    ${t.color === "green" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20" : ""}
+                    ${t.color === "orange" ? "bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20" : ""}
+                    ${t.color === "violet" ? "bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500/20" : ""}
+                    ${t.color === "red" ? "bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20" : ""}
+                    ${t.color === "yellow" ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 hover:bg-yellow-500/20" : ""}
+                  `}
                 >
                   {t.label}
                 </span>
@@ -604,7 +657,7 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* ── REGION & CONTACT ── */}
+      {/* ── CONTACT ── */}
       <section
         id="kontakt"
         className="w-full px-10 py-24 flex flex-col md:flex-row gap-16 items-start"
@@ -613,25 +666,25 @@ export default function HomePage() {
           <p className="text-[10px] text-blue-500 tracking-[0.3em] uppercase mb-4">
             Erreichbarkeit
           </p>
-          <h2 className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
-            Service
-            <span className=" bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 group-hover:tracking-normal">
-              {" "}
-              Regionen
-            </span>
+          <h2 className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase text-4xl font-black italic mb-6">
+            Remote
+            <span className="block">First.</span>
           </h2>
-          <div className="grid grid-cols-2 gap-3  text-[10px] text-slate-400 mb-8">
+          <p className="text-slate-500 text-[11px] leading-relaxed mb-6 uppercase tracking-tighter">
+            Ich arbeite vollständig remote — vollständig ausgestattet,
+            selbstständig und lieferstark. Vor-Ort in der DACH-Region auf
+            Anfrage möglich.
+          </p>
+          <div className="grid grid-cols-2 gap-3 text-[10px] text-slate-400 mb-8">
             {[
-              "Bremen",
-              "Hamburg",
-              "Nds",
               "NRW",
               "RLP",
-              "Saarland",
-              "BaWü",
               "Hessen",
+              "BaWü",
+              "Saarland",
               "Luxemburg",
               "Remote_EU",
+              "Remote_DE",
             ].map((r) => (
               <div
                 key={r}
@@ -660,8 +713,8 @@ export default function HomePage() {
             reden.
           </h3>
           <p className="text-slate-400 text-[11px] leading-relaxed mb-8">
-            Du hast ein Projekt das Systemdenken braucht? Eine Idee die jemanden
-            braucht der sie wirklich versteht? Dann schreib mir.
+            Du hast ein Projekt das einen Entwickler braucht der wirklich
+            liefert? Fullstack, Cloud, AI-Integration — schreib mir.
           </p>
           <div className="space-y-3">
             <a
@@ -681,6 +734,18 @@ export default function HomePage() {
               className="group flex items-center gap-3 text-[11px] text-slate-500 uppercase tracking-widest border-b border-white/10 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit"
             >
               GitHub ansehen{" "}
+              <ExternalLink
+                size={11}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/peter-paeffgen/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 text-[11px] text-slate-500 uppercase tracking-widest border-b border-white/10 pb-3 hover:text-blue-400 hover:border-blue-400 transition-all w-fit"
+            >
+              LinkedIn{" "}
               <ExternalLink
                 size={11}
                 className="group-hover:translate-x-1 transition-transform"
