@@ -1,7 +1,7 @@
 name = "paeffgen-next"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".open-next/assets"
+pages_build_output_dir = ".open-next"
 
 [vars]
 NEXT_PUBLIC_SUPABASE_URL = "https://nxbgsfgypyasvvvjzoum.supabase.co"
