@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabaseClient";
 import { Terminal, Cpu, MapPin, Calendar, AlertTriangle } from "lucide-react";
 import FormRenderer from "@/components/FormRenderer";
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: "Päffgen IT | Kontakt & Impressum",
@@ -18,13 +19,14 @@ export default async function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#05070a] text-white pt-32 pb-20 px-6 font-mono selection:bg-blue-500/30">
+      <Navbar />
       <div className="max-w-6xl mx-auto">
         {/* HEADER */}
         <div className="mb-16 border-b border-white/5 pb-12">
           <div className="flex items-center gap-3 mb-4">
             <Terminal size={16} className="text-blue-500" />
             <span className="text-[10px] uppercase tracking-[0.4em] text-slate-500">
-              Päffgen IT // Kontakt
+              Päffgen IT // Impressum
             </span>
           </div>
           <h1 className="text-6xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">

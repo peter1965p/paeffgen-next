@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 import {
   Zap,
   MapPin,
@@ -245,29 +246,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#05070a] text-white font-mono selection:bg-blue-500/30 overflow-x-hidden">
       {/* ── NAV ── */}
-      <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-white/5 bg-[#05070a]/90 backdrop-blur-md">
-        <div className="relative bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase transition-all duration-1000 text-[11px] tracking-[0.25em]">
-          Päffgen_IT
-        </div>
-        <div className="hidden md:flex gap-8">
-          {["Über mich", "Projekte", "Services", "Kontakt"].map((l) => (
-            <a
-              key={l}
-              href={`#${l.toLowerCase().replace(" ", "-")}`}
-              className="text-[10px] text-slate-500 hover:text-blue-400 transition-colors uppercase tracking-widest"
-            >
-              {l}
-            </a>
-          ))}
-        </div>
-        <div className="flex items-center gap-2 text-[9px] text-slate-600 uppercase tracking-widest">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
-          </span>
-          System Online
-        </div>
-      </nav>
+      <Navbar />
 
       {/* ── HERO ── */}
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black">
@@ -281,7 +260,7 @@ export default function HomePage() {
             Verfügbar für Projekte // Remote aus der Vulkaneifel
           </div>
 
-          <div className="relative mb-12 group text-center">
+          <div className="relative mb-12 group text-center pt-4">
             <h1 className="text-[5rem] md:text-[9rem] font-black tracking-[-0.08em] leading-none select-none">
               <span className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-950 bg-clip-text text-transparent drop-shadow-[0_0_70px_rgba(234,88,12,0.5)] uppercase">
                 Päffgen IT
