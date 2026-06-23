@@ -2,67 +2,80 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard, FileText, PenTool, ClipboardList,
+  Users, Search, Tag, Mail, ShoppingCart, Package,
+  Settings, ArrowLeft,
+} from "lucide-react";
+
+const navLinks = [
+  { href: "/admin",             label: "Dashboard",  icon: LayoutDashboard },
+  { href: "/admin/pages",       label: "Pages",      icon: FileText },
+  { href: "/admin/blog",        label: "Blog",       icon: PenTool },
+  { href: "/admin/forms",       label: "Formulare",  icon: ClipboardList },
+  { href: "/admin/users",       label: "Users",      icon: Users },
+  { href: "/admin/seo",         label: "SEO",        icon: Search },
+  { href: "/admin/categories",  label: "Kategorien", icon: Tag },
+  { href: "/admin/intelligence", label: "Mailbox",   icon: Mail },
+  { href: "/admin/store",       label: "Shop",       icon: ShoppingCart },
+  { href: "/admin/modulstore",  label: "Module",     icon: Package },
+  { href: "/admin/settings",    label: "Settings",   icon: Settings },
+];
 
 export default function Sidebar() {
   const pathname = usePathname() ?? "";
 
-  const navLinks = [
-    { href: "/admin", label: "Dashboard" },
-    { href: "/admin/pages", label: "Sectors" }, // "Sectors" statt Pages für den SPECTORA-Vibe
-    { href: "/admin/blog", label: "Blog" }, // Blog ist jetzt "Intelligence" 
-    { href: "/admin/forms", label: "Formulare" },
-    { href: "/admin/users", label: "Users" },
-    { href: "/admin/seo", label: "SEO AI"},
-    { href: "/admin/categories", label: "Kategorien" },
-    { href: "/admin/intelligence", label: "Mailbox" },
-    { href: "/admin/store", label: "Shop" },
-    { href: "/admin/modulstore", label: "Modul Shop" },
-    { href: "/admin/settings", label: "Settings" },
-  ];
-
   return (
-    <aside className="w-64 bg-[#0d111c] border-r border-white/5 h-screen flex flex-col p-8">
-      <div className="mb-12">
-        <h2 className="text-2xl font-black italic tracking-tighter text-white uppercase">
-          SPECTORA <span className="text-orange-600">OS</span>
+    <aside className="w-60 bg-[#0d111c] border-r border-white/5 h-screen flex flex-col p-6">
+      <div className="mb-10 px-2">
+        <h2 className="text-xl font-black italic tracking-tighter text-white uppercase">
+          SPECTORA
         </h2>
-        <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold mt-1">Control Center</p>
+        <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold mt-1">
+          Control Center
+        </p>
       </div>
 
-      <nav className="flex flex-col gap-3">
+      <nav className="flex flex-col gap-1 flex-1">
         {navLinks.map((link) => {
-          const isActive = pathname === link.href || (link.href !== "/admin" && pathname.startsWith(link.href));
+          const isActive =
+            pathname === link.href ||
+            (link.href !== "/admin" && pathname.startsWith(link.href));
+          const Icon = link.icon;
 
           return (
             <Link
               key={link.href}
               href={link.href}
-              className={`px-5 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
-                isActive 
-                  ? "bg-orange-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)]" 
-                  : "text-slate-500 hover:text-white hover:bg-orange-800"
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-200 ${
+                isActive
+                  ? "bg-orange-600 text-white"
+                  : "text-slate-500 hover:text-white hover:bg-white/5"
               }`}
             >
+              <Icon size={13} />
               {link.label}
             </Link>
           );
         })}
-        
-        <div className="my-8 border-t border-white/5"></div>
-        
-        <Link 
-          href="/" 
-          className="group flex items-center gap-3 px-5 py-2 text-[10px] font-bold text-slate-600 hover:text-blue-400 transition-colors uppercase tracking-widest"
+
+        <div className="my-3 border-t border-white/5" />
+
+        <Link
+          href="/"
+          className="flex items-center gap-3 px-4 py-2 text-[10px] font-bold text-slate-600 hover:text-blue-400 transition-colors uppercase tracking-widest"
         >
-          <span className="transition-transform group-hover:-translate-x-1">←</span> Exit to Web
+          <ArrowLeft size={12} />
+          Exit to Web
         </Link>
       </nav>
 
-      {/* Footer in der Sidebar [cite: 2026-02-20] */}
-      <div className="mt-auto pt-8 border-t border-white/5">
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">System Online</span>
+      <div className="pt-6 border-t border-white/5">
+        <div className="flex items-center gap-3 px-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">
+            System Online
+          </span>
         </div>
       </div>
     </aside>
