@@ -65,7 +65,7 @@ export default function FormManagerPage() {
           <h1 className="text-5xl font-black italic uppercase tracking-tighter">Form Inventory</h1>
           <div className="flex items-center gap-4">
             <span className="text-blue-500 text-[9px] font-black tracking-[0.3em] uppercase">Status: Operative</span>
-            <span className="text-slate-600 text-[9px] font-black tracking-[0.3em] uppercase italic">AETHER OS // DB ACCESS GRANTED</span>
+            <span className="text-slate-600 text-[9px] font-black tracking-[0.3em] uppercase italic">SPECTORA // DB ACCESS GRANTED</span>
           </div>
         </div>
 

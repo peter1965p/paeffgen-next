@@ -51,7 +51,7 @@ export default function ModulStorePage() {
       <div className="mb-16">
         <h1 className="text-5xl font-black italic tracking-tighter uppercase mb-2">Modulstore</h1>
         <p className="text-slate-500 text-[10px] font-black tracking-[0.3em] uppercase">
-          System-Erweiterungen für AETHER OS
+          System-Erweiterungen für SPECTORA
         </p>
       </div>
 

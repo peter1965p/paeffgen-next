@@ -103,7 +103,7 @@ export default function RegisterPage() {
       </div>
       
       <div className="mt-8 text-center text-[8px] font-mono text-slate-800 uppercase tracking-[0.2em] opacity-30 italic">
-        AETHER_CORE_SYSTEM // REV_2026.4
+        SPECTORA_CORE_SYSTEM // REV_2026.4
       </div>
     </div>
   );

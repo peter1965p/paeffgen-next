@@ -29,7 +29,7 @@ export default function InboxList({ messages }: { messages: any[] }) {
       
       {cleanMessages.length === 0 && (
         <div className="p-10 border border-dashed border-white/5 rounded-2xl text-center text-slate-600 font-mono text-xs uppercase italic">
-          No encrypted traffic detected. [AETHER_SECURE_MODE: ON]
+          No encrypted traffic detected. [SPECTORA_SECURE_MODE: ON]
         </div>
       )}
 

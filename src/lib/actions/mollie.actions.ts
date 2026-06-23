@@ -15,7 +15,7 @@ export async function createModuleSubscription(moduleId: string, price: number) 
         currency: 'EUR',
         value: price.toFixed(2),
       },
-      description: `AETHER OS Premium Modul: ${moduleId}`,
+      description: `SPECTORA Premium Modul: ${moduleId}`,
       redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/modulstore?success=true`,
       webhookUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/webhooks/mollie`,
       metadata: { moduleId }

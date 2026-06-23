@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import StoreClient from '@/components/StoreClient';
 
 /**
- * AETHER OS // COMMERCE SECTOR
+ * SPECTORA // COMMERCE SECTOR
  * Management-Interface für Produkte und Bestände
  * Jetzt mit globaler Kategorie-Integration
  */
@@ -52,7 +52,7 @@ export default async function StorePage() {
       <div className="p-4 border-t border-white/5 bg-black/20 flex justify-between items-center z-50">
         <div className="flex flex-col gap-1">
             <span className="text-[8px] font-mono text-slate-600 uppercase tracking-widest">
-              AETHER OS V3.0 // COMMERCE UNIT // STABLE
+              SPECTORA V3.0 // COMMERCE UNIT // STABLE
             </span>
             <span className="text-[7px] text-slate-800 font-mono uppercase tracking-[0.3em]">
               Global Taxonomy Integration Active

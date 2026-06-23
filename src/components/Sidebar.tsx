@@ -8,7 +8,7 @@ export default function Sidebar() {
 
   const navLinks = [
     { href: "/admin", label: "Dashboard" },
-    { href: "/admin/pages", label: "Sectors" }, // "Sectors" statt Pages für den AETHER-Vibe
+    { href: "/admin/pages", label: "Sectors" }, // "Sectors" statt Pages für den SPECTORA-Vibe
     { href: "/admin/blog", label: "Blog" }, // Blog ist jetzt "Intelligence" 
     { href: "/admin/forms", label: "Formulare" },
     { href: "/admin/users", label: "Users" },
@@ -24,7 +24,7 @@ export default function Sidebar() {
     <aside className="w-64 bg-[#0d111c] border-r border-white/5 h-screen flex flex-col p-8">
       <div className="mb-12">
         <h2 className="text-2xl font-black italic tracking-tighter text-white uppercase">
-          AETHER <span className="text-orange-600">OS</span>
+          SPECTORA <span className="text-orange-600">OS</span>
         </h2>
         <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold mt-1">Control Center</p>
       </div>

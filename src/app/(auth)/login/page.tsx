@@ -18,7 +18,7 @@ export default function LoginPage() {
       
       <div className="text-center mb-10 relative z-10">
         <h1 className="text-4xl font-black italic tracking-tighter text-white uppercase">
-          AETHER <span className="text-blue-500">OS</span>
+          SPECTORA <span className="text-blue-500">OS</span>
         </h1>
         <p className="text-slate-500 text-[10px] font-mono uppercase tracking-[0.3em] mt-3 opacity-70">
           Authentifizierung erforderlich
@@ -35,7 +35,7 @@ export default function LoginPage() {
             type="email" 
             name="email" 
             id="email" 
-            placeholder="OPERATOR@AETHER.OS"
+            placeholder="OPERATOR@SPECTORA.OS"
             className="p-4 border rounded-2xl bg-black/40 border-white/5 text-white font-mono text-sm focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder:text-slate-800" 
             required 
             autoFocus

@@ -46,7 +46,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {post.title}
             </h1>
             <div className="flex items-center gap-6 text-muted-foreground text-sm font-bold uppercase tracking-widest">
-              <span>{post.users?.username || "AETHER INTEL"}</span>
+              <span>{post.users?.username || "SPECTORA INTEL"}</span>
               <span>•</span>
               <time>{new Date(post.created_at).toLocaleDateString("de-DE")}</time>
             </div>

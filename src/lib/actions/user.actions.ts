@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { revalidatePath } from "next/cache";
 
 /**
- * --- AETHER OS USER MANAGEMENT --- [cite: 2026-03-08]
+ * --- SPECTORA USER MANAGEMENT --- [cite: 2026-03-08]
  */
 
 export interface User {
@@ -23,7 +23,7 @@ export async function getUserList(): Promise<User[]> {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.warn("AETHER_FETCH_WARNING: Standard-Abfrage fehlgeschlagen, starte Recovery...");
+      console.warn("SPECTORA_FETCH_WARNING: Standard-Abfrage fehlgeschlagen, starte Recovery...");
       // WICHTIG: Auch der Fallback muss 'username' enthalten, sonst knallt es in der UI! [cite: 2026-03-08]
       const { data: recoveryData, error: recoveryError } = await supabase
         .from("users")
@@ -37,7 +37,7 @@ export async function getUserList(): Promise<User[]> {
     // Explizites Casting auf das Interface [cite: 2026-03-08]
     return (data as User[]) || [];
   } catch (error: any) {
-    console.error("AETHER_USER_GET_ERROR:", error.message || error);
+    console.error("SPECTORA_USER_GET_ERROR:", error.message || error);
     return [];
   }
 }
@@ -54,7 +54,7 @@ export async function updateUserRole(id: string | number, role: string) {
     revalidatePath("/admin/users");
     return { success: true };
   } catch (error: any) {
-    console.error("AETHER_USER_UPDATE_ERROR:", error.message || error);
+    console.error("SPECTORA_USER_UPDATE_ERROR:", error.message || error);
     return { success: false, error: error.message };
   }
 }
@@ -80,7 +80,7 @@ export async function createUser(formData: FormData) {
     revalidatePath("/admin/intelligence"); // Revalidate für das Mailsystem [cite: 2026-03-08]
     return { success: true };
   } catch (error: any) {
-    console.error("AETHER_USER_CREATE_ERROR:", error.message);
+    console.error("SPECTORA_USER_CREATE_ERROR:", error.message);
     return { success: false, error: error.message };
   }
 }

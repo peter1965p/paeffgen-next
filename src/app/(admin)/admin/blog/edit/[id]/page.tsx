@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 
-export default function AetherEditor() {
+export default function SpectoraEditor() {
   const router = useRouter();
   const params = useParams();
   const postId = params?.id; // Holt die ID aus der URL, falls vorhanden
@@ -79,7 +79,7 @@ export default function AetherEditor() {
       router.push("/admin/blog");
       router.refresh();
     } catch (error: any) {
-      alert("AETHER Database Error: " + error.message);
+      alert("SPECTORA Database Error: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ export default function AetherEditor() {
           <h2 className="text-sm font-black uppercase tracking-widest text-white">
             {postId && postId !== "new" ? "Editor: Post bearbeiten" : "Editor: Neuer Post"}
           </h2>
-          <p className="text-[10px] text-blue-500 font-mono uppercase tracking-tighter">AETHER OS STUDIO</p>
+          <p className="text-[10px] text-blue-500 font-mono uppercase tracking-tighter">SPECTORA STUDIO</p>
         </div>
         <div className="flex gap-6 items-center">
           <Link href="/admin/blog" className="text-xs font-bold text-slate-500 hover:text-white transition-colors">Abbrechen</Link>
@@ -122,7 +122,7 @@ export default function AetherEditor() {
             />
             <div className="h-1 w-24 bg-blue-600 rounded-full opacity-50"></div>
             <textarea
-              placeholder="Erzähl die Geschichte von AETHER OS..."
+              placeholder="Erzähl die Geschichte von SPECTORA..."
               className="w-full h-[60vh] bg-transparent text-xl font-light leading-relaxed outline-none resize-none placeholder:opacity-10"
               value={post.content}
               onChange={(e) => setPost({ ...post, content: e.target.value })}
@@ -147,7 +147,7 @@ export default function AetherEditor() {
               <label className="text-[9px] font-bold uppercase text-slate-500">Tags (mit Komma trennen)</label>
               <input
                 type="text"
-                placeholder="Tech, AETHER, Update..."
+                placeholder="Tech, SPECTORA, Update..."
                 className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-[11px] outline-none focus:border-blue-500/50"
                 value={post.tags}
                 onChange={(e) => setPost({ ...post, tags: e.target.value })}
@@ -200,7 +200,7 @@ export default function AetherEditor() {
              <p className="text-[9px] text-slate-600 font-medium leading-relaxed uppercase tracking-tighter">
               Status: <span className="text-blue-500">{postId && postId !== "new" ? "Editing Mode" : "Draft Mode"}</span><br />
               Visibility: <span className="text-white">Public</span><br />
-              System: <span className="text-white">AETHER OS 2026</span>
+              System: <span className="text-white">SPECTORA 2026</span>
             </p>
           </div>
         </aside>

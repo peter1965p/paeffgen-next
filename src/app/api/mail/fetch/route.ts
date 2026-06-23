@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { simpleParser } from 'mailparser';
 
 /**
- * AETHER OS // MAIL GATEWAY - STABLE VERSION [cite: 2026-03-08]
+ * SPECTORA // MAIL GATEWAY - STABLE VERSION [cite: 2026-03-08]
  * Behebt UID-Mismatch und sorgt für saubere Content-Trennung [cite: 2026-03-08]
  */
 

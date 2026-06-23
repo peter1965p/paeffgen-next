@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { revalidatePath } from "next/cache";
 
 /**
- * --- AETHER OS INTELLIGENCE ACTIONS ---
+ * --- SPECTORA INTELLIGENCE ACTIONS ---
  * Zentrale Logik für das interne Mailsystem auf paeffgen-it.de [cite: 2026-02-20, 2026-03-08]
  */
 
@@ -37,7 +37,7 @@ export async function sendInternalMessage(formData: FormData) {
     revalidatePath("/admin/intelligence");
     return { success: true };
   } catch (error: any) {
-    console.error("AETHER_MAIL_SEND_ERROR:", error.message);
+    console.error("SPECTORA_MAIL_SEND_ERROR:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -65,7 +65,7 @@ export async function getInboxMessages(userId: string) {
 
     return data || [];
   } catch (error: any) {
-    console.error("AETHER_INBOX_FETCH_ERROR:", error.message);
+    console.error("SPECTORA_INBOX_FETCH_ERROR:", error.message);
     return [];
   }
 }
@@ -83,7 +83,7 @@ export async function markMessageAsRead(messageId: string) {
     revalidatePath("/admin/intelligence");
     return { success: true };
   } catch (error: any) {
-    console.error("AETHER_MAIL_UPDATE_ERROR:", error.message);
+    console.error("SPECTORA_MAIL_UPDATE_ERROR:", error.message);
     return { success: false };
   }
 }

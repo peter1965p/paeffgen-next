@@ -80,7 +80,7 @@ export default function BlogClientContent({ initialPosts, allTags }: { initialPo
           ))}
         </div>
 
-        {/* Suchfeld mit AETHER-Design [cite: 2026-02-20] */}
+        {/* Suchfeld mit SPECTORA-Design [cite: 2026-02-20] */}
         <div className="relative w-full md:w-64">
           <input
             type="text"
@@ -120,7 +120,7 @@ export default function BlogClientContent({ initialPosts, allTags }: { initialPo
                     {post.main_image ? (
                       <img src={post.main_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-80" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[10px] font-mono text-slate-700">AETHER_ASSET_NULL</div>
+                      <div className="w-full h-full flex items-center justify-center text-[10px] font-mono text-slate-700">SPECTORA_ASSET_NULL</div>
                     )}
                   </div>
 

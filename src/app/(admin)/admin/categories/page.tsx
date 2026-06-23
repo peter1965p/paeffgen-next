@@ -67,7 +67,7 @@ export default function GlobalCategoryCenter() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("AETHER OS: Kategorie wirklich systemweit löschen?")) return;
+    if (!confirm("SPECTORA: Kategorie wirklich systemweit löschen?")) return;
     await supabase.from("categories").delete().eq("id", id);
     fetchCategories();
   };
@@ -82,7 +82,7 @@ export default function GlobalCategoryCenter() {
             <LayoutGrid size={24} className="text-white" />
           </div>
           <div>
-            <h1 className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-500">AETHER OS // CORE</h1>
+            <h1 className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-500">SPECTORA // CORE</h1>
             <p className="text-3xl font-black uppercase tracking-tighter text-white">Global_Categories</p>
           </div>
         </div>

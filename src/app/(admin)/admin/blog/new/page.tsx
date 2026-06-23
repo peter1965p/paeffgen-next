@@ -10,7 +10,7 @@ import {
   Layers, Search, Tag 
 } from "lucide-react";
 
-export default function AetherEditor() {
+export default function SpectoraEditor() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -109,7 +109,7 @@ export default function AetherEditor() {
         <div className="flex items-center gap-6">
            <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em]">AETHER OS // CONTROL CENTER</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em]">SPECTORA // CONTROL CENTER</span>
            </div>
         </div>
         <div className="flex items-center gap-8">

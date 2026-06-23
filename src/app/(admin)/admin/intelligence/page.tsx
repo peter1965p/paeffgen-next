@@ -3,7 +3,7 @@ import { getUserList } from "@/lib/actions/user.actions";
 import InboxClient from "@/components/InboxClient";
 
 /**
- * AETHER OS // INTELLIGENCE CENTER
+ * SPECTORA // INTELLIGENCE CENTER
  * Bereinigte Server-Komponente für das Interview in Bremen
  */
 
@@ -16,7 +16,7 @@ export default async function IntelligencePage() {
     getUserList()
   ]);
 
-  // 2. AETHER_SECURE_FILTER: Spam-Mails gnadenlos aussortieren
+  // 2. SPECTORA_SECURE_FILTER: Spam-Mails gnadenlos aussortieren
   const messages = rawMessages.filter((msg: any) => {
     const subject = (msg.subject || "").toLowerCase();
     const content = (msg.content || "").toLowerCase();
@@ -68,7 +68,7 @@ export default async function IntelligencePage() {
 
       {/* Footer Info */}
       <div className="flex justify-between items-center px-6 text-[9px] font-mono text-slate-700 uppercase tracking-[0.2em]">
-        <span>AETHER OS v3.0 // Intelligence Sector</span>
+        <span>SPECTORA v3.0 // Intelligence Sector</span>
         <span className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
           Data Stream Stable [INTERVIEW_MODE: PROTECTED]

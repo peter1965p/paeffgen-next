@@ -22,7 +22,7 @@ export async function syncSEOWithLatestContent(blogPostId: string) {
   const { error: updateError } = await supabase
     .from("settings")
     .update({
-      seo_title: `${post.title} | AETHER OS IT-Services`,
+      seo_title: `${post.title} | SPECTORA IT-Services`,
       seo_description: post.content.substring(0, 160),
       keywords: newKeywords,
       updated_at: new Date().toISOString()

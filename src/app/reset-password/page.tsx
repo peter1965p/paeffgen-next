@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
     <div className="flex flex-col items-center justify-center min-h-[80vh] p-4">
       <div className="w-full max-w-md bg-card border border-primary/20 p-8 rounded-lg shadow-2xl">
         <h1 className="text-2xl font-black mb-6 uppercase tracking-tighter text-primary">
-          AETHER OS // Security Reset
+          SPECTORA // Security Reset
         </h1>
         
         <form onSubmit={handlePasswordUpdate} className="space-y-4">

@@ -32,7 +32,7 @@ export default function MissionControl() {
             <div className="w-3 h-3 bg-[#b33927] rounded-full animate-ping absolute" />
             <div className="w-3 h-3 bg-[#b33927] rounded-full relative" />
           </div>
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">AETHER Intelligence Core Active</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">SPECTORA Intelligence Core Active</span>
         </div>
         <div className="hidden md:flex gap-8 text-[9px] font-mono text-zinc-600 uppercase">
           <span>Uplink: Stable</span>

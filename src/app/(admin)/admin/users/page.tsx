@@ -15,7 +15,7 @@ export default async function UserManagementPage() {
             System <span className="text-blue-500">Users</span>
           </h1>
           <p className="text-slate-500 font-mono text-[10px] uppercase tracking-widest mt-2">
-            AETHER OS // Internal Identity Management
+            SPECTORA // Internal Identity Management
           </p>
         </div>
         <div className="text-right font-mono text-[10px] text-slate-600 uppercase">

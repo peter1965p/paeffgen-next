@@ -24,7 +24,7 @@ export default function AddUserForm() {
       
       <div className="flex-1 min-w-[180px] space-y-2">
         <label className="text-[10px] font-mono text-slate-500 uppercase tracking-widest px-1 text-glow-blue">Identity Mail</label>
-        <input name="email" type="email" required placeholder="operator@aether.os" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-mono text-sm focus:border-blue-500 outline-none transition-all placeholder:opacity-30" />
+        <input name="email" type="email" required placeholder="operator@spectora.app" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-mono text-sm focus:border-blue-500 outline-none transition-all placeholder:opacity-30" />
       </div>
 
       {/* Das neue Rollen-System [cite: 2026-03-08] */}

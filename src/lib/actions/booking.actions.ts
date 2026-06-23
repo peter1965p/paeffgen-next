@@ -14,7 +14,7 @@ export async function processBooking(data: any) {
       subject: 'Einsatz-Protokoll: Hardware-Support initialisiert',
       html: `
         <div style="font-family: monospace; background: #05070a; color: white; padding: 20px;">
-          <h1 style="color: #2563eb;">AETHER OS // EINSATZ-BESTÄTIGUNG</h1>
+          <h1 style="color: #2563eb;">SPECTORA // EINSATZ-BESTÄTIGUNG</h1>
           <p>Hallo ${data.name},</p>
           <p>Ihr Request für den Typ <strong>${data.serviceType}</strong> wurde im System registriert.</p>
           <hr style="border: 1px solid #1e293b;" />

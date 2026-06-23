@@ -22,7 +22,7 @@ export default async function PublicProfilePage({ params }: { params: { slug: st
         
         {/* Dynamisches Branding basierend auf deinen Settings */}
         <div style={{ color: profile.primary_color }} className="text-[10px] font-black uppercase tracking-[0.5em] mb-4">
-          Verified AETHER OS Node // {profile.company_name}
+          Verified SPECTORA Node // {profile.company_name}
         </div>
 
         <h1 className="text-7xl md:text-9xl font-black italic uppercase tracking-tighter leading-[0.8]">

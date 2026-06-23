@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { redirect } from "next/navigation";
 
 // Dein geheimer Code
-const SECRET_INVITE_CODE = "AETHER-2026-X"; 
+const SECRET_INVITE_CODE = "SPECTORA-2026-X"; 
 
 export async function register(prevState: any, formData: FormData) {
   // 1. Daten aus dem Formular extrahieren

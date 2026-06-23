@@ -57,7 +57,7 @@ export async function getInventoryData() {
       min_bestand: p.min_stock || 5,
     }));
   } catch (error) {
-    console.error("AETHER_INVENTORY_ERROR:", error);
+    console.error("SPECTORA_INVENTORY_ERROR:", error);
     return [];
   }
 }
@@ -91,7 +91,7 @@ export async function createFullProduct(data: {
     revalidatePath("/admin");
     return { success: true, id: newProduct.id };
   } catch (error) {
-    console.error("AETHER_PRODUCT_CREATE_ERROR:", error);
+    console.error("SPECTORA_PRODUCT_CREATE_ERROR:", error);
     return { success: false };
   }
 }
@@ -122,7 +122,7 @@ export async function getPendingOrders() {
       status: o.status,
     }));
   } catch (error) {
-    console.error("AETHER_ORDERS_ERROR:", error);
+    console.error("SPECTORA_ORDERS_ERROR:", error);
     return [];
   }
 }
@@ -162,7 +162,7 @@ export async function createOrder(
     revalidatePath("/admin/inventory");
     return { success: true, orderId: order.id, status: "PENDING" };
   } catch (error) {
-    console.error("AETHER_ORDER_CREATE_ERROR:", error);
+    console.error("SPECTORA_ORDER_CREATE_ERROR:", error);
     return { success: false, error: "System-Fehler bei Order-Erstellung" };
   }
 }
@@ -175,7 +175,7 @@ export async function createCategory(name: string, slug: string) {
     revalidatePath("/admin/categories");
     return { success: true };
   } catch (error) {
-    console.error("AETHER_CAT_CREATE_ERROR:", error);
+    console.error("SPECTORA_CAT_CREATE_ERROR:", error);
     return { success: false };
   }
 }
@@ -187,7 +187,7 @@ export async function deleteCategory(id: number) {
     revalidatePath("/admin/categories");
     return { success: true };
   } catch (error) {
-    console.error("AETHER_CAT_DELETE_ERROR:", error);
+    console.error("SPECTORA_CAT_DELETE_ERROR:", error);
     return { success: false };
   }
 }
@@ -224,7 +224,7 @@ export async function getAccountingStats() {
 
     return { inventoryValueEK: invEK, inventoryValueVK: invVK, lowStock, totalSales };
   } catch (error) {
-    console.error("AETHER_ACCOUNTING_ERROR:", error);
+    console.error("SPECTORA_ACCOUNTING_ERROR:", error);
     return { inventoryValueEK: 0, inventoryValueVK: 0, lowStock: 0, totalSales: 0 };
   }
 }
@@ -235,7 +235,7 @@ export async function getSettings() {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error("AETHER_SETTINGS_ERROR", error);
+    console.error("SPECTORA_SETTINGS_ERROR", error);
     return null;
   }
 }
@@ -250,7 +250,7 @@ export async function getCustomerDatabase() {
     if (error) throw error;
     return data as Customer[];
   } catch (error) {
-    console.error("AETHER_CUSTOMER_DB_ERROR:", error);
+    console.error("SPECTORA_CUSTOMER_DB_ERROR:", error);
     return [];
   }
 }
