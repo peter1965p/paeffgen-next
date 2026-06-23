@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Layout, PenTool, ShoppingCart, ClipboardList,
   Calculator, Monitor, Search, Cpu, Lock, CheckCircle2,
+  X, Zap,
 } from "lucide-react";
 import { createClient } from "@/lib/supabaseClient";
 
@@ -41,6 +42,7 @@ export default function ModulStorePage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [premiumModal, setPremiumModal] = useState<Module | null>(null);
 
   const fetchData = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -62,7 +64,7 @@ export default function ModulStorePage() {
 
   const handleToggle = async (mod: Module) => {
     if (mod.is_premium) {
-      alert(`Mollie Integration: ${mod.name} (${mod.price_monthly}€/Mo) — coming soon`);
+      setPremiumModal(mod);
       return;
     }
     if (!userId || toggling) return;
@@ -93,6 +95,63 @@ export default function ModulStorePage() {
 
   return (
     <div className="min-h-screen bg-black text-white p-10 font-sans">
+
+      {/* Premium Module Modal */}
+      {premiumModal && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/80 backdrop-blur-xl"
+          onClick={() => setPremiumModal(null)}
+        >
+          <div
+            className="bg-[#0d111c] border border-[#b33927]/30 w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl shadow-red-950/30"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-8 border-b border-white/5 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-[#b33927]/10 rounded-2xl">
+                  <Lock size={18} className="text-[#b33927]" />
+                </div>
+                <div>
+                  <p className="text-[8px] font-mono text-[#b33927] uppercase tracking-widest">Premium Module</p>
+                  <h2 className="text-lg font-black italic uppercase tracking-tighter text-white">{premiumModal.name}</h2>
+                </div>
+              </div>
+              <button
+                onClick={() => setPremiumModal(null)}
+                className="p-2 hover:bg-white/10 rounded-xl transition-all text-slate-500 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-8 space-y-6">
+              <p className="text-slate-400 text-[11px] leading-relaxed">{premiumModal.description}</p>
+
+              <div className="flex items-center justify-between bg-white/5 rounded-2xl px-6 py-4">
+                <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Monatlich</span>
+                <span className="text-2xl font-black text-white">{premiumModal.price_monthly}€<span className="text-xs text-slate-500 font-normal">/Mo</span></span>
+              </div>
+
+              <div className="flex items-start gap-3 p-4 bg-[#b33927]/5 border border-[#b33927]/20 rounded-2xl">
+                <Zap size={14} className="text-[#b33927] shrink-0 mt-0.5" />
+                <p className="text-[10px] text-[#b33927]/80 font-mono uppercase tracking-wider leading-relaxed">
+                  Mollie-Integration in Arbeit — Lizenz-Freischaltung demnächst verfügbar.
+                </p>
+              </div>
+
+              <button
+                disabled
+                className="w-full py-4 rounded-2xl bg-[#b33927]/20 text-[#b33927]/50 text-[10px] font-black uppercase tracking-widest cursor-not-allowed border border-[#b33927]/10"
+              >
+                Coming Soon
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-12">
         <h1 className="text-5xl font-black italic tracking-tighter uppercase mb-2">
           Module
