@@ -26,10 +26,10 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
 
   useEffect(() => {
     if (!userEmail) {
-      supabase.auth.getUser().then(({ data: { user } }) => {
-        if (user) {
-          setUserEmail(user.email ?? null);
-          setUserId(user.id);
+      supabase.auth.getUser().then(({ data }) => {
+        if (data.user) {
+          setUserEmail(data.user.email ?? null);
+          setUserId(data.user.id);
         }
       });
     }
