@@ -4,7 +4,13 @@ import { useState } from "react";
 import { X, Save, Package, DollarSign, FileText, Database, RefreshCw, Percent, Truck } from "lucide-react";
 import { createFullProduct } from "@/lib/actions/inventory.actions";
 
-export default function AddProductModal({ isOpen, onClose, onRefresh }: any) {
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  onRefresh: () => void;
+}
+
+export default function AddProductModal({ isOpen, onClose, onRefresh }: Props) {
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
@@ -17,14 +23,12 @@ export default function AddProductModal({ isOpen, onClose, onRefresh }: any) {
     
     // Wir mappen die Daten exakt so, wie deine Action sie verlangt [cite: 2026-03-09]
     const productData = {
-      name: formData.get("name") as string,
-      preis: parseFloat(formData.get("preis") as string),
-      ek_preis: parseFloat(formData.get("ek_preis") as string) || 0, // Pflichtfeld [cite: 2026-03-09]
-      ust_satz: parseInt(formData.get("ust_satz") as string) || 19, // Pflichtfeld [cite: 2026-03-09]
-      category_id: parseInt(formData.get("category_id") as string) || 1, // Muss number sein [cite: 2026-03-09]
-      supplier_id: parseInt(formData.get("supplier_id") as string) || 1, // Pflichtfeld + number [cite: 2026-03-09]
-      beschreibung: formData.get("beschreibung") as string,
-      lagerbestand: parseInt(formData.get("lagerbestand") as string) || 0,
+      name:        formData.get("name") as string,
+      price:       parseFloat(formData.get("price") as string),
+      cost_price:  parseFloat(formData.get("cost_price") as string) || 0,
+      vat_rate:    parseFloat(formData.get("vat_rate") as string) || 19,
+      category_id: parseInt(formData.get("category_id") as string) || 1,
+      supplier_id: parseInt(formData.get("supplier_id") as string) || 1,
     };
 
     try {
@@ -59,31 +63,25 @@ export default function AddProductModal({ isOpen, onClose, onRefresh }: any) {
               <input name="name" placeholder="PRODUCT_NAME" required className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none focus:border-blue-500/50" />
             </div>
 
-            {/* Preise: VK und EK [cite: 2026-03-09] */}
+            {/* Preise */}
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-blue-500">VK</span>
-                <input name="preis" type="number" step="0.01" placeholder="UNIT_PRICE" required className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
+                <input name="price" type="number" step="0.01" placeholder="Verkaufspreis" required className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
               </div>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500">EK</span>
-                <input name="ek_preis" type="number" step="0.01" placeholder="COST_PRICE" required className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
+                <input name="cost_price" type="number" step="0.01" placeholder="Einkaufspreis" className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
               </div>
             </div>
 
-            {/* Steuer und Bestand [cite: 2026-03-09] */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500">%</span>
-                <input name="ust_satz" type="number" placeholder="VAT_RATE (e.g. 19)" defaultValue="19" required className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
-              </div>
-              <div className="relative">
-                <Database className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={16} />
-                <input name="lagerbestand" type="number" placeholder="STOCK_QTY" required className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
-              </div>
+            {/* MwSt */}
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500">%</span>
+              <input name="vat_rate" type="number" placeholder="MwSt (z.B. 19)" defaultValue="19" className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
             </div>
 
-            {/* Kategorien und Lieferant [cite: 2026-03-09] */}
+            {/* Kategorien und Lieferant */}
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500">CAT</span>
@@ -98,7 +96,7 @@ export default function AddProductModal({ isOpen, onClose, onRefresh }: any) {
             {/* Beschreibung */}
             <div className="relative">
               <FileText className="absolute left-4 top-4 text-slate-600" size={16} />
-              <textarea name="beschreibung" placeholder="ASSET_LOG_DESCRIPTION" rows={2} className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
+              <textarea name="description" placeholder="Beschreibung" rows={2} className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white font-mono text-[11px] outline-none" />
             </div>
           </div>
 
