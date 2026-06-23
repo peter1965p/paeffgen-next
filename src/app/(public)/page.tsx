@@ -484,14 +484,12 @@ export default function HomePage() {
                     className="group-hover/link:translate-x-1 transition-transform"
                   />
                 </a>
-                <a
-                  href="https://www.paeffgen-it.de/contact"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/contact"
                   className={`text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-sm transition-colors w-fit ${p.accent === "violet" ? "bg-violet-600/20 text-violet-400 hover:bg-violet-600/40" : "bg-blue-600/20 text-blue-400 hover:bg-blue-600/40"}`}
                 >
                   Anfragen →
-                </a>
+                </Link>
               </div>
             </div>
           ))}
