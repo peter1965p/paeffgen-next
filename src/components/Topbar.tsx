@@ -25,14 +25,14 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!userEmail) {
-      supabase.auth.getUser().then(({ data }) => {
-        if (data.user) {
-          setUserEmail(data.user.email ?? null);
-          setUserId(data.user.id);
-        }
-      });
-    }
+    if (userEmail) return;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserEmail(user.email ?? null);
+        setUserId(user.id);
+      }
+    })();
   }, [supabase, userEmail]);
 
   // Logout-Logik
