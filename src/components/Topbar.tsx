@@ -17,14 +17,23 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
   const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
   const [isWarning, setIsWarning] = useState(false);
   
-  // 2. Wir nutzen die Daten vom Server als festen Startwert
-  // Wenn initialEmail leer ist, zeigen wir "Unauthorized" als Debug-Hilfe
-  const [userEmail] = useState<string | null>(initialEmail || "Unauthorized");
-  const [userId] = useState<string | null>(initialId || null); 
+  const [userEmail, setUserEmail] = useState<string | null>(initialEmail || null);
+  const [userId, setUserId] = useState<string | null>(initialId || null);
   
   const router = useRouter();
   const supabase = createClient();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (!userEmail) {
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) {
+          setUserEmail(user.email ?? null);
+          setUserId(user.id);
+        }
+      });
+    }
+  }, [supabase, userEmail]);
 
   // Logout-Logik
   const handleLogout = useCallback(async () => {
@@ -73,9 +82,7 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const userInitial = userEmail && userEmail !== "Unauthorized" 
-    ? userEmail.charAt(0).toUpperCase() 
-    : "?";
+  const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "?";
 
   return (
     <div className="h-20 border-b border-white/5 bg-[#0d111c]/80 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">

@@ -117,9 +117,9 @@ export default async function AdminDashboard() {
           </p>
         </div>
         <div className="flex gap-4">
-          <button className="bg-zinc-900 border border-white/10 hover:bg-zinc-800 text-white text-[10px] font-bold px-6 py-3 rounded-2xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-xl">
+          <a href="/" target="_blank" className="bg-zinc-900 border border-white/10 hover:bg-zinc-800 text-white text-[10px] font-bold px-6 py-3 rounded-2xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-xl">
             <Layers size={14} /> Website ansehen
-          </button>
+          </a>
         </div>
       </div>
 
