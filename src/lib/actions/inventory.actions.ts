@@ -1,41 +1,60 @@
 "use server";
 
-import { supabase } from "@/lib/supabaseClient"; // Korrigierter Import
+import { supabase } from "@/lib/supabaseClient";
 import { revalidatePath } from "next/cache";
 
-// --- TYPEN DEFINITIONEN ---
 export type OrderResult =
   | { success: true; orderId: number | string; status: "PENDING" | "COMPLETED" }
   | { success: false; error: string; status?: never };
 
-interface Produkt {
+interface Product {
   id: number;
   name: string;
-  preis: number;
-  ek_preis?: number;
-  ust_satz?: number;
+  price: number;
+  cost_price: number;
+  vat_rate: number;
   category_id: number;
   supplier_id?: number;
-  lagerbestand: number;
-  min_bestand: number;
+  stock: number;
+  min_stock: number;
+}
+
+interface OrderWithItems {
+  id: number;
+  order_date: string;
+  status: string;
+  order_items: {
+    quantity: number;
+    products: { name: string } | null;
+  }[];
+}
+
+interface SaleData {
+  total_price: number | null;
+}
+
+interface Customer {
+  id: number;
+  full_name: string;
+  email: string;
+  tier: string;
+  created_at: string;
 }
 
 // --- PRODUKT & INVENTAR LOGIK ---
 
 export async function getInventoryData() {
   try {
-    const { data, error } = await supabase.from("produkte").select(`
-        id, name, preis, category_id,
-        lagerbestand,
-        min_bestand
-      `);
+    const { data, error } = await supabase.from("products").select(`
+      id, name, price, cost_price, vat_rate, category_id, supplier_id, stock, min_stock
+    `);
 
     if (error) throw error;
 
-    return (data as Produkt[]).map((p) => ({
+    return (data as Product[]).map((p) => ({
       ...p,
-      bestand: p.lagerbestand || 0,
-      min_bestand: p.min_bestand || 5,
+      bestand: p.stock || 0,
+      min_bestand: p.min_stock || 5,
     }));
   } catch (error) {
     console.error("AETHER_INVENTORY_ERROR:", error);
@@ -45,26 +64,24 @@ export async function getInventoryData() {
 
 export async function createFullProduct(data: {
   name: string;
-  preis: number;
-  ek_preis: number;
-  ust_satz: number;
+  price: number;
+  cost_price: number;
+  vat_rate: number;
   category_id: number;
   supplier_id: number;
 }) {
   try {
     const { data: newProduct, error } = await supabase
-      .from("produkte")
-      .insert([
-        {
-          name: data.name,
-          preis: data.preis,
-          ek_preis: data.ek_preis,
-          ust_satz: data.ust_satz,
-          category_id: data.category_id,
-          supplier_id: data.supplier_id,
-          lagerbestand: 0,
-        },
-      ])
+      .from("products")
+      .insert([{
+        name: data.name,
+        price: data.price,
+        cost_price: data.cost_price,
+        vat_rate: data.vat_rate,
+        category_id: data.category_id,
+        supplier_id: data.supplier_id,
+        stock: 0,
+      }])
       .select()
       .single();
 
@@ -86,22 +103,22 @@ export async function getPendingOrders() {
     const { data, error } = await supabase
       .from("orders")
       .select(`
-        id, datum, status,
+        id, order_date, status,
         order_items (
-          menge,
-          produkte ( name )
+          quantity,
+          products ( name )
         )
       `)
       .eq("status", "PENDING")
-      .order("datum", { ascending: false });
+      .order("order_date", { ascending: false });
 
     if (error) throw error;
 
-    return (data as any[]).map((o) => ({
+    return (data as OrderWithItems[]).map((o) => ({
       id: o.id,
-      datum: o.datum,
-      produkt_name: o.order_items?.[0]?.produkte?.name || "Unbekannt",
-      menge: o.order_items?.[0]?.menge || 0,
+      datum: o.order_date,
+      produkt_name: o.order_items?.[0]?.products?.name || "Unbekannt",
+      menge: o.order_items?.[0]?.quantity || 0,
       status: o.status,
     }));
   } catch (error) {
@@ -115,37 +132,32 @@ export async function createOrder(
   quantity: number,
 ): Promise<OrderResult> {
   try {
-    const { data: produkt } = await supabase
-      .from("produkte")
-      .select("preis")
+    const { data: product } = await supabase
+      .from("products")
+      .select("price")
       .eq("id", productId)
       .single();
 
-    if (!produkt) throw new Error("Produkt nicht gefunden");
+    if (!product) throw new Error("Produkt nicht gefunden");
 
     const { data: order, error: oError } = await supabase
       .from("orders")
-      .insert([
-        {
-          typ: "POS",
-          status: "PENDING",
-          gesamtpreis: produkt.preis * quantity,
-          datum: new Date().toISOString(),
-        },
-      ])
+      .insert([{
+        status: "PENDING",
+        total_price: product.price * quantity,
+        order_date: new Date().toISOString(),
+      }])
       .select()
       .single();
 
     if (oError) throw oError;
 
-    await supabase.from("order_items").insert([
-      {
-        order_id: order.id,
-        produkt_id: productId,
-        menge: quantity,
-        einzelpreis: produkt.preis,
-      },
-    ]);
+    await supabase.from("order_items").insert([{
+      order_id: order.id,
+      product_id: productId,
+      quantity,
+      price_at_purchase: product.price,
+    }]);
 
     revalidatePath("/admin/inventory");
     return { success: true, orderId: order.id, status: "PENDING" };
@@ -155,11 +167,11 @@ export async function createOrder(
   }
 }
 
-// --- KATEGORIEN & LIEFERANTEN ---
+// --- KATEGORIEN ---
 
-export async function createCategory(name: string, type: string) {
+export async function createCategory(name: string, slug: string) {
   try {
-    await supabase.from("categories").insert([{ name, type }]);
+    await supabase.from("categories").insert([{ name, slug }]);
     revalidatePath("/admin/categories");
     return { success: true };
   } catch (error) {
@@ -185,58 +197,46 @@ export async function deleteCategory(id: number) {
 export async function getAccountingStats() {
   try {
     const { data: prodData } = await supabase
-      .from("produkte")
-      .select("lagerbestand, ek_preis, preis, min_bestand");
+      .from("products")
+      .select("stock, cost_price, price, min_stock");
 
     let invEK = 0;
     let invVK = 0;
     let lowStock = 0;
 
-    (prodData as Produkt[])?.forEach((p) => {
-      const stock = p.lagerbestand || 0;
-      invEK += stock * (p.ek_preis || 0);
-      invVK += stock * (p.preis || 0);
-      if (stock < (p.min_bestand || 5)) lowStock++;
+    (prodData as Product[])?.forEach((p) => {
+      const stock = p.stock || 0;
+      invEK += stock * (p.cost_price || 0);
+      invVK += stock * (p.price || 0);
+      if (stock < (p.min_stock || 5)) lowStock++;
     });
 
     const { data: salesData } = await supabase
       .from("orders")
-      .select("gesamtpreis")
+      .select("total_price")
       .eq("status", "COMPLETED");
 
     const totalSales =
-      (salesData as any[])?.reduce((sum: number, o: any) => sum + (o.gesamtpreis || 0), 0) || 0;
+      (salesData as SaleData[])?.reduce(
+        (sum, o) => sum + (o.total_price || 0),
+        0,
+      ) || 0;
 
-    return {
-      inventoryValueEK: invEK,
-      inventoryValueVK: invVK,
-      lowStock: lowStock,
-      totalSales: totalSales,
-    };
+    return { inventoryValueEK: invEK, inventoryValueVK: invVK, lowStock, totalSales };
   } catch (error) {
-    return {
-      inventoryValueEK: 0,
-      inventoryValueVK: 0,
-      lowStock: 0,
-      totalSales: 0,
-    };
+    console.error("AETHER_ACCOUNTING_ERROR:", error);
+    return { inventoryValueEK: 0, inventoryValueVK: 0, lowStock: 0, totalSales: 0 };
   }
 }
 
 export async function getSettings() {
   try {
-    const { data, error } = await supabase
-      .from("settings")
-      .select("setting_key, setting_value");
+    const { data, error } = await supabase.from("settings").select("*").single();
     if (error) throw error;
-
-    return (data as any[]).reduce((acc: any, row: any) => {
-      acc[row.setting_key] = row.setting_value;
-      return acc;
-    }, {});
+    return data;
   } catch (error) {
     console.error("AETHER_SETTINGS_ERROR", error);
-    return {};
+    return null;
   }
 }
 
@@ -244,14 +244,13 @@ export async function getCustomerDatabase() {
   try {
     const { data, error } = await supabase
       .from("customers")
-      .select("id, name, email, status, created_at")
+      .select("id, full_name, email, tier, created_at")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as Customer[];
   } catch (error) {
     console.error("AETHER_CUSTOMER_DB_ERROR:", error);
     return [];
   }
 }
-
