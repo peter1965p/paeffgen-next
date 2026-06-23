@@ -470,19 +470,27 @@ export default function HomePage() {
                   </span>
                 ))}
               </div>
-              <a
-                href={p.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/link flex items-center gap-2 text-[10px] text-slate-500 hover:text-blue-400 uppercase tracking-widest transition-colors w-fit"
-              >
-                <GitBranch size={11} />
-                GitHub ansehen
-                <ExternalLink
-                  size={10}
-                  className="group-hover/link:translate-x-1 transition-transform"
-                />
-              </a>
+              <div className="flex items-center gap-4">
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link flex items-center gap-2 text-[10px] text-slate-500 hover:text-blue-400 uppercase tracking-widest transition-colors w-fit"
+                >
+                  <GitBranch size={11} />
+                  GitHub ansehen
+                  <ExternalLink
+                    size={10}
+                    className="group-hover/link:translate-x-1 transition-transform"
+                  />
+                </a>
+                <a
+                  href="#kontakt"
+                  className={`text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-sm transition-colors w-fit ${p.accent === "violet" ? "bg-violet-600/20 text-violet-400 hover:bg-violet-600/40" : "bg-blue-600/20 text-blue-400 hover:bg-blue-600/40"}`}
+                >
+                  Anfragen →
+                </a>
+              </div>
             </div>
           ))}
         </div>
