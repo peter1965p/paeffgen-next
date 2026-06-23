@@ -6,26 +6,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient"; 
 
-// 1. Definition der Schnittstelle für die Daten vom Server
-interface TopbarProps {
-  initialEmail?: string | null;
-  initialId?: string | null;
-}
-
-export default function Topbar({ initialEmail, initialId }: TopbarProps) {
+export default function Topbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 Minuten [cite: 2026-02-27]
+  const [timeLeft, setTimeLeft] = useState(300);
   const [isWarning, setIsWarning] = useState(false);
-  
-  const [userEmail, setUserEmail] = useState<string | null>(initialEmail || null);
-  const [userId, setUserId] = useState<string | null>(initialId || null);
-  
+
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
   const router = useRouter();
   const supabase = createClient();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (userEmail) return;
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -33,7 +26,7 @@ export default function Topbar({ initialEmail, initialId }: TopbarProps) {
         setUserId(user.id);
       }
     })();
-  }, [supabase, userEmail]);
+  }, []);
 
   // Logout-Logik
   const handleLogout = useCallback(async () => {

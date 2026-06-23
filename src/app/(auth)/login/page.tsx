@@ -1,14 +1,42 @@
 "use client";
 
-import { useActionState } from "react";
-import { login } from "../../../lib/actions/login.actions";
+import { useState } from "react";
 import Link from "next/link";
-import { Terminal, Lock, ArrowRight, AlertTriangle } from "lucide-react";
-
-const initialState = { error: "" };
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabaseClient";
+import { Terminal, Lock, ArrowRight, AlertTriangle, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
-  const [state, formAction] = useActionState(login, initialState);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!email || !password) {
+      setError("Bitte E-Mail und Passwort angeben.");
+      setLoading(false);
+      return;
+    }
+
+    const supabase = createClient();
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (authError) {
+      setError("Zugriff verweigert: Logindaten ungültig.");
+      setLoading(false);
+      return;
+    }
+
+    router.push("/admin");
+  };
 
   return (
     <div className="w-full border border-white/5 rounded-[2rem] bg-[#0d111c] overflow-hidden shadow-2xl">
@@ -48,7 +76,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form action={formAction} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-slate-500 ml-1">
               E-Mail
@@ -78,21 +106,25 @@ export default function LoginPage() {
             />
           </div>
 
-          {state?.error && (
+          {error && (
             <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
               <AlertTriangle size={13} className="text-red-500 shrink-0" />
               <p className="text-red-400 text-[10px] font-mono uppercase tracking-widest">
-                {state.error}
+                {error}
               </p>
             </div>
           )}
 
           <button
             type="submit"
-            className="group w-full mt-2 py-4 px-6 bg-[#b33927] hover:bg-[#d4442f] text-white font-black italic uppercase tracking-widest text-[11px] rounded-xl active:scale-[0.97] transition-all shadow-lg shadow-[#b33927]/20 flex items-center justify-center gap-3"
+            disabled={loading}
+            className="group w-full mt-2 py-4 px-6 bg-[#b33927] hover:bg-[#d4442f] disabled:opacity-60 text-white font-black italic uppercase tracking-widest text-[11px] rounded-xl active:scale-[0.97] transition-all shadow-lg shadow-[#b33927]/20 flex items-center justify-center gap-3"
           >
-            Anmelden
-            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            {loading ? (
+              <><Loader2 size={14} className="animate-spin" /> Authentifiziere...</>
+            ) : (
+              <>Anmelden <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></>
+            )}
           </button>
         </form>
 
