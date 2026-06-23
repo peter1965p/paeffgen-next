@@ -17,7 +17,7 @@ import {
   Calculator,
 } from "lucide-react";
 
-type Order = { gesamtpreis: number | null };
+type Order = { total_price: number | null };
 
 const moduleIconMap: Record<string, React.ElementType> = {
   cms: FileText,
@@ -51,10 +51,10 @@ export default async function AdminDashboard() {
     user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Operator";
   const userEmail = user?.email;
 
-  const { data: orders } = await supabase.from("orders").select("gesamtpreis");
+  const { data: orders } = await supabase.from("orders").select("total_price");
   const totalRevenue =
     (orders as Order[])?.reduce(
-      (acc: number, curr: Order) => acc + Number(curr.gesamtpreis || 0),
+      (acc: number, curr: Order) => acc + Number(curr.total_price || 0),
       0,
     ) || 0;
 
