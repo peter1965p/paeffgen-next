@@ -3,27 +3,35 @@
 import { createClient } from "@/lib/supabaseClient";
 import { revalidatePath } from "next/cache";
 
+export async function getSystemSettings() {
+  const supabase = createClient();
+  const { data } = await supabase.from("settings").select("*").single();
+  return data;
+}
+
 export async function deploySystemConfiguration(formData: FormData) {
   const supabase = createClient();
 
   const updateData = {
-    business_name: formData.get("businessName"),
-    corporate_color: formData.get("corporateColor"),
-    gup_slug: formData.get("gupSlug"),
-    business_bio: formData.get("businessBio"),
-    is_public: formData.get("isPublic") === "true",
-    mollie_live_key: formData.get("mollieLiveKey"),
-    mollie_test_key: formData.get("mollieTestKey"),
-    updated_at: new Date().toISOString(),
+    company_name:      formData.get("businessName")    as string || undefined,
+    primary_color:     formData.get("corporateColor")  as string || undefined,
+    mollie_live_key:   formData.get("mollieLiveKey")   as string || undefined,
+    mollie_test_key:   formData.get("mollieTestKey")   as string || undefined,
+    owner_name:        formData.get("ceoName")         as string || undefined,
+    tax_number:        formData.get("taxId")           as string || undefined,
+    address_full:      formData.get("address")         as string || undefined,
+    support_email:     formData.get("mailAddress")     as string || undefined,
+    system_designation: "SPECTORA",
+    updated_at:        new Date().toISOString(),
   };
 
-  // Wir gehen davon aus, dass es nur einen Einstellungs-Satz gibt
   const { error } = await supabase
     .from("settings")
-    .upsert({ id: 'global_config', ...updateData });
+    .update(updateData)
+    .not("id", "is", null);
 
   if (error) {
-    console.error("Deploy Error:", error.message);
+    console.error("SPECTORA_SETTINGS_DEPLOY_ERROR:", error.message);
     return { success: false, message: error.message };
   }
 
