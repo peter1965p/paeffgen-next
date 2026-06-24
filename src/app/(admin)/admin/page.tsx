@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabaseClient";
-import { Package, Users, Ticket, TrendingUp, Layers, ArrowUpRight } from "lucide-react";
+import { Package, Users, Ticket, TrendingUp, Layers } from "lucide-react";
 import AdminGreeting from "@/components/AdminGreeting";
 import AdminModules from "@/components/AdminModules";
-import Link from "next/link";
 
 export default async function AdminDashboard() {
   const supabase = createClient();
@@ -73,39 +72,15 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      {/* Modules + CTA row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-slate-800/40 border border-white/5 rounded-[2.5rem] p-10">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-            <h2 className="text-[11px] font-black text-white italic uppercase tracking-[0.3em]">
-              Aktive Module & Schnittstellen
-            </h2>
-          </div>
-          <AdminModules />
+      {/* Modules */}
+      <div className="bg-slate-800/40 border border-white/5 rounded-[2.5rem] p-10">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+          <h2 className="text-[11px] font-black text-white italic uppercase tracking-[0.3em]">
+            Aktive Module & Schnittstellen
+          </h2>
         </div>
-
-        <Link
-          href="/admin/modulstore"
-          className="bg-[#b33927] rounded-[2.5rem] p-10 text-white relative overflow-hidden flex flex-col justify-between group cursor-pointer shadow-2xl shadow-red-950/20 active:scale-[0.98] transition-transform"
-        >
-          <ArrowUpRight
-            className="absolute top-8 right-8 opacity-20 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500"
-            size={48}
-          />
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60">
-              Spectora Core
-            </p>
-            <h2 className="text-2xl font-black mt-4 leading-tight uppercase italic tracking-tighter">
-              Konfiguration <br />
-              erweitern?
-            </h2>
-          </div>
-          <div className="mt-10 bg-black text-white text-[10px] font-black py-4 rounded-2xl uppercase tracking-[0.2em] hover:bg-slate-700 transition-all shadow-2xl text-center">
-            Zum Modulstore
-          </div>
-        </Link>
+        <AdminModules />
       </div>
     </div>
   );
