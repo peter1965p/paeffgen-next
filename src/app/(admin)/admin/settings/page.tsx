@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabaseClient";
 import { saveSettings } from "./actions";
+import ThemePicker from "@/components/ThemePicker";
 import {
   User, CreditCard, Mail, FileText, Save,
   CheckCircle2, AlertTriangle, Loader2,
@@ -156,6 +157,9 @@ export default function SettingsPage() {
           <AlertTriangle size={13} /> {error}
         </div>
       )}
+
+      {/* Theme Picker */}
+      <ThemePicker />
 
       {/* Identität */}
       <Section
