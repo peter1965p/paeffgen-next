@@ -213,7 +213,8 @@ export default function TableEditor({ table, rows, columns, page, totalPages }: 
               <button
                 onClick={handleSave}
                 disabled={isPending}
-                className="flex items-center gap-2 px-5 py-2 bg-orange-600 hover:bg-orange-500 text-white text-[11px] font-black uppercase tracking-widest rounded-xl disabled:opacity-50 transition-all"
+                className="flex items-center gap-2 px-5 py-2 text-white text-[11px] font-black uppercase tracking-widest rounded-xl disabled:opacity-50 transition-all"
+                style={{ backgroundColor: "var(--admin-accent, #ea580c)" }}
               >
                 <Check size={12} /> Speichern
               </button>

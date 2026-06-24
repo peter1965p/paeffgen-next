@@ -100,7 +100,8 @@ export default function SqlEditorPage() {
           <button
             onClick={run}
             disabled={isPending || !sql.trim()}
-            className="flex items-center gap-2 px-4 py-1.5 bg-orange-600 hover:bg-orange-500 disabled:opacity-40 text-white text-[11px] font-black uppercase tracking-widest rounded-lg transition-all"
+            className="flex items-center gap-2 px-4 py-1.5 disabled:opacity-40 text-white text-[11px] font-black uppercase tracking-widest rounded-lg transition-all"
+            style={{ backgroundColor: "var(--admin-accent, #ea580c)" }}
           >
             {isPending ? <Loader2 size={11} className="animate-spin" /> : <Play size={11} />}
             {isPending ? "Ausführen…" : "Run"}

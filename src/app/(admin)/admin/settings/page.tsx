@@ -46,7 +46,8 @@ function Section({
           type="button"
           onClick={onSave}
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-500 disabled:opacity-50 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
+          className="flex items-center gap-2 px-4 py-2 disabled:opacity-50 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
+          style={{ backgroundColor: "var(--admin-accent, #ea580c)" }}
         >
           {saving ? (
             <Loader2 size={11} className="animate-spin" />

@@ -105,7 +105,7 @@ export default function Topbar() {
                 {userEmail}
               </p>
             </div>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-500/20 text-sm">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black italic shadow-lg text-sm" style={{ backgroundColor: "var(--admin-accent, #ea580c)" }}>
               {userInitial}
             </div>
             <ChevronDown size={14} className={`text-slate-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
