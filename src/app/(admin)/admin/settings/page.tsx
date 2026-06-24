@@ -72,7 +72,6 @@ export default function SettingsPage() {
 
   // Identity
   const [businessName, setBusinessName] = useState("");
-  const [corporateColor, setCorporateColor] = useState("#b33927");
   const [slug, setSlug] = useState("");
   const [bio, setBio] = useState("");
 
@@ -103,7 +102,6 @@ export default function SettingsPage() {
       if (data) {
         const s = data as SettingsRow;
         setBusinessName(s.business_name ?? "");
-        setCorporateColor(s.corporate_color ?? "#b33927");
         setSlug(s.slug ?? "");
         setBio(s.bio ?? "");
         setMollieLive(s.mollie_live_key ?? "");
@@ -168,7 +166,6 @@ export default function SettingsPage() {
         title="Identität"
         onSave={() => saveSection("identity", {
           business_name: businessName,
-          corporate_color: corporateColor,
           slug,
           bio,
         })}
@@ -176,20 +173,6 @@ export default function SettingsPage() {
         saved={!!saved.identity}
       >
         <Field label="Business Name" name="business_name" value={businessName} onChange={setBusinessName} placeholder="Päffgen IT" />
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Corporate Color</label>
-          <div className="flex items-center gap-3">
-            <input
-              type="color" value={corporateColor}
-              onChange={(e) => setCorporateColor(e.target.value)}
-              className="h-11 w-16 rounded-xl border border-white/10 bg-slate-900/60 cursor-pointer p-1"
-            />
-            <input
-              type="text" value={corporateColor} onChange={(e) => setCorporateColor(e.target.value)}
-              className="flex-1 bg-slate-900/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 font-mono focus:outline-none focus:border-orange-500/50 transition-colors"
-            />
-          </div>
-        </div>
         <Field label="URL Slug" name="slug" value={slug} onChange={setSlug} placeholder="peter-paeffgen" />
         <div className="md:col-span-2">
           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Bio / Kurzbeschreibung</label>
