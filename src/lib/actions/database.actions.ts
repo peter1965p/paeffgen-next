@@ -3,15 +3,7 @@
 import { createClient } from "@/lib/supabaseClient";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { revalidatePath } from "next/cache";
-
-export const ALLOWED_TABLES = [
-  "users", "pages", "products", "orders", "order_items",
-  "customers", "tickets", "categories", "blog_posts",
-  "settings", "modules", "bot_visits", "messages", "forms",
-  "suppliers", "form_submissions",
-] as const;
-
-export type AllowedTable = typeof ALLOWED_TABLES[number];
+import { ALLOWED_TABLES, type AllowedTable } from "@/lib/database.constants";
 
 export async function getTableList() {
   const supabase = createClient();

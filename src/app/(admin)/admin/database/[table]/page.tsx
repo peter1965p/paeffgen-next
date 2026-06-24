@@ -1,4 +1,5 @@
-import { getTableRows, getTableColumns, ALLOWED_TABLES } from "@/lib/actions/database.actions";
+import { getTableRows, getTableColumns } from "@/lib/actions/database.actions";
+import { ALLOWED_TABLES } from "@/lib/database.constants";
 import { notFound } from "next/navigation";
 import { Database } from "lucide-react";
 import Link from "next/link";
