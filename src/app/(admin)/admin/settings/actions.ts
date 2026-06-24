@@ -1,21 +1,11 @@
 "use server";
 
-import { createClient } from "@/lib/supabaseClient"; // Dein Supabase-Server-Client
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-export async function updateMollieKeys(formData: FormData) {
-  const supabase = createClient();
-  const liveKey = formData.get("liveKey") as string;
-  const testKey = formData.get("testKey") as string;
-
-  const { error } = await supabase
+export async function saveSettings(updates: Record<string, string>) {
+  const { error } = await supabaseAdmin
     .from("settings")
-    .update({ 
-      mollie_live_key: liveKey, 
-      mollie_test_key: testKey,
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", "DEINE_SETTINGS_ID"); // Hier die ID deiner Settings-Zeile nutzen
-
-  if (error) throw new Error("Update fehlgeschlagen");
+    .upsert({ id: 1, ...updates }, { onConflict: "id" });
+  if (error) return { error: error.message };
   return { success: true };
 }
