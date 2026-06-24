@@ -28,7 +28,7 @@ export default async function EditPageAdmin({ params }: { params: Promise<{ id: 
         </p>
       </div>
 
-      <div className="bg-zinc-950/50 border border-white/5 rounded-[2.5rem] p-10">
+      <div className="bg-slate-800/60 border border-white/5 rounded-[2.5rem] p-10">
         <PageForm page={page} action={action} />
       </div>
     </div>

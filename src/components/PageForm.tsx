@@ -71,7 +71,7 @@ export default function PageForm({ page, action }: Props) {
     });
   };
 
-  const inputClass = "w-full bg-black/40 border border-white/5 rounded-2xl py-4 px-5 text-white font-mono text-xs outline-none focus:border-[#b33927]/50 focus:ring-1 focus:ring-[#b33927]/10 transition-all placeholder:text-slate-700";
+  const inputClass = "w-full bg-slate-700/60 border border-white/5 rounded-2xl py-4 px-5 text-white font-mono text-xs outline-none focus:border-[#b33927]/50 focus:ring-1 focus:ring-[#b33927]/10 transition-all placeholder:text-slate-700";
   const labelClass = "text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-slate-500 mb-2 block ml-1";
 
   return (
@@ -120,7 +120,7 @@ export default function PageForm({ page, action }: Props) {
 
       {/* Toggles */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <button type="button" onClick={() => setIsPublished(!isPublished)} className={`flex items-center gap-4 p-6 rounded-2xl border transition-all ${isPublished ? "bg-green-500/10 border-green-500/30" : "bg-zinc-950 border-white/5"}`}>
+        <button type="button" onClick={() => setIsPublished(!isPublished)} className={`flex items-center gap-4 p-6 rounded-2xl border transition-all ${isPublished ? "bg-green-500/10 border-green-500/30" : "bg-slate-800 border-white/5"}`}>
           {isPublished ? <Eye size={18} className="text-green-500" /> : <EyeOff size={18} className="text-slate-500" />}
           <div className="text-left">
             <p className="text-[10px] font-black uppercase tracking-widest text-white">{isPublished ? "Veröffentlicht" : "Entwurf"}</p>
@@ -129,7 +129,7 @@ export default function PageForm({ page, action }: Props) {
           <input type="hidden" name="is_published" value={isPublished ? "on" : "off"} />
         </button>
 
-        <button type="button" onClick={() => setShowInNav(!showInNav)} className={`flex items-center gap-4 p-6 rounded-2xl border transition-all ${showInNav ? "bg-blue-500/10 border-blue-500/30" : "bg-zinc-950 border-white/5"}`}>
+        <button type="button" onClick={() => setShowInNav(!showInNav)} className={`flex items-center gap-4 p-6 rounded-2xl border transition-all ${showInNav ? "bg-blue-500/10 border-blue-500/30" : "bg-slate-800 border-white/5"}`}>
           <Navigation size={18} className={showInNav ? "text-blue-500" : "text-slate-500"} />
           <div className="text-left">
             <p className="text-[10px] font-black uppercase tracking-widest text-white">Navigation</p>

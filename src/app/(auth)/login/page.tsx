@@ -39,10 +39,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full border border-white/5 rounded-[2rem] bg-[#0d111c] overflow-hidden shadow-2xl">
+    <div className="w-full border border-white/5 rounded-[2rem] bg-slate-800 overflow-hidden shadow-2xl">
 
       {/* Header Bar */}
-      <div className="flex items-center justify-between px-8 py-4 border-b border-white/5 bg-black/30">
+      <div className="flex items-center justify-between px-8 py-4 border-b border-white/5 bg-slate-800/70">
         <div className="flex items-center gap-2">
           <Terminal size={13} className="text-[#b33927]" />
           <span className="text-[10px] font-black italic uppercase tracking-[0.3em] text-white">
@@ -86,7 +86,7 @@ export default function LoginPage() {
               name="email"
               id="email"
               placeholder="operator@spectora.app"
-              className="p-4 border rounded-xl bg-black/50 border-white/5 text-white font-mono text-xs focus:border-[#b33927]/50 focus:ring-1 focus:ring-[#b33927]/20 outline-none transition-all placeholder:text-slate-800"
+              className="p-4 border rounded-xl bg-slate-700/50 border-white/5 text-white font-mono text-xs focus:border-[#b33927]/50 focus:ring-1 focus:ring-[#b33927]/20 outline-none transition-all placeholder:text-slate-500"
               required
               autoFocus
             />
@@ -101,7 +101,7 @@ export default function LoginPage() {
               name="password"
               id="password"
               placeholder="••••••••••••"
-              className="p-4 border rounded-xl bg-black/50 border-white/5 text-white font-mono text-xs focus:border-[#b33927]/50 focus:ring-1 focus:ring-[#b33927]/20 outline-none transition-all placeholder:text-slate-800"
+              className="p-4 border rounded-xl bg-slate-700/50 border-white/5 text-white font-mono text-xs focus:border-[#b33927]/50 focus:ring-1 focus:ring-[#b33927]/20 outline-none transition-all placeholder:text-slate-500"
               required
             />
           </div>
@@ -142,7 +142,7 @@ export default function LoginPage() {
       </div>
 
       {/* Footer */}
-      <div className="px-10 py-4 border-t border-white/5 bg-black/20">
+      <div className="px-10 py-4 border-t border-white/5 bg-slate-800/50">
         <p className="text-[8px] font-mono text-slate-700 uppercase tracking-[0.3em] text-center">
           © {new Date().getFullYear()} Päffgen IT // Spectora Control Center
         </p>

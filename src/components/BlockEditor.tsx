@@ -9,7 +9,7 @@ interface Props {
   onChange: (blocks: Block[]) => void;
 }
 
-const inputClass = "w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white font-mono text-xs outline-none focus:border-[#b33927]/50 transition-all placeholder:text-slate-700";
+const inputClass = "w-full bg-slate-700/60 border border-white/5 rounded-xl py-3 px-4 text-white font-mono text-xs outline-none focus:border-[#b33927]/50 transition-all placeholder:text-slate-700";
 const labelClass = "text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-slate-500 mb-1.5 block";
 
 function updateField<T extends Block>(block: T, key: keyof T, value: unknown): T {
@@ -233,7 +233,7 @@ function BlockPicker({ onAdd }: { onAdd: (type: BlockType) => void }) {
         <Plus size={14} /> Block hinzufügen
       </button>
       {open && (
-        <div className="absolute bottom-full mb-2 left-0 right-0 bg-[#0d111c] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-10">
+        <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-10">
           {(Object.entries(BLOCK_LABELS) as [BlockType, string][]).map(([type, label]) => (
             <button
               key={type}

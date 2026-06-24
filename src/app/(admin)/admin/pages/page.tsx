@@ -24,7 +24,7 @@ export default async function PagesManagement() {
         </Link>
       </div>
 
-      <div className="bg-zinc-950/50 border border-white/5 rounded-[2.5rem] overflow-hidden">
+      <div className="bg-slate-800/60 border border-white/5 rounded-[2.5rem] overflow-hidden">
         <div className="divide-y divide-white/5">
           {(pages as Array<{ id: number; title: string; slug: string; is_published: boolean; show_in_nav: boolean; nav_order: number }>).map((page) => (
             <div
@@ -32,7 +32,7 @@ export default async function PagesManagement() {
               className="p-6 flex items-center justify-between hover:bg-white/[0.02] transition-all group"
             >
               <div className="flex items-center gap-5 min-w-0">
-                <div className="p-4 bg-zinc-900 rounded-2xl text-slate-400 group-hover:text-[#b33927] transition-colors shrink-0">
+                <div className="p-4 bg-slate-700 rounded-2xl text-slate-400 group-hover:text-[#b33927] transition-colors shrink-0">
                   <FileText size={20} />
                 </div>
                 <div className="min-w-0">
@@ -50,7 +50,7 @@ export default async function PagesManagement() {
                 <span className={`px-3 py-1 border text-[10px] font-black uppercase rounded-lg tracking-widest ${
                   page.is_published
                     ? "bg-green-500/10 border-green-500/20 text-green-500"
-                    : "bg-zinc-800 border-zinc-700 text-zinc-500"
+                    : "bg-slate-600 border-slate-600 text-slate-400"
                 }`}>
                   {page.is_published ? "Live" : "Entwurf"}
                 </span>
@@ -61,7 +61,7 @@ export default async function PagesManagement() {
                   <a
                     href={`/${page.slug}`}
                     target="_blank"
-                    className="p-3 bg-zinc-900 hover:bg-zinc-800 text-slate-500 hover:text-blue-400 rounded-xl transition-all border border-white/5"
+                    className="p-3 bg-slate-700 hover:bg-slate-600 text-slate-500 hover:text-blue-400 rounded-xl transition-all border border-white/5"
                     title="Vorschau"
                   >
                     <ExternalLink size={14} />
@@ -69,7 +69,7 @@ export default async function PagesManagement() {
                 )}
                 <Link
                   href={`/admin/pages/edit/${page.id}`}
-                  className="p-3 bg-zinc-900 hover:bg-zinc-800 text-slate-300 rounded-xl flex items-center gap-2 text-xs font-bold transition-all border border-white/5"
+                  className="p-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl flex items-center gap-2 text-xs font-bold transition-all border border-white/5"
                 >
                   <Edit3 size={14} className="text-[#b33927]" /> Bearbeiten
                 </Link>
@@ -79,7 +79,7 @@ export default async function PagesManagement() {
                 }}>
                   <button
                     type="submit"
-                    className="p-3 bg-zinc-900 hover:bg-red-950 text-red-500 rounded-xl transition-all border border-white/5"
+                    className="p-3 bg-slate-700 hover:bg-red-950 text-red-500 rounded-xl transition-all border border-white/5"
                     title="Löschen"
                   >
                     <Trash2 size={14} />

@@ -34,7 +34,7 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="p-8 space-y-10 font-sans bg-black min-h-screen text-white">
+    <div className="p-8 space-y-10 font-sans bg-slate-900 min-h-screen text-white">
 
       {/* Header row */}
       <div className="flex justify-between items-start gap-6">
@@ -45,7 +45,7 @@ export default async function AdminDashboard() {
           <a
             href="/"
             target="_blank"
-            className="bg-zinc-900 border border-white/10 hover:bg-zinc-800 text-white text-[10px] font-bold px-6 py-3 rounded-2xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-xl"
+            className="bg-slate-700 border border-white/10 hover:bg-slate-600 text-white text-[10px] font-bold px-6 py-3 rounded-2xl transition-all uppercase tracking-widest flex items-center gap-2 shadow-xl"
           >
             <Layers size={14} /> Website ansehen
           </a>
@@ -57,7 +57,7 @@ export default async function AdminDashboard() {
         {stats.map((stat, i) => (
           <div
             key={i}
-            className="p-8 bg-zinc-950/50 border border-white/5 rounded-[2.5rem] shadow-2xl relative overflow-hidden group hover:border-blue-500/30 transition-all"
+            className="p-8 bg-slate-800/60 border border-white/5 rounded-[2.5rem] shadow-2xl relative overflow-hidden group hover:border-blue-500/30 transition-all"
           >
             <div className="flex justify-between items-start mb-6">
               <div className="p-4 bg-blue-500/10 rounded-2xl text-blue-500">
@@ -75,7 +75,7 @@ export default async function AdminDashboard() {
 
       {/* Modules + CTA row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-zinc-950/40 border border-white/5 rounded-[2.5rem] p-10">
+        <div className="lg:col-span-2 bg-slate-800/40 border border-white/5 rounded-[2.5rem] p-10">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
             <h2 className="text-[11px] font-black text-white italic uppercase tracking-[0.3em]">
@@ -102,7 +102,7 @@ export default async function AdminDashboard() {
               erweitern?
             </h2>
           </div>
-          <div className="mt-10 bg-black text-white text-[10px] font-black py-4 rounded-2xl uppercase tracking-[0.2em] hover:bg-zinc-900 transition-all shadow-2xl text-center">
+          <div className="mt-10 bg-black text-white text-[10px] font-black py-4 rounded-2xl uppercase tracking-[0.2em] hover:bg-slate-700 transition-all shadow-2xl text-center">
             Zum Modulstore
           </div>
         </Link>

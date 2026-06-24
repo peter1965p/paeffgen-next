@@ -99,11 +99,11 @@ export default function ModulStorePage() {
       {/* Premium Module Modal */}
       {premiumModal && (
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/80 backdrop-blur-xl"
+          className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-xl"
           onClick={() => setPremiumModal(null)}
         >
           <div
-            className="bg-[#0d111c] border border-[#b33927]/30 w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl shadow-red-950/30"
+            className="bg-slate-800 border border-[#b33927]/30 w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl shadow-red-950/30"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -169,7 +169,7 @@ export default function ModulStorePage() {
             className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
               filter === f
                 ? "bg-[#b33927] shadow-[0_0_20px_rgba(179,57,39,0.3)]"
-                : "bg-zinc-900 border border-white/5 text-slate-500"
+                : "bg-slate-700 border border-white/5 text-slate-500"
             }`}
           >
             {f}
@@ -190,7 +190,7 @@ export default function ModulStorePage() {
             return (
               <div
                 key={mod.id}
-                className={`group relative bg-zinc-950 border p-10 rounded-[2.5rem] transition-all flex flex-col h-full overflow-hidden ${
+                className={`group relative bg-slate-800 border p-10 rounded-[2.5rem] transition-all flex flex-col h-full overflow-hidden ${
                   isActive ? "border-green-500/30" : "border-white/5 hover:border-white/10"
                 }`}
               >
@@ -198,7 +198,7 @@ export default function ModulStorePage() {
                   {IconMap[mod.icon_name]}
                 </div>
 
-                <div className="mb-8 p-4 bg-zinc-900 w-fit rounded-2xl text-blue-500 shadow-inner">
+                <div className="mb-8 p-4 bg-slate-700 w-fit rounded-2xl text-blue-500 shadow-inner">
                   {mod.is_premium
                     ? <Lock size={20} className="text-[#b33927]" />
                     : isActive
@@ -233,8 +233,8 @@ export default function ModulStorePage() {
                       mod.is_premium
                         ? "bg-[#b33927] hover:bg-[#d4442f] text-white"
                         : isActive
-                          ? "bg-zinc-800 border border-green-500/20 text-green-400 hover:bg-red-900/20 hover:text-red-400 hover:border-red-500/20"
-                          : "bg-zinc-900 border border-white/5 text-slate-400 hover:text-white hover:border-white/20"
+                          ? "bg-slate-600 border border-green-500/20 text-green-400 hover:bg-red-900/20 hover:text-red-400 hover:border-red-500/20"
+                          : "bg-slate-700 border border-white/5 text-slate-400 hover:text-white hover:border-white/20"
                     }`}
                   >
                     {isToggeling

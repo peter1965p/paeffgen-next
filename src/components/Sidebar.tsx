@@ -26,7 +26,7 @@ export default function Sidebar() {
   const pathname = usePathname() ?? "";
 
   return (
-    <aside className="w-60 bg-[#0d111c] border-r border-white/5 h-screen flex flex-col p-6">
+    <aside className="w-60 bg-slate-800 border-r border-slate-700/50 h-screen flex flex-col p-6">
       <div className="mb-10 px-2">
         <h2 className="text-xl font-black italic tracking-tighter text-white uppercase">
           SPECTORA

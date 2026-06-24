@@ -54,7 +54,7 @@ export default function AdminModules() {
         return (
           <div
             key={key}
-            className="flex items-center gap-3 px-6 py-3.5 bg-zinc-900/80 border border-white/5 rounded-full text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-white hover:border-blue-500/50 transition-all cursor-default"
+            className="flex items-center gap-3 px-6 py-3.5 bg-slate-700/80 border border-white/5 rounded-full text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-white hover:border-blue-500/50 transition-all cursor-default"
           >
             <Icon size={14} className="text-blue-500 opacity-80" />
             {key.replace("_", " ")}

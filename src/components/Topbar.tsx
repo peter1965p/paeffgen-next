@@ -78,7 +78,7 @@ export default function Topbar() {
   const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : "?";
 
   return (
-    <div className="h-20 border-b border-white/5 bg-[#0d111c]/80 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">
+    <div className="h-20 border-b border-white/5 bg-slate-800/90 backdrop-blur-md flex items-center justify-between px-10 relative z-[100] font-sans">
       <div className="flex items-center gap-4">
         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
         <span className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em]">System Node: <span className="text-white">Active</span></span>
@@ -97,7 +97,7 @@ export default function Topbar() {
         <div className="relative">
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-4 bg-black/40 border border-white/10 pl-4 pr-2 py-2 rounded-2xl hover:border-blue-500/50 transition-all group"
+            className="flex items-center gap-4 bg-slate-700/60 border border-white/10 pl-4 pr-2 py-2 rounded-2xl hover:border-blue-500/50 transition-all group"
           >
             <div className="text-right">
               <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest opacity-50">Operator</p>
@@ -112,7 +112,7 @@ export default function Topbar() {
           </button>
 
           {isOpen && (
-            <div className="absolute right-0 mt-3 w-60 bg-[#0d111c] border border-white/10 rounded-[2rem] shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 backdrop-blur-xl">
+            <div className="absolute right-0 mt-3 w-60 bg-slate-800 border border-white/10 rounded-[2rem] shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 backdrop-blur-xl">
               <div className="px-4 py-2 mb-2 border-b border-white/5">
                 <p className="text-[8px] font-mono text-blue-500 uppercase tracking-widest">Access Level</p>
                 <p className="text-[10px] text-white font-bold italic uppercase">Administrator</p>
