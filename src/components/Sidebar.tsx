@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, FileText, PenTool, ClipboardList,
   Users, Search, Tag, Mail, ShoppingCart, Package,
-  Settings, ArrowLeft,
+  Settings, ArrowLeft, Database, TerminalSquare,
 } from "lucide-react";
 
 const navLinks = [
@@ -19,6 +19,8 @@ const navLinks = [
   { href: "/admin/intelligence", label: "Mailbox",   icon: Mail },
   { href: "/admin/store",       label: "Shop",       icon: ShoppingCart },
   { href: "/admin/modulstore",  label: "Module",     icon: Package },
+  { href: "/admin/database",    label: "Database",   icon: Database },
+  { href: "/admin/sql",         label: "SQL Editor", icon: TerminalSquare },
   { href: "/admin/settings",    label: "Settings",   icon: Settings },
 ];
 
